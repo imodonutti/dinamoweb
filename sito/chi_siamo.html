@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        :root {
+            --navy: #0a192f;
+            --navy-light: #112240;
+            --crimson: #ff2e63;
+            --text: #ccd6f6;
+            --text-dim: #8892b0;
+        }
+
+        body {
+            background-color: var(--navy);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, sans-serif;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 75rem;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Hero */
+        .hero-story {
+            text-align: left;
+            padding: 6rem 0;
+            border-bottom: 1px solid var(--navy-light);
+        }
+
+        .hero-story h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+        }
+
+        .hero-story h1 span {
+            color: var(--crimson);
+            display: block;
+        }
+
+        .hero-story .intro-text {
+            margin: 0 auto;
+            font-size: 1.25rem;
+            color: var(--text-dim);
+        }
+
+        /* DNA Section */
+        .dna-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            padding: 6rem 0;
+            align-items: center;
+        }
+
+        .dna-section h2 {
+            color: var(--crimson);
+            font-size: 2rem;
+        }
+
+        /* Timeline Card Stack */
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .time-card {
+            background: var(--navy-light);
+            padding: 2.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--crimson);
+            transition: transform 0.3s ease;
+        }
+
+        .time-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .time-card h3 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        /* Value Cards */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid var(--navy-light);
+            border-radius: 12px;
+        }
+
+        .value-card h4 {
+            color: var(--crimson);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Team */
+        .team-box {
+            background: var(--navy-light);
+            padding: 4rem;
+            border-radius: 20px;
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        .highlight-text {
+            color: var(--crimson);
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .dna-section, .timeline-grid, .values-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-story h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <section class="hero-story">
+        <h1>
+            Dal primo codice nel 1998 all'Intelligenza Artificiale.<br>
+            <span>Trent’anni di architetture digitali progettate per durare.</span>
+        </h1>
+        <p class="intro-text">
+            Non ci siamo "adeguati" all'evoluzione. L'abbiamo costruita, riga dopo riga, dai server fisici di Piacenza alle infrastrutture Cloud globali.
+        </p>
+    </section>
+
+    <section class="dna-section">
+        <div>
+            <h2>L'Evoluzione è nel nostro Codice.</h2>
+            <p>Dinamoweb non è un'agenzia che "si è aggiornata" per seguire la moda dell'Intelligenza Artificiale. Siamo una struttura che da quasi trent'anni progetta software, gestisce dati e risolve problemi complessi.</p>
+        </div>
+        <div>
+            <p>Oggi abbiamo superato i limiti della gestione tecnica tradizionale: abbiamo migrato la nostra intelligenza sulle infrastrutture di <strong>Google Cloud</strong> e <strong>AWS</strong>, garantendo ai nostri partner scalabilità globale e la massima sicurezza oggi disponibile sul mercato.</p>
+        </div>
+    </section>
+
+    <section>
+        <h2 style="text-align: center; margin-bottom: 3rem;">La Nostra Storia</h2>
+        <div class="timeline-grid">
+            <div class="time-card">
+                <h3>1998 | Le Radici</h3>
+                <p>Nasciamo a Piacenza come divisione web di una storica agenzia di comunicazione. Iniziamo a costruire i primi strumenti di dialogo tra aziende e mercato.</p>
+            </div>
+            <div class="time-card">
+                <h3>2005 | L’Indipendenza</h3>
+                <p>Dinamoweb diventa realtà autonoma. Guidiamo le PMI nell'era dell'E-commerce e della gestione dinamica dei contenuti.</p>
+            </div>
+            <div class="time-card">
+                <h3>2018 | L’Evoluzione Cloud</h3>
+                <p>Abbandoniamo la gestione dei server fisici locali per adottare le architetture AWS e Google Cloud. Standard di livello enterprise.</p>
+            </div>
+            <div class="time-card">
+                <h3>2026 | La Tech Company</h3>
+                <p>Punto di riferimento per l'integrazione dell'AI. Con LeadRaptor e l'automazione, rendiamo scalabile la crescita dei nostri partner.</p>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 6rem 0;">
+        <h2 style="text-align: center;">Partner, non semplici fornitori.</h2>
+        <div class="values-grid">
+            <div class="value-card">
+                <h4>Solidità Storica</h4>
+                <p>30 anni di continuità aziendale sono la tua garanzia. Una realtà solida che sarà qui anche domani.</p>
+            </div>
+            <div class="value-card">
+                <h4>Infrastruttura Globale</h4>
+                <p>Partnership con AWS/Google: velocità e protezione dei dati ovunque nel mondo.</p>
+            </div>
+            <div class="value-card">
+                <h4>Garantito da noi</h4>
+                <p>La nostra assistenza è gestita da DinamoAI. Se funziona per noi, funziona per voi.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-box">
+        <h2>Il Team</h2>
+        <p>Un gruppo affiatato di <span class="highlight-text">12 specialisti</span> che coprono ogni area critica: dallo sviluppo software alla gestione di flussi di lavoro automatici, fino all'ottimizzazione delle vendite. Un team flessibile che ti fornisce solo gli strumenti necessari per raggiungere i tuoi obiettivi.</p>
+    </section>
+
+</div>
+
+</body>
+</html>

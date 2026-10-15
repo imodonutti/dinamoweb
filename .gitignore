@@ -1,0 +1,6 @@
+.DS_Store
+*.env
+segreti/
+# file locali non del sito
+index.html.en
+Dockerfile.coolify

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinamoweb - Digital Legacy (1998-2026)</title>
+    <style>
+        :root {
+            --navy: #0a192f;
+            --navy-light: #112240;
+            --crimson: #ff2e63;
+            --text-main: #ccd6f6;
+            --text-dim: #8892b0;
+            --max-w: 75rem;
+        }
+
+        body {
+            background-color: var(--navy);
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, sans-serif;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* --- Hero Sezione --- */
+        .legacy-hero {
+            text-align: center;
+            padding: 6rem 0 4rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .legacy-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .legacy-hero h1 span { color: var(--crimson); }
+
+        .legacy-hero p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+            color: var(--text-dim);
+        }
+
+        /* --- Filtri / Navigation Era --- */
+        .era-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 3rem 0;
+            position: sticky;
+            top: 1rem;
+            z-index: 10;
+        }
+
+        .era-btn {
+            background: var(--navy-light);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-main);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .era-btn:hover, .era-btn.active {
+            border-color: var(--crimson);
+            color: var(--crimson);
+            box-shadow: 0 0 15px rgba(255, 46, 99, 0.2);
+        }
+
+        /* --- Tabella Archivio --- */
+        .archive-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+
+        .era-heading {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--crimson);
+            font-weight: 700;
+            border-left: 4px solid var(--crimson);
+            margin: 3rem 0 1rem;
+        }
+
+        .archive-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 200px 150px;
+            padding: 1.2rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            align-items: center;
+            transition: background 0.2s ease;
+        }
+
+        .archive-row:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .archive-row .year {
+            font-weight: 700;
+            color: var(--text-dim);
+        }
+
+        .archive-row .client {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .archive-row .service {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .archive-row .link-archive {
+            text-align: right;
+            font-size: 0.8rem;
+        }
+
+        .archive-row a {
+            color: var(--crimson);
+            text-decoration: none;
+            opacity: 0.7;
+        }
+
+        .archive-row a:hover { opacity: 1; text-decoration: underline; }
+
+        /* --- Rassegna Stampa Mini-Section --- */
+        .press-highlight {
+            margin-top: 6rem;
+            background: var(--navy-light);
+            padding: 4rem;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .press-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .press-card {
+            background: var(--navy);
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .press-card span {
+            display: block;
+            color: var(--crimson);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .archive-row { grid-template-columns: 80px 1fr; gap: 0.5rem; }
+            .service, .link-archive { display: none; }
+            .era-nav { flex-wrap: wrap; }
+            .press-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <header class="legacy-hero">
+        <h1>Digital <span>Legacy</span></h1>
+        <p>Dal 1998, ogni riga di codice che abbiamo scritto è un mattone dell'evoluzione digitale italiana. Questo è l'archivio storico dei progetti e della rassegna stampa che hanno segnato il nostro percorso.</p>
+    </header>
+
+    <nav class="era-nav">
+        <button class="era-btn active">Tutti i Progetti</button>
+        <button class="era-btn">2020-2026: Era AI</button>
+        <button class="era-btn">2010-2019: Era Cloud</button>
+        <button class="era-btn">1998-2009: Le Radici</button>
+    </nav>
+
+    <div class="archive-section">
+        
+        <div class="era-heading">2020 — 2026 | L'Evoluzione dell'Intelligenza</div>
+        <div class="archive-row">
+            <div class="year">2024</div>
+            <div class="client">LeadRaptor Intelligence</div>
+            <div class="service">Software Proprietario</div>
+            <div class="link-archive"><a href="#">Vedi Dettagli →</a></div>
+        </div>
+        <div class="archive-row">
+            <div class="year">2023</div>
+            <div class="client">Automazione Processi B2B</div>
+            <div class="service">Workflow / AI</div>
+            <div class="link-archive"><a href="#">Vedi Dettagli →</a></div>
+        </div>
+
+        <div class="era-heading">2010 — 2019 | La Rivoluzione Mobile & Cloud</div>
+        <div class="archive-row">
+            <div class="year">2018</div>
+            <div class="client">Migrazione Infrastruttura AWS</div>
+            <div class="service">Cloud Engineering</div>
+            <div class="link-archive"><span>Legacy Record</span></div>
+        </div>
+        <div class="archive-row">
+            <div class="year">2015</div>
+            <div class="client">E-commerce Multi-Store</div>
+            <div class="service">Web Development</div>
+            <div class="link-archive"><a href="#">Vedi Progetto →</a></div>
+        </div>
+
+        <div class="era-heading">1998 — 2009 | Pionieri del Web</div>
+        <div class="archive-row">
+            <div class="year">2005</div>
+            <div class="client">Primo Portale Dinamico PMI</div>
+            <div class="service">CMS Development</div>
+            <div class="link-archive"><span>Registro Storico</span></div>
+        </div>
+        <div class="archive-row">
+            <div class="year">1998</div>
+            <div class="client">Lancio Dinamoweb Piacenza</div>
+            <div class="service">Digital Foundations</div>
+            <div class="link-archive"><span>Certificato Storico</span></div>
+        </div>
+
+    </div>
+
+    <section class="press-highlight">
+        <h2>Dinamoweb nei Media</h2>
+        <p>La nostra storia raccontata da chi osserva l'innovazione.</p>
+        <div class="press-grid">
+            <div class="press-card">
+                <span>Libertà | 2023</span>
+                "L'Intelligenza Artificiale entra nelle aziende di Piacenza con Dinamoweb."
+            </div>
+            <div class="press-card">
+                <span>Il Sole 24 Ore | 2018</span>
+                "L'evoluzione del Cloud per le PMI italiane."
+            </div>
+            <div class="press-card">
+                <span>Settore Tech | 1999</span>
+                "Dinamoweb: i pionieri che portano il web nelle agenzie di comunicazione."
+            </div>
+        </div>
+        <a href="#" class="era-btn" style="margin-top: 2.5rem; display: inline-block;">Accedi all'Archivio Stampa Completo</a>
+    </section>
+
+</div>
+
+</body>
+</html>

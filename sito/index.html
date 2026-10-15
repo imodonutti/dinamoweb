@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinamoweb 2026 - Home Page Wireframe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0a192f;
+            --navy-light: #112240;
+            --crimson: #ff2e63;
+            --text-main: #ccd6f6;
+            --text-dim: #8892b0;
+            --max-width: 75rem;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: var(--navy); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+
+        /* --- HEADER --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .logo { font-weight: 700; font-size: 1.5rem; letter-spacing: -1px; }
+        .logo span { color: var(--crimson); }
+        nav a { margin-left: 2rem; text-decoration: none; color: var(--text-main); font-size: 0.9rem; }
+        .cta-header { background: var(--crimson); color: white; padding: 0.6rem 1.2rem; border-radius: 4px; font-weight: 700; }
+
+        /* --- SECTION 1: HERO --- */
+        .hero { 
+            height: 85vh; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; text-align: center;
+        }
+        .hero h1 { font-size: 4rem; line-height: 1.1; margin-bottom: 1.5rem; }
+        .hero h1 span { color: var(--crimson); }
+        .hero p { max-width: 700px; font-size: 1.25rem; color: var(--text-dim); margin-bottom: 2.5rem; }
+        .hero-btns .btn { 
+            padding: 1rem 2rem; border-radius: 4px; text-decoration: none; 
+            font-weight: 700; margin: 0 0.5rem; display: inline-block;
+        }
+        .btn-primary { background: var(--crimson); color: white; }
+        .btn-secondary { border: 1px solid var(--crimson); color: var(--crimson); }
+
+        /* --- SECTION 2: THE BRIDGE (TIMELINE) --- */
+        .bridge-section { padding: 6rem 0; background: var(--navy-light); overflow: hidden; }
+        .bridge-section h2 { text-align: center; margin-bottom: 4rem; font-size: 2.5rem; }
+        
+        .timeline-container { 
+            display: flex; gap: 2rem; padding-bottom: 2rem;
+            /* In un sito reale, qui GSAP gestirebbe lo scroll orizzontale */
+            overflow-x: auto; 
+        }
+        .timeline-card { 
+            min-width: 350px; background: var(--navy); padding: 2.5rem; 
+            border-top: 4px solid var(--crimson); border-radius: 8px;
+        }
+        .timeline-card .year { color: var(--crimson); font-weight: 700; font-size: 1.5rem; display: block; margin-bottom: 1rem; }
+        .timeline-card h3 { margin-bottom: 1rem; font-size: 1.4rem; }
+        .timeline-card p { font-size: 0.95rem; color: var(--text-dim); }
+
+        /* --- SECTION 3: ECOSISTEMA --- */
+        .ecosystem { padding: 8rem 0; }
+        .section-title { margin-bottom: 4rem; }
+        .ecosystem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+        .eco-card { 
+            padding: 3rem; background: var(--navy-light); border-radius: 12px;
+            transition: transform 0.3s ease; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .eco-card:hover { transform: translateY(-10px); border-color: var(--crimson); }
+        .eco-card h3 { margin-bottom: 1.5rem; color: var(--crimson); }
+
+        /* --- SECTION 4: LEADRAPTOR --- */
+        .split-section { padding: 6rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+        .visual-placeholder { background: var(--navy-light); height: 450px; border-radius: 20px; border: 1px dashed var(--text-dim); }
+
+        /* --- SECTION 5: CLOUD & DEMO --- */
+        .infra-demo { text-align: center; padding: 6rem 0; background: var(--navy-light); }
+        .logos { display: flex; justify-content: center; gap: 4rem; margin-top: 3rem; opacity: 0.6; font-weight: 700; }
+
+        /* --- SECTION 6: FOOTER / AUDIT --- */
+        .audit-footer { padding: 8rem 0; text-align: center; }
+        .audit-form { 
+            max-width: 600px; margin: 3rem auto 0; background: var(--navy-light); 
+            padding: 3rem; border-radius: 12px; 
+        }
+        .audit-form input, .audit-form select { 
+            width: 100%; padding: 1rem; margin-bottom: 1rem; 
+            background: var(--navy); border: 1px solid rgba(255,255,255,0.1); color: white; 
+        }
+        .audit-form button { 
+            width: 100%; padding: 1.2rem; background: var(--crimson); 
+            color: white; border: none; font-weight: 700; cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">DINAMO<span>WEB</span></div>
+            <nav>
+                <a href="#">Ecosistema</a>
+                <a href="#">LeadRaptor</a>
+                <a href="#">Storia</a>
+                <a href="#" class="cta-header">Richiedi Audit</a>
+            </nav>
+        </header>
+    </div>
+
+    <section class="container hero">
+        <h1>Siamo nati con il Web. Lo abbiamo visto crescere.<br><span>Oggi lo facciamo pensare.</span></h1>
+        <p>Da 30 anni trasformiamo l’avanguardia tecnologica in efficienza misurabile per le imprese. Benvenuti nell’era del business guidato dall'Intelligenza Artificiale.</p>
+        <div class="hero-btns">
+            <a href="#" class="btn btn-primary">Esplora l'Ecosistema</a>
+            <a href="#" class="btn btn-secondary">Richiedi Audit</a>
+        </div>
+    </section>
+
+    <section class="bridge-section">
+        <div class="container">
+            <h2>La Nostra Linea del Tempo: Tre Decenni di Solidità</h2>
+            <div class="timeline-container">
+                <div class="timeline-card">
+                    <span class="year">1998</span>
+                    <h3>Le Radici</h3>
+                    <p>Nasciamo a Piacenza come divisione web di una storica agenzia di comunicazione. Iniziamo a costruire i primi strumenti di dialogo digitale tra aziende e mercato.</p>
+                </div>
+                <div class="timeline-card">
+                    <span class="year">2005</span>
+                    <h3>L'Indipendenza</h3>
+                    <p>Dinamoweb diventa realtà autonoma. Guidiamo le PMI nell'era dell'E-commerce e della gestione dinamica dei contenuti.</p>
+                </div>
+                <div class="timeline-card">
+                    <span class="year">2018</span>
+                    <h3>L'Evoluzione Cloud</h3>
+                    <p>Superiamo la gestione dei server fisici. Adottiamo le architetture AWS e Google Cloud, portando le performance a uno standard Enterprise.</p>
+                </div>
+                <div class="timeline-card">
+                    <span class="year">2026</span>
+                    <h3>La Tech Company</h3>
+                    <p>Punto di riferimento per l'integrazione dell'AI nei processi aziendali. Con LeadRaptor e l'automazione, rendiamo scalabile la tua crescita.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container ecosystem">
+        <div class="section-title">
+            <h2>L'Ecosistema Dinamoweb</h2>
+            <p>Sistemi integrati per dominare il mercato digitale.</p>
+        </div>
+        <div class="ecosystem-grid">
+            <div class="eco-card">
+                <h3>AI Performance Lab</h3>
+                <p>La fine del budget sprecato. Identifichiamo buyer pronti all'acquisto e li convertiamo con campagne omnichannel chirurgiche.</p>
+            </div>
+            <div class="eco-card">
+                <h3>High-End UX</h3>
+                <p>Storytelling visivo ad alte prestazioni. Progettiamo ecosistemi immersivi per brand industriali che non accettano compromessi.</p>
+            </div>
+            <div class="eco-card">
+                <h3>Workflow Automation</h3>
+                <p>Il tempo è il tuo asset più caro. Automatizziamo processi complessi con n8n e offriamo infrastrutture di mailing illimitato.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container split-section">
+        <div>
+            <h2>LeadRaptor: L’Intelligence che trova i tuoi clienti prima della concorrenza.</h2>
+            <p>Perché aspettare che i lead arrivino per caso? LeadRaptor è il nostro software di Intent Analysis che identifica i segnali reali di acquisto dei tuoi prospect B2B.</p>
+        </div>
+        <div class="visual-placeholder">
+            </div>
+    </section>
+
+    <section class="infra-demo">
+        <div class="container">
+            <h2>Il tuo business gira sulle infrastrutture più potenti al mondo.</h2>
+            <p>Sicurezza Enterprise e velocità globale garantita dai nostri partner.</p>
+            <div class="logos">
+                <span>GOOGLE CLOUD</span>
+                <span>AWS PARTNER</span>
+                <span>DINAMO INFRA</span>
+            </div>
+        </div>
+    </section>
+
+    <footer class="container audit-footer">
+        <h2>La tua azienda è pronta per la crescita automatizzata?</h2>
+        <p>Richiedi un Audit Strategico per scoprire dove l'AI può aumentare i tuoi margini.</p>
+        
+        <div class="audit-form">
+            <form>
+                <input type="text" placeholder="Nome e Cognome">
+                <input type="text" placeholder="Nome Azienda">
+                <input type="email" placeholder="Email Professionale">
+                <select>
+                    <option value="">In cosa vuoi scalare?</option>
+                    <option value="vendite">Vendite / Lead Generation</option>
+                    <option value="processi">Efficienza Processi Interni</option>
+                    <option value="brand">Brand Authority</option>
+                </select>
+                <button type="submit">INIZIA L'AUDIT STRATEGICO</button>
+            </form>
+        </div>
+    </footer>
+
+</body>
+</html>
