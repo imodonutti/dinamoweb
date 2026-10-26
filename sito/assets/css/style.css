@@ -266,7 +266,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .intro { display: none; }
 html.has-intro .intro { position: fixed; inset: 0; z-index: 95; display: grid; place-items: center; cursor: pointer;
   background: radial-gradient(60% 60% at 50% 45%, rgba(12,12,12,.2), rgba(12,12,12,.75)); animation: intro-failsafe .01s 7s forwards; }
-.intro-logo { width: min(46vw, 34rem); height: auto; will-change: transform, filter, opacity; }
+.intro-logo { width: min(46vw, 34rem); height: auto; will-change: transform, filter, opacity; overflow: visible; }
+.o-ring { position: fixed; z-index: 96; border-radius: 50%; border-style: solid; border-color: #F4F4F4; pointer-events: none; will-change: transform; }
 .intro-skip { position: absolute; bottom: calc(2rem + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); font-family: var(--f-mono); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: #6a6a6a; }
 html.has-intro .hero-inner, html.has-intro .site-header { opacity: 0; }
 html.has-intro .hero-inner, html.has-intro .site-header { animation: show-failsafe .01s 7s forwards; }

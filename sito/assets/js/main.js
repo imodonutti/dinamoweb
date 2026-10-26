@@ -81,12 +81,13 @@
     var build = reduced ? 1 : 0, startAt = performance.now() + 350;
     var parts = [], pulses = [], rings = [], nextSpawn = 0, li = 0, running = false, visible = true, last = performance.now();
     // arrivo del rotore (intro)
-    var arr = null, rotorHidden = playIntro, hold = playIntro, trail = [], flash = 0, ripples = [], off = [0, 0, 0], spinMul = 1, arrP = 1;
+    var ARR0 = [0, 0, 0], arr = null, rotorHidden = playIntro, hold = playIntro, trail = [], flash = 0, ripples = [], off = [0, 0, 0], spinMul = 1, arrP = 1;
     function arrival(now) {
       if (!arr) { off = [0, 0, 0]; spinMul = 1; arrP = 1; return; }
       var p = Math.max(0, Math.min(1, (now - arr.t0) / arr.dur)), e = 1 - Math.pow(1 - p, 3);
       arrP = p;
-      off = [R * 2.6 * (1 - e) * Math.cos(p * 2.4), R * 8 * (1 - e), R * 4.2 * (1 - e) + Math.sin(p * 20) * R * .05 * (1 - e)];
+      var k = 1 - e;
+      off = [ARR0[0] * k, ARR0[1] * k * k, ARR0[2] * k + Math.sin(p * 16) * R * .04 * k];
       spinMul = 1 + 11 * (1 - e);
       if (p >= 1) dock(now);
     }
@@ -98,6 +99,13 @@
     }
     window.dynCtl = {
       arrive: function (ms) { rotorHidden = false; hold = true; arr = { t0: performance.now(), dur: ms || 2000 }; },
+      // dove compare il rotore all'inizio dell'arrivo (coordinate della finestra) e quanto e' grande
+      startPoint: function () {
+        var sr = stage.getBoundingClientRect(), keep = off; off = ARR0;
+        var c = Pr(0, 0, R * .13), e1 = Pr(R * .96, 0, R * .13), e2 = Pr(0, R * .96, R * .13);
+        off = keep;
+        return { x: sr.left + c[0], y: sr.top + c[1], rx: Math.hypot(e1[0] - c[0], e1[1] - c[1]), ry: Math.hypot(e2[0] - c[0], e2[1] - c[1]) };
+      },
       skip: function () { if (arr) dock(performance.now()); rotorHidden = false; hold = false; build = 1; }
     };
 
@@ -114,6 +122,18 @@
       var h1 = $(".hero-dyn h1");
       if (h1) { var hb = h1.getBoundingClientRect(); h1Rect = [hb.left - r.left, hb.top - r.top, hb.width, hb.height]; }
       outPts = outs.map(function (l) { var b = l.getBoundingClientRect(); return { x: b.left - r.left + b.width * .5, y: b.top - r.top - 4 }; });
+      // punto di partenza del volo: in alto a destra, piccolo come visto da lontano
+      (function () {
+        var tx = mobile ? W * .78 : W * .84, ty = mobile ? H * .12 : H * .17, best = 1e12, keep = off;
+        for (var u = -2; u <= 8; u += .25) for (var v = -4; v <= 14; v += .25) for (var h = -2; h <= 8; h += .25) {
+          off = [R * u, R * v, R * h];
+          var c = Pr(0, 0, R * .13), e1 = Pr(R * .96, 0, R * .13);
+          var rx = Math.hypot(e1[0] - c[0], e1[1] - c[1]);
+          var cost = Math.pow(c[0] - tx, 2) + Math.pow(c[1] - ty, 2) + Math.pow((rx - R * .4) * 6, 2);
+          if (cost < best) { best = cost; ARR0 = [R * u, R * v, R * h]; }
+        }
+        off = keep;
+      })();
       if (!running) draw(performance.now());
     }
 
@@ -247,6 +267,9 @@
       ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.beginPath();
       for (var hz = 0; hz <= 40; hz++) { var ha = hz / 40 * Math.PI * 2, hp = Pr(Math.cos(ha) * R * .14, Math.sin(ha) * R * .14, R * .2); hz ? ctx.lineTo(hp[0], hp[1]) : ctx.moveTo(hp[0], hp[1]); }
       ctx.stroke();
+      // il triangolo della "D" del logo sul mozzo
+      var tri = [Pr(-R * .055, -R * .065, R * .205), Pr(-R * .055, R * .065, R * .205), Pr(R * .075, 0, R * .205)];
+      ctx.fillStyle = "rgba(255,255,255,.92)"; ctx.beginPath(); ctx.moveTo(tri[0][0], tri[0][1]); ctx.lineTo(tri[1][0], tri[1][1]); ctx.lineTo(tri[2][0], tri[2][1]); ctx.closePath(); ctx.fill();
       }
       // lampo all'aggancio
       if (flash > .01) { ctx.fillStyle = "rgba(170,205,255," + (flash * .32).toFixed(3) + ")"; ctx.fillRect(0, 0, W, H); flash *= .9; }
@@ -281,17 +304,24 @@
         ctx.beginPath(); ctx.arc(q[0], q[1], (inner ? 3 : 2.4) * Math.min(1.3, q[3]), 0, Math.PI * 2); ctx.fill();
         var lab = t < .72 ? Math.min(1, t * 8) : Math.max(0, 1 - (t - .72) / .16);
         var tw = ctx.measureText(p.label).width, bx = q[0] + 14, by = q[1] - chipH / 2;
-        if (!mobile && bx < textRight + 20) lab *= Math.max(0, (bx - textRight + 120) / 140);
         var cw = tw + padX * 2;
-        // evita che due etichette si sovrappongano: sposta in basso o in alto
+        // spostamento verticale per non sovrapporsi alle altre etichette: deciso e poi raggiunto con dolcezza
+        var want = 0;
         for (var tries = 0; tries < 6; tries++) {
-          var clash = placed.some(function (r) { return bx < r[0] + r[2] + 6 && bx + cw + 6 > r[0] && by < r[1] + r[3] + 6 && by + chipH + 6 > r[1]; });
+          var yy = by + want;
+          var clash = placed.some(function (r) { return bx < r[0] + r[2] + 6 && bx + cw + 6 > r[0] && yy < r[1] + r[3] + 6 && yy + chipH + 6 > r[1]; });
           if (!clash) break;
-          by += (tries % 2 ? -1 : 1) * (chipH + 8) * (Math.floor(tries / 2) + 1);
+          want = (tries % 2 ? -1 : 1) * (chipH + 8) * (Math.floor(tries / 2) + 1);
         }
-        if (h1Rect && bx < h1Rect[0] + h1Rect[2] && bx + cw > h1Rect[0] && by < h1Rect[1] + h1Rect[3] && by + chipH > h1Rect[1]) lab *= .12;
+        p.dy = (p.dy || 0) + (want - (p.dy || 0)) * .08;
+        by += p.dy;
+        // dietro al titolo l'etichetta si attenua, in modo graduale
+        var under = h1Rect && bx < h1Rect[0] + h1Rect[2] + 10 && bx + cw > h1Rect[0] - 10 && by < h1Rect[1] + h1Rect[3] && by + chipH > h1Rect[1];
+        var goal = lab * (under ? .1 : 1);
+        p.al = p.al === undefined ? 0 : p.al + (goal - p.al) * .07;
+        lab = p.al;
         if (lab > .02 && bx > 0 && by > 0 && bx + cw < W) {
-          placed.push([bx, by, cw, chipH]);
+          placed.push([bx, by - p.dy + want, cw, chipH]);
           ctx.globalAlpha = lab * b;
           ctx.fillStyle = "rgba(12,12,12,.88)"; ctx.fillRect(bx, by, tw + padX * 2, chipH);
           ctx.strokeStyle = "rgba(255,255,255,.22)"; ctx.strokeRect(bx + .5, by + .5, tw + padX * 2 - 1, chipH - 1);
@@ -384,25 +414,46 @@
       if (lenis) lenis.start();
     }
     if (playIntro) {
-      T = 3.1;
-      var il = $("#intro-logo"), hl = $(".site-header .logo img");
+      T = 4.4;
+      var il = $("#intro-logo"), hl = $(".site-header .logo img"), lo = $("#logo-o"), ring = null;
       if (lenis) lenis.stop();
       gsap.set(".site-header", { opacity: 0 });
-      intro.fromTo(il, { opacity: 0, scale: .82, filter: "blur(18px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.1 }, 0)
+      intro.fromTo(il, { opacity: 0, scale: .82, filter: "blur(18px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1 }, 0)
         .fromTo(".intro-skip", { opacity: 0 }, { opacity: 1, duration: .6 }, .6)
-        .add(function () { if (window.dynCtl) window.dynCtl.arrive(2000); }, .3)
-        .to(il, { filter: "drop-shadow(0 0 30px rgba(85,144,247,.95))", duration: .25, ease: "power2.out" }, 2.3)
-        .to(".intro-skip", { opacity: 0, duration: .3 }, 2.3)
+        // la O si stacca dal logo
+        .add(function () {
+          var r = lo.getBoundingClientRect();
+          ring = document.createElement("div"); ring.className = "o-ring";
+          ring.style.left = r.left + "px"; ring.style.top = r.top + "px"; ring.style.width = r.width + "px"; ring.style.height = r.height + "px";
+          ring.style.borderWidth = Math.max(2, r.width * .07) + "px";
+          document.body.appendChild(ring);
+          lo.style.opacity = "0";
+          gsap.to(ring, { scale: 1.18, borderColor: "#9CC3FF", boxShadow: "0 0 40px rgba(85,144,247,.9), inset 0 0 24px rgba(85,144,247,.6)", duration: .35, ease: "power2.out" });
+          // e vola in alto a destra, dove diventa il rotore visto da lontano
+          var sp = window.dynCtl ? window.dynCtl.startPoint() : { x: innerWidth * .8, y: innerHeight * .2, rx: r.width, ry: r.height * .5 };
+          var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+          gsap.to(ring, { x: sp.x - cx, y: sp.y - cy, scaleX: (sp.rx * 2) / r.width, scaleY: (sp.ry * 2) / r.height, rotation: 0,
+            borderColor: "#5590F7", duration: .85, delay: .35, ease: "power3.inOut" });
+        }, .95)
+        .add(function () { if (window.dynCtl) window.dynCtl.arrive(1700); }, 2.15)
+        .add(function () { if (ring) gsap.to(ring, { opacity: 0, duration: .2, onComplete: function () { ring.remove(); } }); }, 2.2)
+        .to(il, { opacity: .55, duration: .5, ease: "power2.out" }, 2.2)
+        // atterrato il rotore, la O torna al suo posto e il logo va nell'intestazione
+        .add(function () { lo.style.transition = "opacity .4s"; lo.style.opacity = "1"; }, 3.85)
+        .to(il, { opacity: 1, filter: "drop-shadow(0 0 30px rgba(85,144,247,.95))", duration: .3, ease: "power2.out" }, 3.85)
+        .to(".intro-skip", { opacity: 0, duration: .3 }, 3.85)
         .add(function () {
           var a = il.getBoundingClientRect(), b = hl.getBoundingClientRect();
           gsap.to(il, { x: (b.left + b.width / 2) - (a.left + a.width / 2), y: (b.top + b.height / 2) - (a.top + a.height / 2),
             scale: b.width / a.width, filter: "drop-shadow(0 0 0px rgba(85,144,247,0))", duration: 1, ease: "expo.inOut" });
-        }, 2.45)
-        .to(".site-header", { opacity: 1, duration: .35, ease: "power2.out" }, 3.3)
-        .add(finishIntro, 3.5);
+        }, 4.0)
+        .to(".site-header", { opacity: 1, duration: .35, ease: "power2.out" }, 4.85)
+        .add(finishIntro, 5.05);
       var skip = function () {
         if (introDone) return;
         intro.progress(1);
+        $$(".o-ring").forEach(function (n) { n.remove(); });
+        var lo2 = $("#logo-o"); if (lo2) lo2.style.opacity = "1";
         if (window.dynCtl) window.dynCtl.skip();
         finishIntro();
       };
