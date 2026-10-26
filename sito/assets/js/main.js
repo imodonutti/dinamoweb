@@ -109,6 +109,31 @@
       skip: function () { if (arr) dock(performance.now()); rotorHidden = false; hold = false; build = 1; }
     };
 
+    // vetro: copia ridotta della scena (sfocatura economica) e trama del metallo spazzolato
+    var sm = document.createElement("canvas"), smx = sm.getContext("2d");
+    var brush = (function () {
+      var c = document.createElement("canvas"); c.width = 240; c.height = 60; var x = c.getContext("2d");
+      for (var i = 0; i < 260; i++) {
+        var y = Math.random() * 60, l = 30 + Math.random() * 200, g = 120 + Math.random() * 120;
+        x.strokeStyle = "rgba(" + g + "," + g + "," + (g + 8) + "," + (.05 + Math.random() * .1).toFixed(2) + ")";
+        x.beginPath(); var sx = Math.random() * 240; x.moveTo(sx, y); x.lineTo(sx + l, y + (Math.random() - .5) * .6); x.stroke();
+      }
+      return ctx.createPattern(c, "repeat");
+    })();
+    function snapshot() {
+      var sw = Math.max(2, Math.round(W / 9)), sh = Math.max(2, Math.round(H / 9));
+      if (sm.width !== sw || sm.height !== sh) { sm.width = sw; sm.height = sh; }
+      smx.imageSmoothingEnabled = true; smx.imageSmoothingQuality = "high";
+      smx.clearRect(0, 0, sw, sh); smx.drawImage(canvas, 0, 0, sw, sh);
+    }
+    function frosted(pathFn, tint) {
+      ctx.save(); pathFn(); ctx.clip();
+      ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
+      ctx.drawImage(sm, 0, 0, W, H);
+      ctx.fillStyle = tint; ctx.fillRect(0, 0, W, H);
+      ctx.restore();
+    }
+
     function layout() {
       var r = stage.getBoundingClientRect();
       W = r.width; H = r.height; mobile = W < 760;
@@ -245,16 +270,47 @@
       // rotore: sei settori in rilievo
       var hr = R * .13;
       if (!rotorHidden) {
+      snapshot();
       for (var k = 0; k < 6; k++) {
-        var a0 = angle + k * Math.PI / 3 + .1, a1 = angle + (k + 1) * Math.PI / 3 - .1, n = 16, pts = [];
-        for (var j = 0; j <= n; j++) { var a = a0 + (a1 - a0) * j / n; pts.push(Pr(Math.cos(a) * R * .96, Math.sin(a) * R * .96, hr)); }
-        for (j = n; j >= 0; j--) { a = a0 + (a1 - a0) * j / n; pts.push(Pr(Math.cos(a) * R * .46, Math.sin(a) * R * .46, hr)); }
+        var a0 = angle + k * Math.PI / 3 + .1, a1 = angle + (k + 1) * Math.PI / 3 - .1, n = 16, pts = [], outer = [], inner = [];
+        for (var j = 0; j <= n; j++) { var a = a0 + (a1 - a0) * j / n, po = Pr(Math.cos(a) * R * .96, Math.sin(a) * R * .96, hr); pts.push(po); outer.push(po); }
+        for (j = n; j >= 0; j--) { a = a0 + (a1 - a0) * j / n; var pi = Pr(Math.cos(a) * R * .46, Math.sin(a) * R * .46, hr); pts.push(pi); inner.push(pi); }
+        var path = function () { ctx.beginPath(); pts.forEach(function (p, q) { q ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.closePath(); };
         ctx.globalAlpha = arr ? 1 : b;
-        ctx.beginPath(); pts.forEach(function (p, q) { q ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.closePath();
-        ctx.fillStyle = k % 2 ? "rgba(" + BLUE + "," + (.14 + glow * .38).toFixed(3) + ")" : "rgba(30,32,38,.82)";
-        ctx.fill(); ctx.strokeStyle = k % 2 ? "rgba(156,195,255,.75)" : "rgba(255,255,255,.28)"; ctx.stroke();
         // spigoli verticali esterni
         [a0, a1].forEach(function (aa) { ctx.strokeStyle = "rgba(255,255,255,.14)"; segr(Math.cos(aa) * R * .96, Math.sin(aa) * R * .96, 0, Math.cos(aa) * R * .96, Math.sin(aa) * R * .96, hr); ctx.stroke(); });
+        var minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
+        pts.forEach(function (p) { minX = Math.min(minX, p[0]); maxX = Math.max(maxX, p[0]); minY = Math.min(minY, p[1]); maxY = Math.max(maxY, p[1]); });
+        if (k % 2) {
+          // lastra di vetro smerigliato: sfondo sfocato, velatura blu, riflesso diagonale, filo di luce sui bordi
+          frosted(path, "rgba(" + BLUE + "," + (.1 + glow * .22).toFixed(3) + ")");
+          ctx.save(); path(); ctx.clip();
+          var gl = ctx.createLinearGradient(minX, minY, maxX, maxY);
+          gl.addColorStop(0, "rgba(255,255,255,.16)"); gl.addColorStop(.38, "rgba(255,255,255,.03)");
+          gl.addColorStop(.46, "rgba(255,255,255,.2)"); gl.addColorStop(.52, "rgba(255,255,255,.02)"); gl.addColorStop(1, "rgba(255,255,255,0)");
+          ctx.fillStyle = gl; ctx.fillRect(minX, minY, maxX - minX, maxY - minY);
+          ctx.restore();
+          ctx.lineWidth = 1.6; ctx.strokeStyle = "rgba(225,236,255,.85)";
+          ctx.beginPath(); outer.forEach(function (p, q) { q ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+          ctx.lineWidth = 1; ctx.strokeStyle = "rgba(156,195,255,.55)"; path(); ctx.stroke();
+        } else {
+          // metallo spazzolato
+          ctx.save(); path(); ctx.clip();
+          var gm = ctx.createLinearGradient(minX, minY, maxX, maxY);
+          gm.addColorStop(0, "rgba(58,62,70,.95)"); gm.addColorStop(.5, "rgba(30,33,39,.95)"); gm.addColorStop(1, "rgba(44,48,56,.95)");
+          ctx.fillStyle = gm; ctx.fillRect(minX, minY, maxX - minX, maxY - minY);
+          ctx.globalAlpha = (arr ? 1 : b) * .32; ctx.fillStyle = brush; ctx.fillRect(minX, minY, maxX - minX, maxY - minY);
+          ctx.restore(); ctx.globalAlpha = arr ? 1 : b;
+          ctx.strokeStyle = "rgba(255,255,255,.32)"; path(); ctx.stroke();
+          ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.beginPath(); outer.forEach(function (p, q) { q ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+        }
+        // bulloni agli angoli esterni
+        [a0 + .07, a1 - .07].forEach(function (aa) {
+          var bp = Pr(Math.cos(aa) * R * .88, Math.sin(aa) * R * .88, hr), rb = Math.max(1.4, R * .015 * bp[3]);
+          var bg = ctx.createRadialGradient(bp[0] - rb * .4, bp[1] - rb * .4, 0, bp[0], bp[1], rb);
+          bg.addColorStop(0, "#d6dbe2"); bg.addColorStop(.6, "#7b828c"); bg.addColorStop(1, "#2a2e35");
+          ctx.fillStyle = bg; ctx.beginPath(); ctx.arc(bp[0], bp[1], rb, 0, Math.PI * 2); ctx.fill();
+        });
         ctx.globalAlpha = 1;
       }
       // albero e mozzo luminoso
@@ -267,6 +323,15 @@
       ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.beginPath();
       for (var hz = 0; hz <= 40; hz++) { var ha = hz / 40 * Math.PI * 2, hp = Pr(Math.cos(ha) * R * .14, Math.sin(ha) * R * .14, R * .2); hz ? ctx.lineTo(hp[0], hp[1]) : ctx.moveTo(hp[0], hp[1]); }
       ctx.stroke();
+      // cupola di vetro sul mozzo
+      (function () {
+        var c = Pr(0, 0, R * .2), ex = Pr(R * .2, 0, R * .2), ey = Pr(0, R * .2, R * .2);
+        var rx = Math.hypot(ex[0] - c[0], ex[1] - c[1]), ry = Math.hypot(ey[0] - c[0], ey[1] - c[1]);
+        var dg = ctx.createRadialGradient(c[0] - rx * .35, c[1] - ry * .5, 0, c[0], c[1], rx);
+        dg.addColorStop(0, "rgba(255,255,255,.38)"); dg.addColorStop(.55, "rgba(200,220,255,.08)"); dg.addColorStop(1, "rgba(200,220,255,.0)");
+        ctx.fillStyle = dg; ctx.beginPath(); ctx.ellipse(c[0], c[1], rx, ry, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = "rgba(235,242,255,.6)"; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.ellipse(c[0], c[1], rx, ry, 0, Math.PI * 1.05, Math.PI * 1.75); ctx.stroke(); ctx.lineWidth = 1;
+      })();
       // il triangolo della "D" del logo sul mozzo
       var tri = [Pr(-R * .055, -R * .065, R * .205), Pr(-R * .055, R * .065, R * .205), Pr(R * .075, 0, R * .205)];
       ctx.fillStyle = "rgba(255,255,255,.92)"; ctx.beginPath(); ctx.moveTo(tri[0][0], tri[0][1]); ctx.lineTo(tri[1][0], tri[1][1]); ctx.lineTo(tri[2][0], tri[2][1]); ctx.closePath(); ctx.fill();
@@ -323,8 +388,12 @@
         if (lab > .02 && bx > 0 && by > 0 && bx + cw < W) {
           placed.push([bx, by - p.dy + want, cw, chipH]);
           ctx.globalAlpha = lab * b;
-          ctx.fillStyle = "rgba(12,12,12,.88)"; ctx.fillRect(bx, by, tw + padX * 2, chipH);
-          ctx.strokeStyle = "rgba(255,255,255,.22)"; ctx.strokeRect(bx + .5, by + .5, tw + padX * 2 - 1, chipH - 1);
+          frosted(function () { ctx.beginPath(); ctx.rect(bx, by, cw, chipH); }, "rgba(16,18,24,.62)");
+          var gc = ctx.createLinearGradient(0, by, 0, by + chipH);
+          gc.addColorStop(0, "rgba(255,255,255,.1)"); gc.addColorStop(1, "rgba(255,255,255,0)");
+          ctx.fillStyle = gc; ctx.fillRect(bx, by, cw, chipH);
+          ctx.strokeStyle = "rgba(255,255,255,.2)"; ctx.strokeRect(bx + .5, by + .5, cw - 1, chipH - 1);
+          ctx.strokeStyle = "rgba(255,255,255,.45)"; ctx.beginPath(); ctx.moveTo(bx + 1, by + .5); ctx.lineTo(bx + cw - 1, by + .5); ctx.stroke();
           ctx.fillStyle = "#e6e6e6"; ctx.fillText(p.label, bx + padX, by + chipH / 2 + .5);
           ctx.globalAlpha = 1;
         }
