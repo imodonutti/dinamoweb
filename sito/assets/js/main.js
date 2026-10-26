@@ -22,6 +22,7 @@
 
   /* Scroll inerziale + ancore */
   var lenis = null;
+  var lenisRef = function () { return lenis; };
   if (motion && typeof window.Lenis !== "undefined") {
     lenis = new window.Lenis({ duration: 1.2, easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
     lenis.on("scroll", ScrollTrigger.update);
@@ -60,52 +61,236 @@
   if (reduced) $$(".map animateMotion, .map animate").forEach(function (n) { n.parentNode.removeChild(n); });
   if (reduced) $$(".map .pulse-dot").forEach(function (n) { n.parentNode.removeChild(n); });
 
+  /* ---------- Dinamo: il movimento entra, l'energia esce ---------- */
+  (function dynamo() {
+    var wrap = $("#dynamo"), canvas = $("#dyn-canvas");
+    if (!wrap || !canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext("2d");
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var outs = $$("#dyn-out li"), outEls = [$("#o0"), $("#o1"), $("#o2")];
+    var outVals = outEls.map(function (e) { return parseInt(e.textContent, 10) || 0; });
+    var LABELS = ["email · 22:47", "richiesta preventivo", "visita · Cremona", "ordine #2418", "WhatsApp · rivenditore",
+      "catalogo · art. 4521", "domanda tecnica", "fattura da registrare", "visita · Parma", "ordine da ricopiare", "chiamata persa · 18:40", "visita · Lodi"];
+    var BLUE = "85,144,247";
+    var W = 0, H = 0, cx = 0, cy = 0, R = 0, mobile = false, outPts = [];
+    var parts = [], pulses = [], rings = [];
+    var angle = 0, speed = 0, boost = 0, hover = 0, glow = 0;
+    var build = reduced ? 1 : 0, startAt = performance.now() + 600;
+    var nextSpawn = 0, li = 0, running = false, visible = true, last = performance.now();
+    var MONO = '500 10.5px "Geist Mono", ui-monospace, Menlo, monospace';
+
+    function layout() {
+      var r = wrap.getBoundingClientRect();
+      W = r.width; H = r.height; mobile = W < 560;
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var outBox = $("#dyn-out").getBoundingClientRect();
+      if (mobile) { cx = W * .5; cy = H * .42; R = Math.min(W * .27, H * .2); }
+      else { var free = outBox.left - r.left - 30; cx = free * .58; cy = H * .5; R = Math.min(free * .24, H * .27); }
+      outPts = outs.map(function (l) {
+        var b = l.getBoundingClientRect();
+        return mobile ? { x: b.left - r.left + 10, y: b.top - r.top - 10 } : { x: b.left - r.left - 4, y: b.top - r.top + b.height * .62 };
+      });
+      if (!running) draw(performance.now(), 0);
+    }
+
+    function spawn(now) {
+      var label = LABELS[li++ % LABELS.length];
+      var sx, sy, th;
+      if (mobile) { sx = W * (.1 + Math.random() * .8); sy = -10; th = -Math.PI / 2 + (Math.random() - .5) * 1.4; }
+      else { sx = -10; sy = H * (.1 + Math.random() * .8); th = Math.PI + (Math.random() - .5) * 1.5; }
+      var ex = cx + Math.cos(th) * R * 1.34, ey = cy + Math.sin(th) * R * 1.34;
+      parts.push({ label: label, sx: sx, sy: sy, ex: ex, ey: ey, th: th, c1x: sx + (ex - sx) * .45, c1y: sy + (Math.random() - .5) * 80,
+        t0: now, dur: 2600 + Math.random() * 1400, phase: 0, sp: 0 });
+    }
+    function bez(p, t) {
+      var u = 1 - t, x = u * u * p.sx + 2 * u * t * p.c1x + t * t * p.ex, y = u * u * p.sy + 2 * u * t * p.c1y + t * t * p.ey;
+      return [x, y];
+    }
+    function rimPoint(k) {
+      var o = outPts[k], a = Math.atan2(o.y - cy, o.x - cx);
+      return [cx + Math.cos(a) * R * 1.36, cy + Math.sin(a) * R * 1.36];
+    }
+    function hit(k) {
+      outVals[k] += 1; outEls[k].textContent = outVals[k];
+      outs[k].classList.add("hit");
+      setTimeout(function () { outs[k].classList.remove("hit"); }, 450);
+    }
+
+    function draw(now, dt) {
+      ctx.clearRect(0, 0, W, H);
+      var b = Math.max(0, Math.min(1, build));
+      var e = Math.min(1, (speed - .5) / 2.2);
+      glow += ((.25 + e * .75) - glow) * .05;
+
+      // bagliore
+      var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 2.6);
+      g.addColorStop(0, "rgba(" + BLUE + "," + (.22 * glow * b).toFixed(3) + ")");
+      g.addColorStop(1, "rgba(" + BLUE + ",0)");
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+      // linee d'uscita
+      outPts.forEach(function (o, k) {
+        var s = rimPoint(k);
+        ctx.strokeStyle = "rgba(" + BLUE + "," + (.18 + glow * .2) * b + ")"; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(s[0], s[1]);
+        var mx = (s[0] + o.x) / 2;
+        if (mobile) ctx.bezierCurveTo(s[0], (s[1] + o.y) / 2, o.x, (s[1] + o.y) / 2, o.x, o.y);
+        else ctx.bezierCurveTo(mx, s[1], mx, o.y, o.x, o.y);
+        ctx.stroke();
+      });
+
+      // statore: anelli che si disegnano all'ingresso, denti, bobine
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "#2c2c2c"; ctx.beginPath(); ctx.arc(cx, cy, R * 1.36, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * b); ctx.stroke();
+      ctx.strokeStyle = "#3a3a3a"; ctx.beginPath(); ctx.arc(cx, cy, R * 1.22, Math.PI / 2, Math.PI / 2 + Math.PI * 2 * b); ctx.stroke();
+      var teeth = 48;
+      for (var i = 0; i < teeth * b; i++) {
+        var ta = i / teeth * Math.PI * 2;
+        var live = Math.max(0, Math.cos(ta - angle * 3)) * e;
+        ctx.strokeStyle = live > .3 ? "rgba(" + BLUE + "," + (.35 + live * .6).toFixed(2) + ")" : "#383838";
+        ctx.beginPath(); ctx.moveTo(cx + Math.cos(ta) * R * 1.06, cy + Math.sin(ta) * R * 1.06);
+        ctx.lineTo(cx + Math.cos(ta) * R * 1.2, cy + Math.sin(ta) * R * 1.2); ctx.stroke();
+      }
+      // quote tecniche
+      if (b > .9 && !mobile) {
+        ctx.font = MONO; ctx.fillStyle = "#4d4d4d";
+        ctx.strokeStyle = "#2c2c2c"; ctx.setLineDash([2, 3]);
+        ctx.beginPath(); ctx.moveTo(cx + R * .96, cy - R * .96); ctx.lineTo(cx + R * 1.5, cy - R * 1.5); ctx.lineTo(cx + R * 1.5 + 50, cy - R * 1.5); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillText("STATORE", cx + R * 1.5 + 4, cy - R * 1.5 - 6);
+        ctx.fillText("ROTORE  " + Math.round(speed * 60) + " giri/min", cx - R * .9, cy + R * 1.62);
+      }
+
+      // rotore
+      ctx.save(); ctx.translate(cx, cy); ctx.rotate(angle); ctx.globalAlpha = b;
+      for (var k = 0; k < 6; k++) {
+        var a0 = k * Math.PI / 3 + .12, a1 = (k + 1) * Math.PI / 3 - .12;
+        ctx.beginPath(); ctx.arc(0, 0, R * .96, a0, a1); ctx.arc(0, 0, R * .5, a1, a0, true); ctx.closePath();
+        ctx.fillStyle = k % 2 ? "rgba(" + BLUE + "," + (.1 + glow * .35).toFixed(3) + ")" : "rgba(28,28,28,.95)";
+        ctx.fill(); ctx.strokeStyle = k % 2 ? "rgba(" + BLUE + ",.65)" : "#4a4a4a"; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(Math.cos(a0 - .12) * R * .22, Math.sin(a0 - .12) * R * .22); ctx.lineTo(Math.cos(a0 - .12) * R * .96, Math.sin(a0 - .12) * R * .96);
+        ctx.strokeStyle = "#333"; ctx.stroke();
+      }
+      ctx.restore();
+      // mozzo
+      var hg = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * .3);
+      hg.addColorStop(0, "rgba(220,233,255," + (.55 + glow * .45) * b + ")");
+      hg.addColorStop(.45, "rgba(" + BLUE + "," + (.6 + glow * .4) * b + ")");
+      hg.addColorStop(1, "rgba(" + BLUE + ",0)");
+      ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(cx, cy, R * .3, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "rgba(255,255,255,.5)"; ctx.beginPath(); ctx.arc(cx, cy, R * .12, 0, Math.PI * 2); ctx.stroke();
+
+      // anelli d'energia
+      rings = rings.filter(function (r) {
+        var t = (now - r.t0) / 900; if (t > 1) return false;
+        ctx.strokeStyle = "rgba(" + BLUE + "," + (1 - t) * .7 + ")";
+        ctx.beginPath(); ctx.arc(cx, cy, R * (.25 + t * 1.1), 0, Math.PI * 2); ctx.stroke(); return true;
+      });
+
+      // particelle in ingresso
+      ctx.font = MONO; ctx.textBaseline = "middle";
+      parts = parts.filter(function (p) {
+        var x, y, alpha = 1, lab = 0;
+        if (p.phase === 0) {
+          var t = Math.min(1, (now - p.t0) / p.dur), te = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+          var q = bez(p, te); x = q[0]; y = q[1]; lab = t < .75 ? 1 : 1 - (t - .75) / .25;
+          // scia
+          var q2 = bez(p, Math.max(0, te - .05));
+          ctx.strokeStyle = "rgba(244,244,244,.25)"; ctx.beginPath(); ctx.moveTo(q2[0], q2[1]); ctx.lineTo(x, y); ctx.stroke();
+          if (t >= 1) { p.phase = 1; p.t1 = now; }
+        } else {
+          var s = Math.min(1, (now - p.t1) / 850);
+          var rr = R * 1.34 * (1 - s) + R * .15 * s, aa = p.th + s * 2.6;
+          x = cx + Math.cos(aa) * rr; y = cy + Math.sin(aa) * rr; alpha = 1 - s * .6;
+          if (s >= 1) {
+            boost += .55; rings.push({ t0: now });
+            var k = (Math.random() * 3) | 0;
+            pulses.push({ k: k, t0: now + 120 });
+            return false;
+          }
+        }
+        var blue = p.phase === 1;
+        ctx.fillStyle = blue ? "rgba(" + BLUE + "," + alpha + ")" : "rgba(244,244,244," + alpha + ")";
+        ctx.beginPath(); ctx.arc(x, y, blue ? 2.6 : 2.2, 0, Math.PI * 2); ctx.fill();
+        if (lab > 0.02) {
+          var tw = ctx.measureText(p.label).width, bx = x + 10, by = y - 11;
+          if (mobile) { bx = Math.min(W - tw - 18, Math.max(4, x - tw / 2)); by = y - 30; }
+          ctx.globalAlpha = lab;
+          ctx.fillStyle = "rgba(12,12,12,.88)"; ctx.fillRect(bx, by, tw + 14, 22);
+          ctx.strokeStyle = "#333"; ctx.strokeRect(bx + .5, by + .5, tw + 13, 21);
+          ctx.fillStyle = "#c9c9c9"; ctx.fillText(p.label, bx + 7, by + 11.5);
+          ctx.globalAlpha = 1;
+        }
+        return true;
+      });
+
+      // impulsi di corrente in uscita
+      pulses = pulses.filter(function (u) {
+        var t = (now - u.t0) / 700; if (t < 0) return true;
+        if (t >= 1) { hit(u.k); return false; }
+        var s = rimPoint(u.k), o = outPts[u.k], mx = (s[0] + o.x) / 2;
+        var p0, p1, p2, p3;
+        if (mobile) { p0 = s; p1 = [s[0], (s[1] + o.y) / 2]; p2 = [o.x, (s[1] + o.y) / 2]; p3 = [o.x, o.y]; }
+        else { p0 = s; p1 = [mx, s[1]]; p2 = [mx, o.y]; p3 = [o.x, o.y]; }
+        for (var j = 0; j < 6; j++) {
+          var tt = Math.max(0, t - j * .025), u1 = 1 - tt;
+          var px = u1 * u1 * u1 * p0[0] + 3 * u1 * u1 * tt * p1[0] + 3 * u1 * tt * tt * p2[0] + tt * tt * tt * p3[0];
+          var py = u1 * u1 * u1 * p0[1] + 3 * u1 * u1 * tt * p1[1] + 3 * u1 * tt * tt * p2[1] + tt * tt * tt * p3[1];
+          ctx.fillStyle = "rgba(156,195,255," + (1 - j / 6) + ")";
+          ctx.beginPath(); ctx.arc(px, py, 2.4 - j * .3, 0, Math.PI * 2); ctx.fill();
+        }
+        return true;
+      });
+    }
+
+    function frame(now) {
+      if (!running) return;
+      var dt = Math.min(.05, (now - last) / 1000); last = now;
+      if (now > startAt) build = Math.min(1, build + dt / 1.6);
+      var sv = (typeof lenisRef === "function" && lenisRef()) ? Math.min(2.5, Math.abs(lenisRef().velocity || 0) * .04) : 0;
+      boost *= Math.pow(.35, dt);
+      var target = (build < 1 ? .6 * build : .6) + boost + hover * .9 + sv;
+      speed += (target - speed) * Math.min(1, dt * 2.2);
+      angle += speed * dt;
+      if (build > .85 && now > nextSpawn) {
+        spawn(now);
+        nextSpawn = now + (mobile ? 1500 : 950) + Math.random() * 700;
+      }
+      draw(now, dt);
+      requestAnimationFrame(frame);
+    }
+    function start() { if (running || reduced || !visible || document.hidden) return; running = true; last = performance.now(); requestAnimationFrame(frame); }
+    function stop() { running = false; }
+
+    layout();
+    if (reduced) {
+      // fotogramma fermo e leggibile
+      var now = performance.now();
+      speed = .6; angle = .4; build = 1;
+      for (var s = 0; s < 4; s++) { spawn(now - 900 * (s + 1)); }
+      draw(now, 0);
+    }
+    window.addEventListener("resize", layout);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+    wrap.addEventListener("pointerenter", function () { hover = 1; });
+    wrap.addEventListener("pointerleave", function () { hover = 0; });
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; visible ? start() : stop(); }).observe(wrap);
+    document.addEventListener("visibilitychange", function () { document.hidden ? stop() : start(); });
+    start();
+  })();
+
   if (motion) {
     document.documentElement.classList.add("js-motion");
     gsap.registerPlugin(ScrollTrigger);
-    /* Apertura: il titolo entra parola per parola, poi la scena racconta una giornata */
-    var q = $("#q"), qText = q ? q.textContent : "";
-    var reply = $("#reply"), replyText = reply ? reply.textContent : "";
+    /* Apertura: il titolo entra parola per parola, poi la dinamo si disegna e parte */
     var intro = gsap.timeline({ defaults: { ease: "expo.out" }, delay: .15 });
     intro.from(".hero .meta-row .meta", { opacity: 0, y: 10, duration: .8, stagger: .1 }, 0)
-      .from(".hero h1 .w", { yPercent: 110, opacity: 0, filter: "blur(14px)", duration: 1.3, stagger: .07 }, .1)
+      .from(".hero h1 .w", { yPercent: 110, opacity: 0, filter: "blur(14px)", duration: 1.3, stagger: .08 }, .1)
       .from(".hero-lead, .hero-actions", { opacity: 0, y: 24, duration: 1.1, stagger: .12 }, .9)
-      .from(".scene-cap", { opacity: 0, duration: .8 }, 1.0)
-      // 1. il sito: compare la finestra e si digita il codice
-      .from(".c-site", { opacity: 0, y: 40, rotateX: 18, duration: 1.2 }, 1.0)
-      .add(function () { if (q) q.textContent = ""; }, 1.0)
-      .to({ n: 0 }, { n: qText.length, duration: .6, ease: "none", onUpdate: function () { if (q) q.textContent = qText.slice(0, Math.round(this.targets()[0].n)); } }, 1.5)
-      .from(".c-site .result", { opacity: 0, x: -12, duration: .6, stagger: .12 }, 2.0)
-      // 2. l'agente risponde
-      .fromTo("#w1", { strokeDashoffset: 60, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: .8, ease: "power2.out" }, 2.3)
-      .from(".c-chat", { opacity: 0, y: 30, scale: .96, duration: 1 }, 2.5)
-      .from(".c-chat .bub.in", { opacity: 0, y: 8, duration: .5 }, 2.7)
-      .add(function () { if (reply) reply.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>'; }, 3.0)
-      .add(function () { if (reply) reply.textContent = replyText; }, 3.6)
-      .from(".c-chat .bub.out", { opacity: 0, y: 8, duration: .5 }, 3.0)
-      // 3. l'automazione lavora
-      .fromTo("#w2", { strokeDashoffset: 60, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: .8, ease: "power2.out" }, 3.8)
-      .from(".c-flow", { opacity: 0, y: 30, duration: 1 }, 4.0)
-      .from(".c-flow li", { opacity: 0, x: -10, duration: .45, stagger: .3 }, 4.3)
-      // 4. il mattino dopo, LeadRaptor segnala un'azienda
-      .fromTo("#w3", { strokeDashoffset: 60, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: .8, ease: "power2.out" }, 5.2)
-      .from(".c-lead", { opacity: 0, y: -24, scale: .94, duration: 1.1, ease: "back.out(1.6)" }, 5.4)
+      .from(".dyn-tag", { opacity: 0, duration: .8, stagger: .15 }, 1.1)
+      .from(".dyn-out li", { opacity: 0, x: 16, duration: .9, stagger: .12 }, 1.6)
       .from(".trust, .stats .stat", { opacity: 0, y: 20, duration: 1, stagger: .08 }, 1.4);
-
-    /* Profondità: le schede si spostano a strati col mouse e scorrendo */
-    var depth = { ".c-site": 10, ".c-flow": 18, ".c-chat": 28, ".c-lead": 38 };
-    if (finePointer && window.matchMedia("(min-width: 961px)").matches) {
-      var movers = Object.keys(depth).map(function (s) {
-        return { k: depth[s], x: gsap.quickTo(s, "x", { duration: 1, ease: "power3" }), y: gsap.quickTo(s, "y", { duration: 1, ease: "power3" }) };
-      });
-      $(".hero").addEventListener("pointermove", function (e) {
-        var nx = e.clientX / window.innerWidth - .5, ny = e.clientY / window.innerHeight - .5;
-        movers.forEach(function (m) { m.x(nx * m.k); m.y(ny * m.k * .7); });
-      });
-      Object.keys(depth).forEach(function (s) {
-        gsap.to(s, { yPercent: -depth[s] * .9, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: .6 } });
-      });
-    }
 
     /* Titoli e blocchi */
     $$(".reveal-lines").forEach(function (el) {
