@@ -1,221 +1,466 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dinamoweb 2026 - Home Page Wireframe</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --navy: #0a192f;
-            --navy-light: #112240;
-            --crimson: #ff2e63;
-            --text-main: #ccd6f6;
-            --text-dim: #8892b0;
-            --max-width: 75rem;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background-color: var(--navy); 
-            color: var(--text-main); 
-            font-family: 'Inter', sans-serif; 
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
-
-        /* --- HEADER --- */
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .logo { font-weight: 700; font-size: 1.5rem; letter-spacing: -1px; }
-        .logo span { color: var(--crimson); }
-        nav a { margin-left: 2rem; text-decoration: none; color: var(--text-main); font-size: 0.9rem; }
-        .cta-header { background: var(--crimson); color: white; padding: 0.6rem 1.2rem; border-radius: 4px; font-weight: 700; }
-
-        /* --- SECTION 1: HERO --- */
-        .hero { 
-            height: 85vh; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; text-align: center;
-        }
-        .hero h1 { font-size: 4rem; line-height: 1.1; margin-bottom: 1.5rem; }
-        .hero h1 span { color: var(--crimson); }
-        .hero p { max-width: 700px; font-size: 1.25rem; color: var(--text-dim); margin-bottom: 2.5rem; }
-        .hero-btns .btn { 
-            padding: 1rem 2rem; border-radius: 4px; text-decoration: none; 
-            font-weight: 700; margin: 0 0.5rem; display: inline-block;
-        }
-        .btn-primary { background: var(--crimson); color: white; }
-        .btn-secondary { border: 1px solid var(--crimson); color: var(--crimson); }
-
-        /* --- SECTION 2: THE BRIDGE (TIMELINE) --- */
-        .bridge-section { padding: 6rem 0; background: var(--navy-light); overflow: hidden; }
-        .bridge-section h2 { text-align: center; margin-bottom: 4rem; font-size: 2.5rem; }
-        
-        .timeline-container { 
-            display: flex; gap: 2rem; padding-bottom: 2rem;
-            /* In un sito reale, qui GSAP gestirebbe lo scroll orizzontale */
-            overflow-x: auto; 
-        }
-        .timeline-card { 
-            min-width: 350px; background: var(--navy); padding: 2.5rem; 
-            border-top: 4px solid var(--crimson); border-radius: 8px;
-        }
-        .timeline-card .year { color: var(--crimson); font-weight: 700; font-size: 1.5rem; display: block; margin-bottom: 1rem; }
-        .timeline-card h3 { margin-bottom: 1rem; font-size: 1.4rem; }
-        .timeline-card p { font-size: 0.95rem; color: var(--text-dim); }
-
-        /* --- SECTION 3: ECOSISTEMA --- */
-        .ecosystem { padding: 8rem 0; }
-        .section-title { margin-bottom: 4rem; }
-        .ecosystem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        .eco-card { 
-            padding: 3rem; background: var(--navy-light); border-radius: 12px;
-            transition: transform 0.3s ease; border: 1px solid rgba(255,255,255,0.05);
-        }
-        .eco-card:hover { transform: translateY(-10px); border-color: var(--crimson); }
-        .eco-card h3 { margin-bottom: 1.5rem; color: var(--crimson); }
-
-        /* --- SECTION 4: LEADRAPTOR --- */
-        .split-section { padding: 6rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-        .visual-placeholder { background: var(--navy-light); height: 450px; border-radius: 20px; border: 1px dashed var(--text-dim); }
-
-        /* --- SECTION 5: CLOUD & DEMO --- */
-        .infra-demo { text-align: center; padding: 6rem 0; background: var(--navy-light); }
-        .logos { display: flex; justify-content: center; gap: 4rem; margin-top: 3rem; opacity: 0.6; font-weight: 700; }
-
-        /* --- SECTION 6: FOOTER / AUDIT --- */
-        .audit-footer { padding: 8rem 0; text-align: center; }
-        .audit-form { 
-            max-width: 600px; margin: 3rem auto 0; background: var(--navy-light); 
-            padding: 3rem; border-radius: 12px; 
-        }
-        .audit-form input, .audit-form select { 
-            width: 100%; padding: 1rem; margin-bottom: 1rem; 
-            background: var(--navy); border: 1px solid rgba(255,255,255,0.1); color: white; 
-        }
-        .audit-form button { 
-            width: 100%; padding: 1.2rem; background: var(--crimson); 
-            color: white; border: none; font-weight: 700; cursor: pointer;
-        }
-
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dinamoweb Homepage 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Web agency di Piacenza dal 1998. Siti ed e-commerce, agenti AI e automazione, visibilità su Google e sulle AI, foto e video industriali per le imprese di Piacenza, Parma, Cremona, Lodi e Pavia.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0C0C0C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/style.css?v=202610261509">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"Dinamoweb S.r.l.","url":"https://www.dinamoweb.com","foundingDate":"1998",
+ "description":"Web agency di Piacenza: siti ed e-commerce, agenti AI e automazione, SEO e GEO, Google Ads, foto e video industriali.",
+ "telephone":"+39 0523 1998388","email":"info@dinamoweb.com","vatID":"IT01431780335",
+ "address":{"@type":"PostalAddress","streetAddress":"Via Conciliazione 58/C","postalCode":"29122","addressLocality":"Piacenza","addressRegion":"PC","addressCountry":"IT"},
+ "areaServed":["Piacenza","Parma","Cremona","Lodi","Pavia"],"openingHours":["Mo-Fr 09:00-13:00","Mo-Fr 14:00-18:00"]}
+</script>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <div class="logo">DINAMO<span>WEB</span></div>
-            <nav>
-                <a href="#">Ecosistema</a>
-                <a href="#">LeadRaptor</a>
-                <a href="#">Storia</a>
-                <a href="#" class="cta-header">Richiedi Audit</a>
-            </nav>
-        </header>
+<div class="draft-flag"><i aria-hidden="true"></i>Bozza v3 · testi e numeri da approvare · non indicizzata</div>
+
+<header class="site-header" id="top">
+  <div class="container">
+    <a class="logo" href="#top" aria-label="Dinamoweb, torna all'inizio"><img src="/assets/img/logo-dinamoweb.svg" alt="Dinamoweb" width="93" height="40"></a>
+    <nav class="nav" id="nav" aria-label="Menu principale">
+      <a href="#servizi">Servizi</a>
+      <a href="#lavori">Lavori</a>
+      <a href="#leadraptor">LeadRaptor</a>
+      <a href="#storia">Chi siamo</a>
+      <a href="#checkup">Contatti</a>
+    </nav>
+    <div class="header-tools">
+      <a class="support-link desk" href="#assistenza">Assistenza</a>
+      <a class="btn btn-primary btn-small magnetic" href="#checkup">Check-up gratuito <span class="arrow" aria-hidden="true">→</span></a>
     </div>
+    <button class="btn btn-small menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
+  </div>
+</header>
 
-    <section class="container hero">
-        <h1>Siamo nati con il Web. Lo abbiamo visto crescere.<br><span>Oggi lo facciamo pensare.</span></h1>
-        <p>Da 30 anni trasformiamo l’avanguardia tecnologica in efficienza misurabile per le imprese. Benvenuti nell’era del business guidato dall'Intelligenza Artificiale.</p>
-        <div class="hero-btns">
-            <a href="#" class="btn btn-primary">Esplora l'Ecosistema</a>
-            <a href="#" class="btn btn-secondary">Richiedi Audit</a>
-        </div>
-    </section>
+<main>
 
-    <section class="bridge-section">
-        <div class="container">
-            <h2>La Nostra Linea del Tempo: Tre Decenni di Solidità</h2>
-            <div class="timeline-container">
-                <div class="timeline-card">
-                    <span class="year">1998</span>
-                    <h3>Le Radici</h3>
-                    <p>Nasciamo a Piacenza come divisione web di una storica agenzia di comunicazione. Iniziamo a costruire i primi strumenti di dialogo digitale tra aziende e mercato.</p>
-                </div>
-                <div class="timeline-card">
-                    <span class="year">2005</span>
-                    <h3>L'Indipendenza</h3>
-                    <p>Dinamoweb diventa realtà autonoma. Guidiamo le PMI nell'era dell'E-commerce e della gestione dinamica dei contenuti.</p>
-                </div>
-                <div class="timeline-card">
-                    <span class="year">2018</span>
-                    <h3>L'Evoluzione Cloud</h3>
-                    <p>Superiamo la gestione dei server fisici. Adottiamo le architetture AWS e Google Cloud, portando le performance a uno standard Enterprise.</p>
-                </div>
-                <div class="timeline-card">
-                    <span class="year">2026</span>
-                    <h3>La Tech Company</h3>
-                    <p>Punto di riferimento per l'integrazione dell'AI nei processi aziendali. Con LeadRaptor e l'automazione, rendiamo scalabile la tua crescita.</p>
-                </div>
-            </div>
+  <!-- _01 Apertura -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-flutes" aria-hidden="true"></div>
+    <div class="container">
+      <div class="meta-row">
+        <span class="meta ruled"><b>_01</b> Web agency &amp; AI per le imprese</span>
+        <span class="meta">Piacenza — dal 1998</span>
+      </div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1 id="hero-title">
+            <span class="line"><span class="w metal">Il</span> <span class="w metal">web</span> <span class="w metal">che</span> <span class="w metal">vende.</span></span>
+            <span class="line"><span class="w ghost">L'AI</span> <span class="w ghost">che</span> <span class="w ghost">risponde.</span></span>
+            <span class="line"><span class="w blue">Il</span> <span class="w blue">tempo</span> <span class="w blue">che</span> <span class="w blue">ritrovi.</span></span>
+          </h1>
+          <p class="hero-lead">Siti, agenti AI e automazioni per le imprese di <strong>Piacenza, Parma, Cremona, Lodi e Pavia</strong>. Dal 1998 portiamo la tecnologia delle grandi agenzie a chi fa industria sul territorio.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary magnetic" href="#checkup">Prenota un check-up gratuito <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="btn magnetic" href="#lavori">Guarda i lavori</a>
+          </div>
         </div>
-    </section>
 
-    <section class="container ecosystem">
-        <div class="section-title">
-            <h2>L'Ecosistema Dinamoweb</h2>
-            <p>Sistemi integrati per dominare il mercato digitale.</p>
-        </div>
-        <div class="ecosystem-grid">
-            <div class="eco-card">
-                <h3>AI Performance Lab</h3>
-                <p>La fine del budget sprecato. Identifichiamo buyer pronti all'acquisto e li convertiamo con campagne omnichannel chirurgiche.</p>
-            </div>
-            <div class="eco-card">
-                <h3>High-End UX</h3>
-                <p>Storytelling visivo ad alte prestazioni. Progettiamo ecosistemi immersivi per brand industriali che non accettano compromessi.</p>
-            </div>
-            <div class="eco-card">
-                <h3>Workflow Automation</h3>
-                <p>Il tempo è il tuo asset più caro. Automatizziamo processi complessi con n8n e offriamo infrastrutture di mailing illimitato.</p>
-            </div>
-        </div>
-    </section>
+        <div class="scene" id="scene">
+          <p class="scene-cap"><span class="meta"><b>_</b> Un martedì qualsiasi di un cliente · esempio</span></p>
+          <div class="scene-inner" id="scene-inner">
+            <svg class="wires" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <path id="w1" d="M58,30 C70,34 74,40 72,47" />
+              <path id="w2" d="M52,66 C44,72 34,72 30,76" />
+              <path id="w3" d="M40,90 C60,98 84,92 88,84" />
+            </svg>
 
-    <section class="container split-section">
+            <article class="card c-site" data-step="1">
+              <div class="bar"><i></i><i></i><i></i><span>officinerossi.it/catalogo</span></div>
+              <div class="card-body">
+                <span class="tagc">Sito &amp; catalogo</span>
+                <div class="search"><span class="lens" aria-hidden="true">⌕</span><span class="q" id="q">4521</span><span class="caret" aria-hidden="true"></span></div>
+                <div class="result"><div class="thumb" aria-hidden="true"></div><div><b>Boccola in bronzo · art. 4521</b><small>Disponibile · 120 pz · Scheda tecnica PDF</small></div></div>
+                <div class="result dim"><div class="thumb" aria-hidden="true"></div><div><b>Boccola in bronzo · art. 4522</b><small>Su ordinazione · 10 giorni</small></div></div>
+              </div>
+            </article>
+
+            <article class="card c-chat" data-step="2">
+              <span class="tagc ai"><span class="dot-live" aria-hidden="true"></span>Agente AI · 22:47</span>
+              <p class="bub in">Avete 40 pezzi del 4521 per venerdì?</p>
+              <p class="bub out" id="reply">Sì, ne abbiamo 120 a magazzino. Consegna giovedì. Preparo l'offerta?</p>
+            </article>
+
+            <article class="card c-flow" data-step="3">
+              <span class="tagc">Automazione · 22:48</span>
+              <ul>
+                <li>Ordine #2418 inserito nel gestionale</li>
+                <li>Offerta PDF generata e inviata</li>
+                <li>Avviso al commerciale per domattina</li>
+              </ul>
+            </article>
+
+            <article class="card c-lead" data-step="4">
+              <span class="tagc">LeadRaptor · 08:30</span>
+              <b>Costruttore di macchine utensili</b>
+              <small>Cremona · sta guardando Prezzi e Catalogo</small>
+              <span class="lvl hot">Interesse alto</span>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="trust">
+        <span class="meta">_ Partner certificati</span>
+        <div class="trust-logos">
+          <span><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="none" stroke="#5590F7"/><path d="M6 10.2l2.6 2.6L14 7.4" fill="none" stroke="#F4F4F4" stroke-width="1.5"/></svg>Google Partner</span>
+          <span><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="none" stroke="#5590F7"/><path d="M6 10.2l2.6 2.6L14 7.4" fill="none" stroke="#F4F4F4" stroke-width="1.5"/></svg>Shopify Partner</span>
+          <span><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="none" stroke="#5590F7"/><path d="M6 10.2l2.6 2.6L14 7.4" fill="none" stroke="#F4F4F4" stroke-width="1.5"/></svg>Confindustria Piacenza</span>
+        </div>
+      </div>
+      <div class="stats" style="margin-top:clamp(3rem,6vw,5rem)">
+        <div class="stat"><strong data-count="28">28</strong><span>anni di web, dal 1998</span></div>
+        <div class="stat"><strong><span data-count="650">650</span><sup>+</sup></strong><span>siti realizzati per oltre 600 clienti</span></div>
+        <div class="stat"><strong data-count="18">18</strong><span>aziende con campagne Google attive oggi</span></div>
+        <div class="stat"><strong data-count="5">5</strong><span>province servite da una sede a Piacenza</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- _02 Manifesto -->
+  <section class="section rule-top" aria-label="Manifesto">
+    <div class="container">
+      <div class="meta-row"><span class="meta ruled"><b>_02</b> Manifesto</span><span class="meta">1998 → 2026</span></div>
+      <p class="manifesto-text" id="manifesto">Siamo nati con il web. Lo abbiamo visto crescere. <span data-hl>Oggi lo facciamo pensare.</span></p>
+      <div class="manifesto-foot"><p class="fade-up">Siti che vendono, agenti AI che rispondono ai clienti, automazioni che restituiscono ore all'ufficio. Tecnologia da grande agenzia, con un referente a Piacenza che risponde al telefono.</p></div>
+    </div>
+  </section>
+
+  <!-- _03 Servizi -->
+  <section class="section rule-top" id="servizi" aria-labelledby="servizi-title">
+    <div class="container">
+      <div class="sec-head">
+        <div class="meta-row"><span class="meta ruled"><b>_03</b> Cosa facciamo</span><span class="meta">4 aree · 1 squadra</span></div>
+        <h2 id="servizi-title" class="reveal-lines"><span class="line"><span class="metal">Quattro mestieri,</span></span><span class="line indent"><span class="ghost">una squadra sola.</span></span></h2>
+      </div>
+      <div class="eco">
+        <a class="eco-card" href="#checkup">
+          <span class="meta"><span>Tav. A</span><span>Web</span></span>
+          <div class="eco-art"><svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><polygon points="33.4,112.0 120.0,162.0 120.0,170.0 33.4,120.0" fill="#0F0F0F" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="206.6,112.0 120.0,162.0 120.0,170.0 206.6,120.0" fill="#111111" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="120.0,62.0 206.6,112.0 120.0,162.0 33.4,112.0" fill="#141414" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="33.4,90.0 120.0,140.0 120.0,148.0 33.4,98.0" fill="#0F0F0F" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="206.6,90.0 120.0,140.0 120.0,148.0 206.6,98.0" fill="#111111" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="120.0,40.0 206.6,90.0 120.0,140.0 33.4,90.0" fill="#141414" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="33.4,68.0 120.0,118.0 120.0,126.0 33.4,76.0" fill="#0F0F0F" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="206.6,68.0 120.0,118.0 120.0,126.0 206.6,76.0" fill="#111111" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="120.0,18.0 206.6,68.0 120.0,118.0 33.4,68.0" fill="#141414" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><circle cx="120.0" cy="68.0" r="0" fill="#5590F7" opacity=".85"/><polygon points="120.0,38.0 172.0,68.0 120.0,98.0 68.0,68.0" fill="rgba(85,144,247,.12)" stroke="#5590F7" stroke-width="1"/><circle cx="120.0" cy="45.5" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="107.0" cy="53.0" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="94.0" cy="60.5" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="81.0" cy="68.0" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="133.0" cy="53.0" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="120.0" cy="60.5" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="107.0" cy="68.0" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="94.0" cy="75.5" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="146.0" cy="60.5" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="133.0" cy="68.0" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="120.0" cy="75.5" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="107.0" cy="83.0" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="159.0" cy="68.0" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="146.0" cy="75.5" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="133.0" cy="83.0" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="120.0" cy="90.5" r="1.3" fill="#5590F7" opacity=".85"/><line x1="33.4" y1="120.0" x2="33.4" y2="134.0" stroke="#4A4A4A" stroke-width="1" stroke-dasharray="2 3"/><line x1="120.0" y1="170.0" x2="120.0" y2="184.0" stroke="#4A4A4A" stroke-width="1" stroke-dasharray="2 3"/></svg></div>
+          <h3>Siti ed e-commerce</h3>
+          <p>Siti veloci, multilingua, con cataloghi che i tuoi clienti consultano in un clic.</p>
+          <div class="tags"><span class="tag">Siti su misura</span><span class="tag">Shopify</span><span class="tag">Cataloghi</span></div>
+        </a>
+        <a class="eco-card" href="#checkup">
+          <span class="meta"><span>Tav. B</span><span class="blue">AI</span></span>
+          <div class="eco-art"><svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="120.0" y1="100.0" x2="68.0" y2="80.0" stroke="#5590F7" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/><line x1="120.0" y1="100.0" x2="189.3" y2="90.0" stroke="#5590F7" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/><line x1="120.0" y1="100.0" x2="141.7" y2="162.5" stroke="#5590F7" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/><line x1="120.0" y1="100.0" x2="50.7" y2="140.0" stroke="#5590F7" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/><polygon points="54.2,72.0 68.0,80.0 68.0,96.0 54.2,88.0" fill="#0F0F0F" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="81.9,72.0 68.0,80.0 68.0,96.0 81.9,88.0" fill="#111111" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="68.0,64.0 81.9,72.0 68.0,80.0 54.2,72.0" fill="#141414" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="175.4,82.0 189.3,90.0 189.3,106.0 175.4,98.0" fill="#0F0F0F" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="203.1,82.0 189.3,90.0 189.3,106.0 203.1,98.0" fill="#111111" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="189.3,74.0 203.1,82.0 189.3,90.0 175.4,82.0" fill="#141414" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="81.9,80.0 120.0,102.0 120.0,142.0 81.9,120.0" fill="#0F0F0F" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="158.1,80.0 120.0,102.0 120.0,142.0 158.1,120.0" fill="#111111" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="120.0,58.0 158.1,80.0 120.0,102.0 81.9,80.0" fill="#16213A" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><circle cx="120.0" cy="65.3" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="107.3" cy="72.7" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="94.6" cy="80.0" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="132.7" cy="72.7" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="120.0" cy="80.0" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="107.3" cy="87.3" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="145.4" cy="80.0" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="132.7" cy="87.3" r="1.3" fill="#5590F7" opacity=".85"/><circle cx="120.0" cy="94.7" r="1.3" fill="#5590F7" opacity=".85"/><polygon points="36.9,132.0 50.7,140.0 50.7,156.0 36.9,148.0" fill="#0F0F0F" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="64.6,132.0 50.7,140.0 50.7,156.0 64.6,148.0" fill="#111111" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="50.7,124.0 64.6,132.0 50.7,140.0 36.9,132.0" fill="#141414" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="127.8,154.5 141.7,162.5 141.7,178.5 127.8,170.5" fill="#0F0F0F" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="155.5,154.5 141.7,162.5 141.7,178.5 155.5,170.5" fill="#111111" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="141.7,146.5 155.5,154.5 141.7,162.5 127.8,154.5" fill="#141414" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /></svg></div>
+          <h3>Agenti AI e automazione</h3>
+          <p>Un assistente che risponde a clienti e rivenditori giorno e notte. E le ore che l'ufficio perde a copiare ordini, le restituiamo.</p>
+          <div class="tags"><span class="tag">Claude</span><span class="tag">n8n</span><span class="tag">Gestionale</span></div>
+        </a>
+        <a class="eco-card" href="#checkup">
+          <span class="meta"><span>Tav. C</span><span>SEO · GEO</span></span>
+          <div class="eco-art"><svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(0,26)"><polygon points="42.1,106.0 120.0,151.0 120.0,165.0 42.1,120.0" fill="#0F0F0F" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="197.9,106.0 120.0,151.0 120.0,165.0 197.9,120.0" fill="#111111" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="120.0,61.0 197.9,106.0 120.0,151.0 42.1,106.0" fill="#141414" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="64.6,92.0 120.0,124.0 120.0,138.0 64.6,106.0" fill="#0F0F0F" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="175.4,92.0 120.0,124.0 120.0,138.0 175.4,106.0" fill="#111111" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="120.0,60.0 175.4,92.0 120.0,124.0 64.6,92.0" fill="#141414" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="85.4,78.0 120.0,98.0 120.0,112.0 85.4,92.0" fill="#0F0F0F" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="154.6,78.0 120.0,98.0 120.0,112.0 154.6,92.0" fill="#111111" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="120.0,58.0 154.6,78.0 120.0,98.0 85.4,78.0" fill="#141414" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="106.1,52.0 120.0,60.0 120.0,86.0 106.1,78.0" fill="#0F0F0F" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="133.9,52.0 120.0,60.0 120.0,86.0 133.9,78.0" fill="#111111" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="120.0,44.0 133.9,52.0 120.0,60.0 106.1,52.0" fill="#16213A" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><ellipse cx="120.0" cy="46.0" rx="36.7" ry="21.2" fill="none" stroke="#5590F7" stroke-width="1"  opacity="0.9"/><ellipse cx="120.0" cy="46.0" rx="61.2" ry="35.4" fill="none" stroke="#5590F7" stroke-width="1"  opacity="0.55"/><ellipse cx="120.0" cy="46.0" rx="85.7" ry="49.5" fill="none" stroke="#5590F7" stroke-width="1"  opacity="0.3"/></g></svg></div>
+          <h3>Visibilità su Google e sulle AI</h3>
+          <p>Quando un buyer chiede a ChatGPT chi produce quello che fai tu, la risposta deve essere il tuo nome.</p>
+          <div class="tags"><span class="tag">SEO</span><span class="tag">GEO</span><span class="tag">Google Ads</span><span class="tag">Social con agenti</span></div>
+        </a>
+        <a class="eco-card" href="#checkup">
+          <span class="meta"><span>Tav. D</span><span>Rec</span></span>
+          <div class="eco-art"><svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g transform="translate(0,10)"><polygon points="24.7,101.0 146.0,171.0 146.0,175.0 24.7,105.0" fill="#0F0F0F" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="215.3,131.0 146.0,171.0 146.0,175.0 215.3,135.0" fill="#111111" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="94.0,61.0 215.3,131.0 146.0,171.0 24.7,101.0" fill="#141414" stroke="#4A4A4A" stroke-width="1" stroke-linejoin="round" /><polygon points="114.8,79.0 55.9,113.0 55.9,55.0 114.8,21.0" fill="#121212" stroke="#4A4A4A" stroke-width="1"/><polygon points="140.8,94.0 81.9,128.0 81.9,70.0 140.8,36.0" fill="#121212" stroke="#4A4A4A" stroke-width="1"/><polygon points="166.8,109.0 107.9,143.0 107.9,85.0 166.8,51.0" fill="#16213A" stroke="#5590F7" stroke-width="1"/><polygon points="145.1,101.5 145.1,83.5 127.8,102.5" fill="#5590F7" opacity=".9"/><circle cx="114.8" cy="13.0" r="3" fill="#ff4d4f"/></g></svg></div>
+          <h3>Foto e video industriali</h3>
+          <p>Macchinari, stabilimenti e prodotti raccontati come meritano.</p>
+          <div class="tags"><span class="tag">Still life</span><span class="tag">Stabilimenti</span><span class="tag">Multicamera</span></div>
+        </a>
+      </div>
+      <div class="eco-more"><span>E poi server, hosting e posta elettronica gestiti da noi.</span><a href="#checkup">Tutti i servizi →</a></div>
+    </div>
+  </section>
+
+  <!-- _04 Agente dal vivo -->
+  <section class="section rule-top agent-sec" aria-labelledby="agent-title">
+    <div class="container">
+      <div>
+        <div class="meta-row"><span class="meta ruled"><b>_04</b> Agenti AI dal vivo</span></div>
+        <h2 id="agent-title" class="reveal-lines"><span class="line"><span class="metal">Venerdì, 22:47.</span></span><span class="line"><span class="ghost">L'ufficio è chiuso.</span></span><span class="line"><span class="blue">L'agente no.</span></span></h2>
+        <ul class="agent-points">
+          <li><span>01</span><div><strong>Conosce la tua azienda</strong>Cataloghi, listini, disponibilità e procedure, collegati al gestionale.</div></li>
+          <li><span>02</span><div><strong>Risponde dove sono i clienti</strong>Sul sito, su WhatsApp e via email, a qualsiasi ora.</div></li>
+          <li><span>03</span><div><strong>Passa la palla al momento giusto</strong>Quando serve una persona, il tuo commerciale riceve il riepilogo già scritto.</div></li>
+        </ul>
+      </div>
+      <div class="agent-stage">
+        <aside class="agent" id="agent" aria-label="Esempio di agente AI al lavoro">
+          <div class="agent-head"><span class="meta"><span class="dot-live" aria-hidden="true"></span>Agente AI · online</span><span class="meta">ven 22:47</span></div>
+          <p class="msg msg-in" data-seq="1"><small>Cliente · WhatsApp</small>Buonasera, mi servono 40 pezzi dell'articolo 4521 entro venerdì prossimo. Riuscite?</p>
+          <p class="msg msg-out" data-seq="2"><small>Assistente AI</small>Sì: a magazzino ne risultano 120. Con l'ordine entro lunedì alle 12 la consegna è giovedì. Preparo l'offerta per il vostro referente?</p>
+          <div class="agent-log" data-seq="3"><span>Disponibilità verificata nel gestionale</span><span>Offerta in bozza · avviso al commerciale</span></div>
+          <p class="meta">Esempio · agente collegato a magazzino e gestionale</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- _05 Lavori -->
+  <section class="section rule-top" id="lavori" aria-labelledby="lavori-title">
+    <div class="container">
+      <div class="sec-head">
+        <div class="meta-row"><span class="meta ruled"><b>_05</b> Progetti selezionati</span><span class="meta">In uscita · 2026</span></div>
+        <h2 id="lavori-title" class="reveal-lines"><span class="line"><span class="metal">I progetti raccontano</span></span><span class="line indent"><span class="ghost">meglio di noi.</span></span></h2>
+      </div>
+    </div>
+    <div class="works-pin" id="works-pin">
+      <div class="works-track" id="works-track">
+        <a class="work" href="#lavori">
+          <div class="work-media"><img src="/assets/img/lpr.jpg" alt="Homepage del nuovo sito LPR, ricambi per impianti frenanti" width="800" height="500" loading="lazy"><span class="cap"><span class="dot-live" aria-hidden="true"></span>_ In uscita</span></div>
+          <div class="meta-row"><span class="meta">01 — LPR · Ricambi frenanti</span><span class="meta">Sito e catalogo</span></div>
+          <h3>Migliaia di codici ricambio, trovati in un clic.</h3>
+          <p>Catalogo con ricerca per codice LPR, OEM e OES, in più lingue.</p>
+        </a>
+        <a class="work" href="#lavori">
+          <div class="work-media"><img src="/assets/img/edilsider.jpg" alt="Homepage del nuovo sito Edilsider, edifici modulari" width="800" height="500" loading="lazy"><span class="cap"><span class="dot-live" aria-hidden="true"></span>_ In uscita</span></div>
+          <div class="meta-row"><span class="meta">02 — Edilsider · Edifici modulari</span><span class="meta">Internazionale</span></div>
+          <h3>Progetti in quattro continenti, un solo racconto.</h3>
+          <p>Campi per il settore minerario, militare e sanitario, dal Canada all'Australia.</p>
+        </a>
+        <a class="work" href="#lavori">
+          <div class="work-media"><img src="/assets/img/maxiarredo.jpg" alt="Homepage del nuovo sito Maxiarredo, architettura d'interni" width="800" height="500" loading="lazy"><span class="cap"><span class="dot-live" aria-hidden="true"></span>_ In uscita</span></div>
+          <div class="meta-row"><span class="meta">03 — Maxiarredo · Interni</span><span class="meta">Riposizionamento</span></div>
+          <h3>Da negozio di arredamento a studio di architettura d'interni.</h3>
+          <p>Nuova identità digitale per un'azienda attiva dal 1988.</p>
+        </a>
+        <a class="work-end" href="#lavori">
+          <span class="meta">_ Archivio</span>
+          <strong>669</strong>
+          <span>progetti dal 2001, per 615 aziende ed enti del territorio.</span>
+          <em>Vedi tutti i lavori →</em>
+        </a>
+      </div>
+      <div class="works-bar" aria-hidden="true"><i></i></div>
+    </div>
+  </section>
+
+  <!-- _06 Territorio -->
+  <section class="section rule-top territory" aria-labelledby="terr-title">
+    <div class="container">
+      <div>
+        <div class="meta-row"><span class="meta ruled"><b>_06</b> Territorio</span></div>
+        <h2 id="terr-title" class="reveal-lines"><span class="line"><span class="metal">Da Piacenza,</span></span><span class="line"><span class="ghost">per cinque province.</span></span></h2>
+        <p class="fade-up">Lavoriamo con le imprese tra Lombardia ed Emilia. Un'ora di strada al massimo, per guardarsi in faccia quando serve.</p>
+      </div>
+      <div class="map fade-up">
+        <span class="corner c1">Tav. 06 — Bacino</span><span class="corner c2">N ↑</span><span class="corner c3">Distanze in linea d'aria</span><span class="corner c4">45°03′N 9°41′E</span>
+        <svg viewBox="0 0 800 500" role="img" aria-label="Mappa: Dinamoweb a Piacenza, collegata a Milano, Lodi, Pavia, Cremona e Parma">
+<defs>
+  <linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#5590F7" stop-opacity=".9"/><stop offset="1" stop-color="#5590F7" stop-opacity=".25"/></linearGradient>
+  <radialGradient id="hub"><stop offset="0" stop-color="#5590F7" stop-opacity=".55"/><stop offset="1" stop-color="#5590F7" stop-opacity="0"/></radialGradient>
+</defs>
+<path d="M37.3,250.0 L128.0,240.2 L218.7,259.8 L309.3,269.5 L377.3,279.3 L445.3,264.7 L522.4,259.8 L604.0,298.8 L694.7,333.0 L762.7,347.7" fill="none" stroke="#2a3a55" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="128.0" y="258.2" font-family="Geist Mono, monospace" font-size="10" letter-spacing="2" fill="#3c5277">FIUME PO</text>
+<path id="r1" d="M374.2,288.1 Q296.4,146.4 146.1,86.9" fill="none" stroke="url(#lg)" stroke-width="1.2"/><path id="r2" d="M374.2,288.1 Q354.1,208.6 288.0,160.1" fill="none" stroke="url(#lg)" stroke-width="1.2"/><path id="r3" d="M374.2,288.1 Q264.8,212.0 132.1,223.1" fill="none" stroke="url(#lg)" stroke-width="1.2"/><path id="r4" d="M374.2,288.1 Q455.9,295.2 523.3,248.5" fill="none" stroke="url(#lg)" stroke-width="1.2"/><path id="r5" d="M374.2,288.1 Q496.0,401.2 662.0,410.7" fill="none" stroke="url(#lg)" stroke-width="1.2"/>
+<circle r="2.6" fill="#9CC3FF" class="pulse-dot"><animateMotion dur="2.75s" repeatCount="indefinite" begin="0.4s"><mpath href="#r1"/></animateMotion></circle><circle r="2.6" fill="#9CC3FF" class="pulse-dot"><animateMotion dur="3.10s" repeatCount="indefinite" begin="0.8s"><mpath href="#r2"/></animateMotion></circle><circle r="2.6" fill="#9CC3FF" class="pulse-dot"><animateMotion dur="3.45s" repeatCount="indefinite" begin="1.2s"><mpath href="#r3"/></animateMotion></circle><circle r="2.6" fill="#9CC3FF" class="pulse-dot"><animateMotion dur="3.80s" repeatCount="indefinite" begin="1.6s"><mpath href="#r4"/></animateMotion></circle><circle r="2.6" fill="#9CC3FF" class="pulse-dot"><animateMotion dur="4.15s" repeatCount="indefinite" begin="2.0s"><mpath href="#r5"/></animateMotion></circle>
+<g class="city"><circle cx="146.1" cy="86.9" r="4.5" fill="#0C0C0C" stroke="#9a9a9a"/><circle cx="146.1" cy="86.9" r="1.6" fill="#F4F4F4"/><text x="132.1" y="84.9" text-anchor="end">Milano</text><text class="km" x="132.1" y="98.9" text-anchor="end">60 KM</text></g><g class="city"><circle cx="288.0" cy="160.1" r="4.5" fill="#0C0C0C" stroke="#9a9a9a"/><circle cx="288.0" cy="160.1" r="1.6" fill="#F4F4F4"/><text x="274.0" y="158.1" text-anchor="end">Lodi</text><text class="km" x="274.0" y="172.1" text-anchor="end">33 KM</text></g><g class="city"><circle cx="132.1" cy="223.1" r="4.5" fill="#0C0C0C" stroke="#9a9a9a"/><circle cx="132.1" cy="223.1" r="1.6" fill="#F4F4F4"/><text x="118.1" y="221.1" text-anchor="end">Pavia</text><text class="km" x="118.1" y="235.1" text-anchor="end">44 KM</text></g><g class="city"><circle cx="523.3" cy="248.5" r="4.5" fill="#0C0C0C" stroke="#9a9a9a"/><circle cx="523.3" cy="248.5" r="1.6" fill="#F4F4F4"/><text x="537.3" y="246.5" text-anchor="start">Cremona</text><text class="km" x="537.3" y="260.5" text-anchor="start">27 KM</text></g><g class="city"><circle cx="662.0" cy="410.7" r="4.5" fill="#0C0C0C" stroke="#9a9a9a"/><circle cx="662.0" cy="410.7" r="1.6" fill="#F4F4F4"/><text x="676.0" y="408.7" text-anchor="start">Parma</text><text class="km" x="676.0" y="422.7" text-anchor="start">57 KM</text></g>
+<circle cx="374.2" cy="288.1" r="46" fill="url(#hub)"/>
+<circle cx="374.2" cy="288.1" r="22" fill="none" stroke="#5590F7" stroke-opacity=".35"><animate attributeName="r" values="12;34;12" dur="3.2s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values=".6;0;.6" dur="3.2s" repeatCount="indefinite"/></circle>
+<rect x="365.2" y="279.1" width="18" height="18" rx="2" fill="#2563EB" stroke="#9CC3FF"/>
+<circle cx="374.2" cy="288.1" r="3" fill="#fff"/>
+<g class="city"><text x="390.2" y="318.1" fill="#fff" style="fill:#fff">PIACENZA</text><text class="km" x="390.2" y="332.1">DINAMOWEB · DAL 1998</text></g>
+</svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- _07 Metodo -->
+  <section class="section rule-top method" id="metodo" aria-labelledby="metodo-title">
+    <div class="container">
+      <div class="method-head">
+        <div class="meta-row"><span class="meta ruled"><b>_07</b> Il metodo</span></div>
+        <h2 id="metodo-title" class="reveal-lines"><span class="line"><span class="metal">Quattro fasi.</span></span><span class="line"><span class="ghost">Un risultato in mano</span></span><span class="line"><span class="ghost">a ogni fase.</span></span></h2>
+        <p>Sai sempre cosa stiamo facendo, quanto costa e cosa ricevi alla fine di ogni passaggio.</p>
+      </div>
+      <ol class="steps" id="steps" role="list">
+        <li class="step"><span class="meta">Fase 01</span><div><h3>Check-up</h3></div><p>Guardiamo il tuo sito, i tuoi processi e i tuoi concorrenti.</p><div class="gets"><b>Cosa ricevi</b>Una lista di priorità, con costi e tempi.</div></li>
+        <li class="step"><span class="meta">Fase 02</span><div><h3>Progetto</h3></div><p>Struttura, contenuti e design prima di scrivere una riga di codice.</p><div class="gets"><b>Cosa ricevi</b>Il prototipo da approvare.</div></li>
+        <li class="step"><span class="meta">Fase 03</span><div><h3>Sviluppo</h3></div><p>Sito, automazioni e assistenti AI, collegati ai tuoi strumenti.</p><div class="gets"><b>Cosa ricevi</b>Tutto online, testato, con formazione al tuo team.</div></li>
+        <li class="step"><span class="meta">Fase 04</span><div><h3>Crescita</h3></div><p>Misuriamo e miglioriamo ogni mese.</p><div class="gets"><b>Cosa ricevi</b>Un report chiaro su contatti e risultati.</div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- _08 LeadRaptor -->
+  <section class="section rule-top raptor" id="leadraptor" aria-labelledby="raptor-title">
+    <div class="container raptor-grid">
+      <div class="raptor-copy">
+        <div class="meta-row"><span class="meta ruled"><b>_08</b> LeadRaptor</span></div>
+        <h2 id="raptor-title" class="reveal-lines"><span class="line"><span class="metal">Scopri chi visita</span></span><span class="line"><span class="metal">il tuo sito.</span></span><span class="line"><span class="blue">Anche se non scrive.</span></span></h2>
+        <p>LeadRaptor è il nostro strumento: riconosce le aziende che navigano il tuo sito e ti mostra cosa le interessa. La nuova versione con intelligenza artificiale è in arrivo.</p>
+        <form class="waitlist" id="waitlist" novalidate>
+          <label class="meta" for="wl-email">_ Lista d'attesa versione AI</label>
+          <input id="wl-email" name="email" type="email" placeholder="La tua email aziendale" autocomplete="email" required>
+          <button class="btn btn-primary" type="submit">Avvisami <span class="arrow" aria-hidden="true">→</span></button>
+        </form>
+        <p class="form-note" id="wl-note" role="status"></p>
+      </div>
+      <div class="dash fade-up" aria-label="Esempio di dashboard LeadRaptor con dati di esempio">
+        <div class="panel">
+          <div class="panel-head"><span class="meta">Questa settimana</span><span class="meta">Esempio</span></div>
+          <div class="kpi">
+            <div><strong>47</strong><small>Aziende riconosciute</small><span class="up">▲ 12%</span></div>
+            <div><strong>9</strong><small>Ad alto interesse</small><span class="up">▲ 3</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><span class="meta">Dalla visita al contatto</span></div>
+          <div class="funnel">
+            <div>Visite<i style="--w:100%"></i><b>312</b></div>
+            <div>Aziende<i style="--w:62%"></i><b>47</b></div>
+            <div>Interesse alto<i style="--w:28%"></i><b>9</b></div>
+            <div>Contattate<i style="--w:14%"></i><b>4</b></div>
+          </div>
+        </div>
+        <div class="panel wide">
+          <div class="panel-head"><span class="meta">Quando visitano · ore 8–18</span><span class="meta">Lun–Ven</span></div>
+          <div class="heat" aria-hidden="true"><span></span><span class="h">8</span><span class="h">9</span><span class="h">10</span><span class="h">11</span><span class="h">12</span><span class="h">13</span><span class="h">14</span><span class="h">15</span><span class="h">16</span><span class="h">17</span><span class="h">18</span><span>Lun</span><span class="c" style="--a:0.13"></span><span class="c" style="--a:0.38"></span><span class="c" style="--a:1.00"></span><span class="c" style="--a:0.73"></span><span class="c" style="--a:0.54"></span><span class="c" style="--a:0.20"></span><span class="c" style="--a:0.34"></span><span class="c" style="--a:0.68"></span><span class="c" style="--a:0.80"></span><span class="c" style="--a:0.43"></span><span class="c" style="--a:0.12"></span><span>Mar</span><span class="c" style="--a:0.12"></span><span class="c" style="--a:0.40"></span><span class="c" style="--a:0.80"></span><span class="c" style="--a:0.70"></span><span class="c" style="--a:0.49"></span><span class="c" style="--a:0.21"></span><span class="c" style="--a:0.47"></span><span class="c" style="--a:0.76"></span><span class="c" style="--a:0.78"></span><span class="c" style="--a:0.38"></span><span class="c" style="--a:0.09"></span><span>Mer</span><span class="c" style="--a:0.10"></span><span class="c" style="--a:0.55"></span><span class="c" style="--a:0.84"></span><span class="c" style="--a:0.89"></span><span class="c" style="--a:0.53"></span><span class="c" style="--a:0.21"></span><span class="c" style="--a:0.32"></span><span class="c" style="--a:0.82"></span><span class="c" style="--a:0.76"></span><span class="c" style="--a:0.43"></span><span class="c" style="--a:0.10"></span><span>Gio</span><span class="c" style="--a:0.12"></span><span class="c" style="--a:0.51"></span><span class="c" style="--a:0.74"></span><span class="c" style="--a:0.71"></span><span class="c" style="--a:0.43"></span><span class="c" style="--a:0.17"></span><span class="c" style="--a:0.36"></span><span class="c" style="--a:0.67"></span><span class="c" style="--a:0.75"></span><span class="c" style="--a:0.29"></span><span class="c" style="--a:0.10"></span><span>Ven</span><span class="c" style="--a:0.12"></span><span class="c" style="--a:0.45"></span><span class="c" style="--a:1.00"></span><span class="c" style="--a:1.00"></span><span class="c" style="--a:0.56"></span><span class="c" style="--a:0.24"></span><span class="c" style="--a:0.41"></span><span class="c" style="--a:0.80"></span><span class="c" style="--a:0.71"></span><span class="c" style="--a:0.27"></span><span class="c" style="--a:0.06"></span></div>
+        </div>
+        <div class="panel wide feed">
+          <div class="panel-head"><span class="meta"><span class="dot-live" aria-hidden="true"></span>Visite in tempo reale</span><span class="meta" id="feed-count">3 oggi</span></div>
+          <div class="feed-scroll">
+            <table>
+              <thead><tr><th scope="col">Azienda</th><th scope="col">Pagine</th><th scope="col">Cosa guarda</th><th scope="col">Interesse</th></tr></thead>
+              <tbody id="feed-body">
+                <tr><td>Costruttore di macchine utensili<span>Piacenza · 2ª visita</span></td><td class="num">7</td><td>E-commerce B2B, Prezzi</td><td><span class="lvl hot">Alto</span></td></tr>
+                <tr><td>Distributore materiale idraulico<span>Lodi · prima visita</span></td><td class="num">4</td><td>Agenti AI, Casi studio</td><td><span class="lvl">Medio</span></td></tr>
+                <tr><td>Studio di progettazione<span>Parma · prima visita</span></td><td class="num">2</td><td>Contatti</td><td><span class="lvl">Basso</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- _09 Storia -->
+  <section class="section rule-top" id="storia" aria-labelledby="storia-title">
+    <div class="container">
+      <div class="sec-head">
+        <div class="meta-row"><span class="meta ruled"><b>_09</b> La nostra storia</span><span class="meta">Piacenza</span></div>
+        <h2 id="storia-title" class="reveal-lines"><span class="line"><span class="metal">Dal 1998,</span></span><span class="line indent"><span class="ghost">un passo avanti alla volta.</span></span></h2>
+      </div>
+      <ol class="timeline" id="timeline" role="list">
+        <li class="tl"><span class="tl-year metal">1998</span><h3>Le radici</h3><p>Nasciamo a Piacenza come divisione web di una storica agenzia di comunicazione.</p></li>
+        <li class="tl"><span class="tl-year metal">2005</span><h3>L'indipendenza</h3><p>Dinamoweb diventa una società autonoma e accompagna le PMI nell'era dell'e-commerce.</p></li>
+        <li class="tl"><span class="tl-year metal">2018</span><h3>Il passaggio al cloud</h3><p>Lasciamo i server fisici e portiamo i siti dei clienti su infrastrutture cloud.</p></li>
+        <li class="tl"><span class="tl-year blue">2026</span><h3>L'era dell'AI</h3><p>Agenti AI e automazione entrano nei processi delle aziende che seguiamo.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- _10 Check-up -->
+  <section class="section rule-top checkup" id="checkup" aria-labelledby="checkup-title">
+    <div class="container">
+      <div class="meta-row"><span class="meta ruled"><b>_10</b> Check-up gratuito</span><span class="meta">30 minuti · senza impegno</span></div>
+      <h2 id="checkup-title" class="reveal-lines"><span class="line"><span class="metal">Da dove</span></span><span class="line indent"><span class="metal">iniziamo</span><span class="blue">?</span></span></h2>
+      <div class="checkup-grid">
+        <div class="checkup-intro">
+          <p>In 30 minuti guardiamo insieme il tuo sito e ti diciamo dove l'AI può farti risparmiare tempo o portarti clienti.</p>
+          <ul>
+            <li><span>01</span>Analisi del sito e della visibilità su Google e sulle AI</li>
+            <li><span>02</span>Due o tre processi che si possono automatizzare</li>
+            <li><span>03</span>Una stima di costi e tempi, per iscritto</li>
+          </ul>
+        </div>
+        <div class="glass fade-up">
+          <form class="form" id="checkup-form" novalidate>
+            <div class="field"><label for="f-nome">Nome e cognome</label><input id="f-nome" name="nome" autocomplete="name" required></div>
+            <div class="field"><label for="f-azienda">Azienda</label><input id="f-azienda" name="azienda" autocomplete="organization" required></div>
+            <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+            <div class="field"><label for="f-tel">Telefono</label><input id="f-tel" name="telefono" type="tel" autocomplete="tel"></div>
+            <fieldset class="field full">
+              <legend>Cosa ti interessa</legend>
+              <div class="checks">
+                <label class="check"><input type="checkbox" id="c-siti" name="interesse" value="siti"><span>Sito o e-commerce</span></label>
+                <label class="check"><input type="checkbox" id="c-ai" name="interesse" value="ai"><span>Agenti AI e automazione</span></label>
+                <label class="check"><input type="checkbox" id="c-vis" name="interesse" value="visibilita"><span>Visibilità</span></label>
+                <label class="check"><input type="checkbox" id="c-foto" name="interesse" value="foto"><span>Foto e video</span></label>
+              </div>
+            </fieldset>
+            <div class="field full"><label for="f-msg">Raccontaci in due righe (facoltativo)</label><textarea id="f-msg" name="messaggio" rows="2"></textarea></div>
+            <div class="form-foot">
+              <button class="btn btn-primary magnetic" type="submit">Prenota il check-up <span class="arrow" aria-hidden="true">→</span></button>
+              <small>Ti ricontattiamo entro un giorno lavorativo.</small>
+            </div>
+            <p class="form-status" id="checkup-status" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer" id="assistenza">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="logo" href="#top"><img src="/assets/img/logo-dinamoweb.svg" alt="Dinamoweb" width="111" height="48"></a>
+        <p class="legal" style="margin-top:1.5rem">Dinamoweb S.r.l.<br>Via Conciliazione 58/C, 29122 Piacenza (PC)<br>Tel. +39 0523 1998388 · info@dinamoweb.com</p>
+      </div>
+      <div class="footer-cols">
         <div>
-            <h2>LeadRaptor: L’Intelligence che trova i tuoi clienti prima della concorrenza.</h2>
-            <p>Perché aspettare che i lead arrivino per caso? LeadRaptor è il nostro software di Intent Analysis che identifica i segnali reali di acquisto dei tuoi prospect B2B.</p>
+          <h4>_ Assistenza clienti</h4>
+          <ul>
+            <li><a href="#assistenza" data-open-assistant>Assistente AI</a></li>
+            <li><a href="#assistenza">Richiesta di assistenza</a></li>
+            <li><a href="#assistenza">Teleassistenza Mac</a></li>
+            <li><a href="#assistenza">Teleassistenza Windows</a></li>
+            <li><a href="#assistenza">Demo riservata</a></li>
+          </ul>
         </div>
-        <div class="visual-placeholder">
-            </div>
-    </section>
-
-    <section class="infra-demo">
-        <div class="container">
-            <h2>Il tuo business gira sulle infrastrutture più potenti al mondo.</h2>
-            <p>Sicurezza Enterprise e velocità globale garantita dai nostri partner.</p>
-            <div class="logos">
-                <span>GOOGLE CLOUD</span>
-                <span>AWS PARTNER</span>
-                <span>DINAMO INFRA</span>
-            </div>
+        <div>
+          <h4>_ Orari</h4>
+          <ul class="legal"><li>Lunedì–venerdì</li><li>9:00–13:00</li><li>14:00–18:00</li></ul>
         </div>
-    </section>
-
-    <footer class="container audit-footer">
-        <h2>La tua azienda è pronta per la crescita automatizzata?</h2>
-        <p>Richiedi un Audit Strategico per scoprire dove l'AI può aumentare i tuoi margini.</p>
-        
-        <div class="audit-form">
-            <form>
-                <input type="text" placeholder="Nome e Cognome">
-                <input type="text" placeholder="Nome Azienda">
-                <input type="email" placeholder="Email Professionale">
-                <select>
-                    <option value="">In cosa vuoi scalare?</option>
-                    <option value="vendite">Vendite / Lead Generation</option>
-                    <option value="processi">Efficienza Processi Interni</option>
-                    <option value="brand">Brand Authority</option>
-                </select>
-                <button type="submit">INIZIA L'AUDIT STRATEGICO</button>
-            </form>
+        <div>
+          <h4>_ Seguici</h4>
+          <ul>
+            <li><a href="https://www.linkedin.com/" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://www.facebook.com/" rel="noopener">Facebook</a></li>
+            <li><a href="https://www.youtube.com/" rel="noopener">YouTube</a></li>
+            <li><a href="https://vimeo.com/" rel="noopener">Vimeo</a></li>
+          </ul>
         </div>
-    </footer>
+      </div>
+    </div>
+    <div class="footer-word" aria-hidden="true">dinamoweb</div>
+    <div class="footer-bottom">
+      <span>© 1998–2026 Dinamoweb S.r.l. · P. IVA 01431780335 · REA PC-161904 · SDI SUBM70N · Cap. soc. € 10.000 i.v.</span>
+      <span><a href="#top">Privacy</a> · <a href="#top">Cookie</a></span>
+    </div>
+  </div>
+</footer>
 
+<button class="assistant-toggle" id="assistant-toggle" aria-expanded="false" aria-controls="assistant"><span class="dot-live" aria-hidden="true"></span><span>Chiedi all'assistente</span></button>
+<div class="assistant" id="assistant" role="dialog" aria-label="Assistente Dinamoweb" hidden>
+  <header>
+    <div><strong><span class="dot-live" aria-hidden="true"></span>Assistente Dinamoweb</strong><div class="meta">Demo · risposte di esempio</div></div>
+    <button class="assistant-close" id="assistant-close" aria-label="Chiudi l'assistente">×</button>
+  </header>
+  <div class="assistant-body" id="assistant-body" aria-live="polite">
+    <p class="msg msg-out"><small>Assistente</small>Ciao! Posso aiutarti con un nuovo progetto o con l'assistenza sul tuo sito. Da cosa partiamo?</p>
+  </div>
+  <div class="assistant-quick" id="assistant-quick">
+    <button type="button" data-q="preventivo">Vorrei un preventivo</button>
+    <button type="button" data-q="assistenza">Ho bisogno di assistenza</button>
+    <button type="button" data-q="agente">Cos'è un agente AI?</button>
+  </div>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="/assets/js/main.js?v=202610261509"></script>
 </body>
 </html>
