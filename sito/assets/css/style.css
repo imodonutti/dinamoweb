@@ -22,7 +22,7 @@
   /* sistema spaziale ripreso da Maxiarredo */
   --gutter: clamp(1.25rem, .6rem + 2.4vw, 3rem);
   --section-pad: clamp(5.5rem, 2.5rem + 8.5vw, 11.5rem);
-  --header-h: 84px;
+  --header-h: 96px;
   --radius: 2px;
   --fs-display: clamp(3rem, 1.1rem + 7.4vw, 9.25rem);
   --fs-h2: clamp(2.3rem, 1.2rem + 3.7vw, 5.5rem);
@@ -88,7 +88,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .site-header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; transition: background .4s, border-color .4s; border-bottom: 1px solid transparent; }
 .site-header.scrolled { background: rgba(12,12,12,.72); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); border-bottom-color: var(--line); }
 .site-header .container { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: var(--header-h); gap: 1.5rem; }
-.logo img { height: 2.5rem; width: auto; }
+.logo img { height: clamp(2.75rem, 2rem + 1.6vw, 3.6rem); width: auto; }
+.site-footer .logo img { height: clamp(3rem, 2.4rem + 1.4vw, 4rem); }
 .nav { display: flex; gap: .25rem; padding: .3rem; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(22,22,22,.55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 .nav a { text-decoration: none; font-size: .86rem; color: var(--muted); padding: .5rem .85rem; border-radius: var(--radius); transition: color .2s, background .2s; }
 .nav a:hover { color: var(--fg); background: var(--surface-2); }
