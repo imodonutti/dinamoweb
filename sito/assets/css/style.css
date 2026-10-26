@@ -261,6 +261,18 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .hero-dyn .dyn-out { position: static; transform: none; width: auto; display: grid; grid-auto-flow: column; gap: clamp(1.25rem, 3vw, 3rem); }
 .hero-dyn .dyn-out li { padding-left: .8rem; background: rgba(12,12,12,.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: .4rem .9rem .5rem .8rem; }
 
+/* intro: logo e rotore in arrivo */
+.intro { display: none; }
+html.has-intro .intro { position: fixed; inset: 0; z-index: 95; display: grid; place-items: center; cursor: pointer;
+  background: radial-gradient(60% 60% at 50% 45%, rgba(12,12,12,.2), rgba(12,12,12,.75)); animation: intro-failsafe .01s 7s forwards; }
+.intro-logo { width: min(46vw, 34rem); height: auto; will-change: transform, filter, opacity; }
+.intro-skip { position: absolute; bottom: calc(2rem + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); font-family: var(--f-mono); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: #6a6a6a; }
+html.has-intro .hero-inner, html.has-intro .site-header { opacity: 0; }
+html.has-intro .hero-inner, html.has-intro .site-header { animation: show-failsafe .01s 7s forwards; }
+@keyframes show-failsafe { to { opacity: 1; } }
+html.has-intro body { overflow: hidden; }
+@keyframes intro-failsafe { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+
 /* fascia partner + numeri */
 .trust { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: var(--gutter); align-items: center; padding-top: 2.5rem; margin-top: clamp(3rem, 6vw, 5rem); border-top: 1px solid var(--line); }
 .trust-logos { display: flex; flex-wrap: wrap; gap: clamp(1.5rem, 4vw, 4rem); align-items: center; font-weight: 500; font-size: clamp(1rem, 1.4vw, 1.3rem); letter-spacing: -.02em; color: #bdbdbd; }

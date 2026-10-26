@@ -6,6 +6,8 @@
   var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   var hasGSAP = typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined";
   var motion = hasGSAP && !reduced;
+  var playIntro = motion && document.documentElement.classList.contains("has-intro");
+  if (!motion) document.documentElement.classList.remove("has-intro");
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
 
@@ -77,6 +79,26 @@
     var angle = 0, speed = 0, boost = 0, hover = 0, glow = .3, scrollP = 0;
     var build = reduced ? 1 : 0, startAt = performance.now() + 350;
     var parts = [], pulses = [], rings = [], nextSpawn = 0, li = 0, running = false, visible = true, last = performance.now();
+    // arrivo del rotore (intro)
+    var arr = null, rotorHidden = playIntro, hold = playIntro, trail = [], flash = 0, ripples = [], off = [0, 0, 0], spinMul = 1, arrP = 1;
+    function arrival(now) {
+      if (!arr) { off = [0, 0, 0]; spinMul = 1; arrP = 1; return; }
+      var p = Math.max(0, Math.min(1, (now - arr.t0) / arr.dur)), e = 1 - Math.pow(1 - p, 3);
+      arrP = p;
+      off = [R * 2.6 * (1 - e) * Math.cos(p * 2.4), R * 8 * (1 - e), R * 4.2 * (1 - e) + Math.sin(p * 20) * R * .05 * (1 - e)];
+      spinMul = 1 + 11 * (1 - e);
+      if (p >= 1) dock(now);
+    }
+    function dock(now) {
+      arr = null; off = [0, 0, 0]; spinMul = 1; arrP = 1; trail = [];
+      flash = 1; ripples.push(now); boost += 2.6; hold = false;
+      rings.push({ t0: now }); rings.push({ t0: now + 140 }); rings.push({ t0: now + 280 });
+      nextSpawn = now + 500;
+    }
+    window.dynCtl = {
+      arrive: function (ms) { rotorHidden = false; hold = true; arr = { t0: performance.now(), dur: ms || 2000 }; },
+      skip: function () { if (arr) dock(performance.now()); rotorHidden = false; hold = false; build = 1; }
+    };
 
     function layout() {
       var r = stage.getBoundingClientRect();
@@ -103,6 +125,8 @@
       var s = F / (F + d2);
       return [CX + x2 * s, CY - up * s, d2, s];
     }
+    function Pr(u, v, h) { return P(u + off[0], v + off[1], h + off[2]); }
+    function segr(u1, v1, h1, u2, v2, h2) { var a = Pr(u1, v1, h1), b2 = Pr(u2, v2, h2); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b2[0], b2[1]); }
     function ring(r, h, a0, a1, n) {
       a0 = a0 || 0; a1 = a1 === undefined ? Math.PI * 2 : a1; n = n || 90;
       ctx.beginPath();
@@ -123,7 +147,8 @@
       ctx.clearRect(0, 0, W, H);
       var b = Math.max(0, Math.min(1, build)), e = Math.min(1, (speed - .5) / 2.2);
       glow += ((.3 + e * .7) - glow) * .05;
-      var hub = P(0, 0, R * .2);
+      arrival(now);
+      var hub = Pr(0, 0, R * .2);
 
       // bagliore attorno al mozzo
       var g = ctx.createRadialGradient(hub[0], hub[1], 0, hub[0], hub[1], R * 1.9);
@@ -171,27 +196,57 @@
         if (f[2] < 0 && i % 2 === 0) { ctx.strokeStyle = "rgba(255,255,255,.1)"; seg(ca * so, sa * so, 0, ca * so, sa * so, hs); ctx.stroke(); }
       }
 
+      // onda d'urto sul pavimento dopo l'aggancio
+      ripples = ripples.filter(function (t0) {
+        var t = (now - t0) / 1500; if (t > 1) return false;
+        ctx.strokeStyle = "rgba(" + BLUE + "," + ((1 - t) * .7).toFixed(3) + ")"; ctx.lineWidth = 2 * (1 - t) + .5;
+        ring(R * (.6 + t * 3.4), 0, 0, Math.PI * 2, 120); ctx.stroke(); ctx.lineWidth = 1; return true;
+      });
+      // scia e spinta durante il volo
+      if (arr && !rotorHidden) {
+        trail.push([hub[0], hub[1], hub[3]]); if (trail.length > 26) trail.shift();
+        trail.forEach(function (t, q) {
+          var a = q / trail.length;
+          ctx.fillStyle = "rgba(156,195,255," + (a * .28).toFixed(3) + ")";
+          ctx.beginPath(); ctx.ellipse(t[0], t[1], R * .5 * t[2] * a, R * .16 * t[2] * a, 0, 0, Math.PI * 2); ctx.fill();
+        });
+        var th = Pr(0, 0, -R * .2), tg = ctx.createRadialGradient(th[0], th[1], 0, th[0], th[1], R * 1.1 * th[3]);
+        tg.addColorStop(0, "rgba(200,222,255,.55)"); tg.addColorStop(.4, "rgba(" + BLUE + ",.35)"); tg.addColorStop(1, "rgba(" + BLUE + ",0)");
+        ctx.fillStyle = tg; ctx.beginPath(); ctx.arc(th[0], th[1], R * 1.1 * th[3], 0, Math.PI * 2); ctx.fill();
+        // ombra che si stringe sul pavimento
+        var sh = P(off[0], off[1], 0), sk = Math.max(.15, 1 - off[2] / (R * 4.2));
+        ctx.fillStyle = "rgba(" + BLUE + "," + (.18 * sk).toFixed(3) + ")";
+        ctx.beginPath(); ctx.ellipse(sh[0], sh[1], R * 1.2 * sh[3] * sk, R * .45 * sh[3] * sk, 0, 0, Math.PI * 2); ctx.fill();
+      }
+
       // rotore: sei settori in rilievo
       var hr = R * .13;
+      if (!rotorHidden) {
       for (var k = 0; k < 6; k++) {
         var a0 = angle + k * Math.PI / 3 + .1, a1 = angle + (k + 1) * Math.PI / 3 - .1, n = 16, pts = [];
-        for (var j = 0; j <= n; j++) { var a = a0 + (a1 - a0) * j / n; pts.push(P(Math.cos(a) * R * .96, Math.sin(a) * R * .96, hr)); }
-        for (j = n; j >= 0; j--) { a = a0 + (a1 - a0) * j / n; pts.push(P(Math.cos(a) * R * .46, Math.sin(a) * R * .46, hr)); }
-        ctx.globalAlpha = b;
+        for (var j = 0; j <= n; j++) { var a = a0 + (a1 - a0) * j / n; pts.push(Pr(Math.cos(a) * R * .96, Math.sin(a) * R * .96, hr)); }
+        for (j = n; j >= 0; j--) { a = a0 + (a1 - a0) * j / n; pts.push(Pr(Math.cos(a) * R * .46, Math.sin(a) * R * .46, hr)); }
+        ctx.globalAlpha = arr ? 1 : b;
         ctx.beginPath(); pts.forEach(function (p, q) { q ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.closePath();
         ctx.fillStyle = k % 2 ? "rgba(" + BLUE + "," + (.14 + glow * .38).toFixed(3) + ")" : "rgba(30,32,38,.82)";
         ctx.fill(); ctx.strokeStyle = k % 2 ? "rgba(156,195,255,.75)" : "rgba(255,255,255,.28)"; ctx.stroke();
         // spigoli verticali esterni
-        [a0, a1].forEach(function (aa) { ctx.strokeStyle = "rgba(255,255,255,.14)"; seg(Math.cos(aa) * R * .96, Math.sin(aa) * R * .96, 0, Math.cos(aa) * R * .96, Math.sin(aa) * R * .96, hr); ctx.stroke(); });
+        [a0, a1].forEach(function (aa) { ctx.strokeStyle = "rgba(255,255,255,.14)"; segr(Math.cos(aa) * R * .96, Math.sin(aa) * R * .96, 0, Math.cos(aa) * R * .96, Math.sin(aa) * R * .96, hr); ctx.stroke(); });
         ctx.globalAlpha = 1;
       }
       // albero e mozzo luminoso
       var hg = ctx.createRadialGradient(hub[0], hub[1], 0, hub[0], hub[1], R * .36 * hub[3]);
-      hg.addColorStop(0, "rgba(235,242,255," + ((.6 + glow * .4) * b).toFixed(3) + ")");
-      hg.addColorStop(.35, "rgba(" + BLUE + "," + ((.65 + glow * .35) * b).toFixed(3) + ")");
+      var bh = arr ? 1 : b;
+      hg.addColorStop(0, "rgba(235,242,255," + ((.6 + glow * .4) * bh).toFixed(3) + ")");
+      hg.addColorStop(.35, "rgba(" + BLUE + "," + ((.65 + glow * .35) * bh).toFixed(3) + ")");
       hg.addColorStop(1, "rgba(" + BLUE + ",0)");
       ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(hub[0], hub[1], R * .36 * hub[3], 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = "rgba(255,255,255," + (.55 * b) + ")"; ring(R * .14, R * .2, 0, Math.PI * 2, 40); ctx.stroke();
+      ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.beginPath();
+      for (var hz = 0; hz <= 40; hz++) { var ha = hz / 40 * Math.PI * 2, hp = Pr(Math.cos(ha) * R * .14, Math.sin(ha) * R * .14, R * .2); hz ? ctx.lineTo(hp[0], hp[1]) : ctx.moveTo(hp[0], hp[1]); }
+      ctx.stroke();
+      }
+      // lampo all'aggancio
+      if (flash > .01) { ctx.fillStyle = "rgba(170,205,255," + (flash * .32).toFixed(3) + ")"; ctx.fillRect(0, 0, W, H); flash *= .9; }
 
       // anelli d'energia
       rings = rings.filter(function (r) {
@@ -264,11 +319,11 @@
       boost *= Math.pow(.35, dt);
       var target = .55 * Math.min(1, build * 1.5) + boost + hover * .9 + sv;
       speed += (target - speed) * Math.min(1, dt * 2);
-      angle += speed * dt;
+      angle += speed * dt * spinMul;
       yaw += (yawT - yaw) * Math.min(1, dt * 2.5);
       tiltNow += ((tilt + pitchT + scrollP * .32) - tiltNow) * Math.min(1, dt * 3);
       roll = -.35 - scrollP * .5;
-      if (build > .7 && now > nextSpawn) { spawn(now); nextSpawn = now + (mobile ? 1300 : 800) + Math.random() * 600; }
+      if (!hold && build > .7 && now > nextSpawn) { spawn(now); nextSpawn = now + (mobile ? 1300 : 800) + Math.random() * 600; }
       draw(now);
       var rpm = Math.round(speed * 60);
       if (rpmEl && rpm !== rpmShown) { rpmShown = rpm; rpmEl.textContent = rpm; }
@@ -303,14 +358,52 @@
   if (motion) {
     document.documentElement.classList.add("js-motion");
     gsap.registerPlugin(ScrollTrigger);
-    /* Apertura: il titolo entra parola per parola, poi la dinamo si disegna e parte */
+    /* Apertura. Alla prima visita: logo al centro, il rotore arriva dal fondo e si aggancia,
+       il logo vola nell'intestazione. Poi entra il titolo. */
     var intro = gsap.timeline({ defaults: { ease: "expo.out" }, delay: .15 });
-    intro.from(".hero .meta-row .meta", { opacity: 0, y: 10, duration: .8, stagger: .1 }, 0)
-      .from(".hero h1 .w", { yPercent: 110, opacity: 0, filter: "blur(16px)", duration: 1.4, stagger: .09 }, .2)
-      .from(".hero-lead, .hero-actions", { opacity: 0, y: 24, duration: 1.1, stagger: .12 }, .9)
-      .from(".hud-cap, .hud-right > .meta", { opacity: 0, duration: .8, stagger: .15 }, 1.2)
-      .from(".dyn-out li", { opacity: 0, y: 16, duration: .9, stagger: .12 }, 1.5)
-      .from(".trust, .stats .stat", { opacity: 0, y: 20, duration: 1, stagger: .08 }, 1.4);
+    var T = 0, introDone = !playIntro;
+    function finishIntro() {
+      if (introDone) return; introDone = true;
+      try { sessionStorage.setItem("dw-intro", "1"); } catch (e) {}
+      var box = $("#intro"); if (box && box.parentNode) box.parentNode.removeChild(box);
+      document.documentElement.classList.remove("has-intro");
+      gsap.set(".site-header", { opacity: 1 });
+      if (lenis) lenis.start();
+    }
+    if (playIntro) {
+      T = 3.1;
+      var il = $("#intro-logo"), hl = $(".site-header .logo img");
+      if (lenis) lenis.stop();
+      gsap.set(".site-header", { opacity: 0 });
+      intro.fromTo(il, { opacity: 0, scale: .82, filter: "blur(18px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.1 }, 0)
+        .fromTo(".intro-skip", { opacity: 0 }, { opacity: 1, duration: .6 }, .6)
+        .add(function () { if (window.dynCtl) window.dynCtl.arrive(2000); }, .3)
+        .to(il, { filter: "drop-shadow(0 0 30px rgba(85,144,247,.95))", duration: .25, ease: "power2.out" }, 2.3)
+        .to(".intro-skip", { opacity: 0, duration: .3 }, 2.3)
+        .add(function () {
+          var a = il.getBoundingClientRect(), b = hl.getBoundingClientRect();
+          gsap.to(il, { x: (b.left + b.width / 2) - (a.left + a.width / 2), y: (b.top + b.height / 2) - (a.top + a.height / 2),
+            scale: b.width / a.width, filter: "drop-shadow(0 0 0px rgba(85,144,247,0))", duration: 1, ease: "expo.inOut" });
+        }, 2.45)
+        .to(".site-header", { opacity: 1, duration: .35, ease: "power2.out" }, 3.3)
+        .add(finishIntro, 3.5);
+      var skip = function () {
+        if (introDone) return;
+        intro.progress(1);
+        if (window.dynCtl) window.dynCtl.skip();
+        finishIntro();
+      };
+      $("#intro").addEventListener("click", skip);
+      window.addEventListener("wheel", skip, { passive: true, once: true });
+      window.addEventListener("keydown", skip, { once: true });
+      window.addEventListener("touchmove", skip, { passive: true, once: true });
+    }
+    intro.from(".hero .meta-row .meta", { opacity: 0, y: 10, duration: .8, stagger: .1 }, T)
+      .from(".hero h1 .w", { yPercent: 110, opacity: 0, filter: "blur(16px)", duration: 1.4, stagger: .09 }, T + .2)
+      .from(".hero-lead, .hero-actions", { opacity: 0, y: 24, duration: 1.1, stagger: .12 }, T + .9)
+      .from(".hud-cap, .hud-right > .meta", { opacity: 0, duration: .8, stagger: .15 }, T + 1.2)
+      .from(".dyn-out li", { opacity: 0, y: 16, duration: .9, stagger: .12 }, T + 1.5)
+      .from(".trust, .stats .stat", { opacity: 0, y: 20, duration: 1, stagger: .08 }, T + 1.4);
 
     /* Titoli e blocchi */
     $$(".reveal-lines").forEach(function (el) {
