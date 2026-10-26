@@ -74,8 +74,8 @@
     var LABELS = ["email · 22:47", "richiesta preventivo", "visita · Cremona", "ordine #2418", "WhatsApp · rivenditore", "catalogo · art. 4521",
       "domanda tecnica", "chiamata persa · 18:40", "visita · Parma", "ordine da ricopiare", "visita · Lodi", "fattura da registrare"];
     var BLUE = "85,144,247", MONO = '500 14px "Geist Mono", ui-monospace, Menlo, monospace', MONO_S = '500 12px "Geist Mono", ui-monospace, Menlo, monospace';
-    var VMAX = 1.25; // velocita' massima del rotore (rad/s, circa 75 giri/min)
-    var W = 0, H = 0, mobile = false, R = 0, CX = 0, CY = 0, F = 1000, outPts = [], textRight = 0;
+    var VMAX = .6; // velocita' massima del rotore (rad/s, circa 75 giri/min)
+    var W = 0, H = 0, mobile = false, R = 0, CX = 0, CY = 0, F = 1000, outPts = [], textRight = 0, h1Rect = null;
     var tilt = 1.0, tiltNow = 1.0, yaw = 0, yawT = 0, pitchT = 0, roll = -.35;
     var angle = 0, speed = 0, boost = 0, hover = 0, glow = .3, scrollP = 0;
     var build = reduced ? 1 : 0, startAt = performance.now() + 350;
@@ -111,6 +111,8 @@
       F = Math.max(W, H) * 1.5;
       var copy = $(".hero-dyn .hero-lead");
       textRight = copy ? copy.getBoundingClientRect().right - r.left : 0;
+      var h1 = $(".hero-dyn h1");
+      if (h1) { var hb = h1.getBoundingClientRect(); h1Rect = [hb.left - r.left, hb.top - r.top, hb.width, hb.height]; }
       outPts = outs.map(function (l) { var b = l.getBoundingClientRect(); return { x: b.left - r.left + b.width * .5, y: b.top - r.top - 4 }; });
       if (!running) draw(performance.now());
     }
@@ -137,7 +139,7 @@
 
     function spawn(now) {
       var a0 = mobile ? (-.4 + Math.random() * 1.8) : (-1.3 + Math.random() * 2.6);
-      parts.push({ label: LABELS[li++ % LABELS.length], a0: a0, r0: R * (2.4 + Math.random() * .6), t0: now, dur: 3200 + Math.random() * 1600, spin: .9 + Math.random() * .5 });
+      parts.push({ label: LABELS[li++ % LABELS.length], a0: a0, r0: R * (2.4 + Math.random() * .6), t0: now, dur: 6000 + Math.random() * 2000, spin: .45 + Math.random() * .25 });
     }
     function hit(k) {
       outVals[k] += 1; outEls[k].textContent = outVals[k];
@@ -146,7 +148,7 @@
 
     function draw(now) {
       ctx.clearRect(0, 0, W, H);
-      var b = Math.max(0, Math.min(1, build)), e = Math.max(0, Math.min(1, (speed - .5) / (VMAX - .5)));
+      var b = Math.max(0, Math.min(1, build)), e = Math.max(0, Math.min(1, (speed - .25) / (VMAX - .25)));
       glow += ((.3 + e * .7) - glow) * .05;
       arrival(now);
       var hub = Pr(0, 0, R * .2);
@@ -258,7 +260,7 @@
 
       // particelle: arrivano da lontano, entrano a spirale nel rotore
       ctx.font = mobile ? MONO_S : MONO; ctx.textBaseline = "middle";
-      var chipH = mobile ? 26 : 32, padX = mobile ? 9 : 12;
+      var chipH = mobile ? 26 : 32, padX = mobile ? 9 : 12, placed = [];
       parts = parts.filter(function (p) {
         var t = (now - p.t0) / p.dur;
         if (t >= 1) {
@@ -277,10 +279,19 @@
         ctx.beginPath(); ctx.moveTo(q2[0], q2[1]); ctx.lineTo(q[0], q[1]); ctx.stroke(); ctx.lineWidth = 1;
         ctx.fillStyle = inner ? "rgba(" + BLUE + ",1)" : "rgba(244,244,244,.95)";
         ctx.beginPath(); ctx.arc(q[0], q[1], (inner ? 3 : 2.4) * Math.min(1.3, q[3]), 0, Math.PI * 2); ctx.fill();
-        var lab = t < .6 ? Math.min(1, t * 6) : Math.max(0, 1 - (t - .6) / .2);
+        var lab = t < .72 ? Math.min(1, t * 8) : Math.max(0, 1 - (t - .72) / .16);
         var tw = ctx.measureText(p.label).width, bx = q[0] + 14, by = q[1] - chipH / 2;
         if (!mobile && bx < textRight + 20) lab *= Math.max(0, (bx - textRight + 120) / 140);
-        if (lab > .02 && bx > 0 && by > 0 && bx + tw + padX * 2 < W) {
+        var cw = tw + padX * 2;
+        // evita che due etichette si sovrappongano: sposta in basso o in alto
+        for (var tries = 0; tries < 6; tries++) {
+          var clash = placed.some(function (r) { return bx < r[0] + r[2] + 6 && bx + cw + 6 > r[0] && by < r[1] + r[3] + 6 && by + chipH + 6 > r[1]; });
+          if (!clash) break;
+          by += (tries % 2 ? -1 : 1) * (chipH + 8) * (Math.floor(tries / 2) + 1);
+        }
+        if (h1Rect && bx < h1Rect[0] + h1Rect[2] && bx + cw > h1Rect[0] && by < h1Rect[1] + h1Rect[3] && by + chipH > h1Rect[1]) lab *= .12;
+        if (lab > .02 && bx > 0 && by > 0 && bx + cw < W) {
+          placed.push([bx, by, cw, chipH]);
           ctx.globalAlpha = lab * b;
           ctx.fillStyle = "rgba(12,12,12,.88)"; ctx.fillRect(bx, by, tw + padX * 2, chipH);
           ctx.strokeStyle = "rgba(255,255,255,.22)"; ctx.strokeRect(bx + .5, by + .5, tw + padX * 2 - 1, chipH - 1);
@@ -319,13 +330,13 @@
       scrollP = Math.max(0, Math.min(1, -r.top / Math.max(1, r.height)));
       var sv = lenisRef() ? Math.min(2.5, Math.abs(lenisRef().velocity || 0) * .04) : 0;
       boost = Math.min(boost, 1.2) * Math.pow(.35, dt);
-      var target = Math.min(VMAX, .55 * Math.min(1, build * 1.5) + boost * .5 + hover * .4 + sv * .3);
+      var target = Math.min(VMAX, .3 * Math.min(1, build * 1.5) + boost * .25 + hover * .2 + sv * .15);
       speed += (target - speed) * Math.min(1, dt * 2);
       angle += speed * dt * spinMul;
       yaw += (yawT - yaw) * Math.min(1, dt * 2.5);
       tiltNow += ((tilt + pitchT + scrollP * .32) - tiltNow) * Math.min(1, dt * 3);
       roll = -.35 - scrollP * .5;
-      if (!hold && build > .7 && now > nextSpawn) { spawn(now); nextSpawn = now + (mobile ? 1300 : 800) + Math.random() * 600; }
+      if (!hold && build > .7 && now > nextSpawn) { spawn(now); nextSpawn = now + (mobile ? 2200 : 1500) + Math.random() * 900; }
       draw(now);
       var rpm = Math.round(speed * 60);
       if (rpmEl && rpm !== rpmShown) { rpmShown = rpm; rpmEl.textContent = rpm; }
@@ -336,9 +347,9 @@
 
     layout();
     if (reduced) {
-      var now = performance.now(); speed = .6; angle = .5; build = 1; glow = .5;
+      var now = performance.now(); speed = .3; angle = .5; build = 1; glow = .5;
       for (var s = 0; s < 5; s++) { spawn(now - 700 * (s + 1)); }
-      draw(now); if (rpmEl) rpmEl.textContent = "36";
+      draw(now); if (rpmEl) rpmEl.textContent = "18";
     }
     window.addEventListener("resize", layout);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
