@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="/assets/css/style.css?v=202610261545">
+<link rel="stylesheet" href="/assets/css/style.css?v=202610261559">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","name":"Dinamoweb S.r.l.","url":"https://www.dinamoweb.com","foundingDate":"1998",
  "description":"Web agency di Piacenza: siti ed e-commerce, agenti AI e automazione, SEO e GEO, Google Ads, foto e video industriali.",
@@ -45,41 +45,40 @@
 <main>
 
   <!-- _01 Apertura -->
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="hero-glow" aria-hidden="true"></div>
-    <div class="hero-flutes" aria-hidden="true"></div>
-    <div class="container">
-      <div class="meta-row">
-        <span class="meta ruled"><b>_01</b> Web agency &amp; AI per le imprese</span>
-        <span class="meta">Piacenza — dal 1998</span>
-      </div>
-      <div class="hero-grid">
+  <section class="hero hero-dyn" aria-labelledby="hero-title">
+    <div class="hero-stage" id="hero-stage">
+      <canvas id="dyn-canvas" role="img" aria-label="Una dinamo in prospettiva: email, richieste, visite e ordini entrano nel rotore e diventano richieste evase, ore restituite e clienti nuovi"></canvas>
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <div class="meta-row">
+          <span class="meta ruled"><b>_01</b> Web agency &amp; AI per le imprese</span>
+          <span class="meta">Piacenza — dal 1998</span>
+        </div>
         <div class="hero-copy">
           <h1 id="hero-title">
-            <span class="line"><span class="w metal">Il</span> <span class="w metal">movimento</span> <span class="w metal">c'è</span> <span class="w metal">già.</span></span>
-            <span class="line"><span class="w ghost">Noi</span> <span class="w ghost">lo</span> <span class="w ghost">trasformiamo</span></span>
-            <span class="line"><span class="w blue">in</span> <span class="w blue">energia.</span></span>
+            <span class="line"><span class="w ghost">Il</span> <span class="w ghost">movimento</span> <span class="w ghost">c'è</span> <span class="w ghost">già.</span></span>
+            <span class="line"><span class="w metal">Trasformiamolo</span> <span class="w metal">in</span> <span class="w blue">energia.</span></span>
           </h1>
-          <p class="hero-lead">Ogni email, richiesta e visita al sito è energia che oggi <strong>si disperde</strong>. Con siti, agenti AI e automazioni la trasformiamo in <strong>clienti e ore di lavoro</strong>, per le imprese di Piacenza, Parma, Cremona, Lodi e Pavia.</p>
+          <p class="hero-lead">Siti, agenti AI e automazioni che trasformano email, richieste e visite in <strong>clienti e ore di lavoro</strong>. Per le imprese di Piacenza, Parma, Cremona, Lodi e Pavia.</p>
           <div class="hero-actions">
             <a class="btn btn-primary magnetic" href="#checkup">Prenota un check-up gratuito <span class="arrow" aria-hidden="true">→</span></a>
             <a class="btn magnetic" href="#lavori">Guarda i lavori</a>
           </div>
         </div>
-
-        <div class="dynamo" id="dynamo">
-          <canvas id="dyn-canvas" role="img" aria-label="Animazione: email, richieste, visite e ordini entrano in una dinamo e ne escono come richieste evase, ore restituite e clienti nuovi"></canvas>
-          <span class="dyn-tag d-tl meta">_ In ingresso · energia dispersa</span>
-          <span class="dyn-tag d-bl meta">Mod. DW-26 · Dinamo</span>
-          <ul class="dyn-out" id="dyn-out">
-            <li><span class="meta">Richieste evase</span><strong><span id="o0">128</span></strong></li>
-            <li><span class="meta">Ore restituite</span><strong><span id="o1">46</span><small> h</small></strong></li>
-            <li><span class="meta">Clienti nuovi</span><strong><span id="o2">9</span></strong></li>
-          </ul>
-          <span class="dyn-tag d-br meta">Esempio · un mese di un cliente</span>
+        <div class="hud">
+          <span class="meta hud-cap">Mod. DW-26 · Rotore <b id="rpm">0</b> giri/min</span>
+          <div class="hud-right">
+            <span class="meta">_ Esempio · un mese di un cliente</span>
+            <ul class="dyn-out" id="dyn-out">
+              <li><span class="meta">Richieste evase</span><strong><span id="o0">128</span></strong></li>
+              <li><span class="meta">Ore restituite</span><strong><span id="o1">46</span><small> h</small></strong></li>
+              <li><span class="meta">Clienti nuovi</span><strong><span id="o2">9</span></strong></li>
+            </ul>
+          </div>
         </div>
       </div>
-
+    </div>
+    <div class="container">
       <div class="trust">
         <span class="meta">_ Partner certificati</span>
         <div class="trust-logos">
@@ -430,6 +429,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="/assets/js/main.js?v=202610261545"></script>
+<script src="/assets/js/main.js?v=202610261559"></script>
 </body>
 </html>
