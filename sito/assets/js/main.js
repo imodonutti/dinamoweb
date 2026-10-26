@@ -539,9 +539,28 @@
       .from(".trust, .stats .stat", { opacity: 0, y: 20, duration: 1, stagger: .08 }, T + 1.4);
 
     /* Titoli e blocchi */
+    // titoli di sezione: le parole si accendono una dopo l'altra mentre scorri (come il manifesto)
     $$(".reveal-lines").forEach(function (el) {
       if (el.closest(".hero")) return;
-      gsap.from(el.querySelectorAll(".line > span"), { yPercent: 118, duration: 1.3, ease: "expo.out", stagger: .08, scrollTrigger: { trigger: el, start: "top 88%" } });
+      var ws = [];
+      $$(".line", el).forEach(function (line) {
+        var frag = document.createDocumentFragment();
+        Array.prototype.slice.call(line.childNodes).forEach(function (node) {
+          var cls = node.nodeType === 1 ? node.className : "";
+          node.textContent.split(/(\s+)/).forEach(function (part) {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            var s = document.createElement("span"); s.className = "sw " + cls; s.textContent = part;
+            frag.appendChild(s); ws.push(s);
+          });
+        });
+        line.textContent = ""; line.appendChild(frag);
+      });
+      if (!ws.length) return;
+      ScrollTrigger.create({ trigger: el, start: "top 85%", end: "bottom 45%", scrub: true, onUpdate: function (self) {
+        var n = Math.round(self.progress * ws.length);
+        for (var i = 0; i < ws.length; i++) ws[i].classList.toggle("on", i < n);
+      } });
     });
     $$(".fade-up").forEach(function (el) {
       gsap.from(el, { opacity: 0, y: 40, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 90%" } });

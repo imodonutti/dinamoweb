@@ -314,6 +314,11 @@ html.has-intro body { overflow: hidden; }
 .sec-head .sub { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--gutter); }
 .sec-head .sub p { grid-column: 2; color: var(--muted); font-size: var(--fs-lead); max-width: 30em; line-height: 1.45; }
 
+/* titoli che si accendono parola per parola */
+.sw { display: inline; }
+.js-motion .reveal-lines .sw { opacity: .14; transition: opacity .35s ease; }
+.js-motion .reveal-lines .sw.on { opacity: 1; }
+
 /* Manifesto */
 .manifesto-text { font-size: clamp(2rem, 1rem + 4.2vw, 5.6rem); font-weight: 400; letter-spacing: -.05em; line-height: 1.02; max-width: 15em; text-wrap: pretty; margin-top: clamp(2.5rem, 5vw, 4rem); }
 .manifesto-text .w { color: var(--fg); }
@@ -602,5 +607,6 @@ fieldset.field { border: 0; padding: 0; margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .js-motion .manifesto-text .w { color: var(--fg); }
+  .js-motion .reveal-lines .sw { opacity: 1; }
   .js-motion .steps, .js-motion .timeline { --fill: 1; }
 }
