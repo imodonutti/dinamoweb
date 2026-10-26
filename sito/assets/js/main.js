@@ -582,7 +582,7 @@
         scrollTrigger: { trigger: "#works-pin", start: "top 18%", end: function () { return "+=" + dist(); }, pin: true, scrub: .8, invalidateOnRefresh: true, anticipatePin: 1,
           onUpdate: function (self) { bar.style.setProperty("--p", self.progress.toFixed(3)); } } });
       gsap.utils.toArray(".work-media img").forEach(function (img) {
-        gsap.fromTo(img, { xPercent: 3 }, { xPercent: -3, ease: "none", scrollTrigger: { trigger: img, containerAnimation: tween, start: "left right", end: "right left", scrub: true } });
+        gsap.fromTo(img, { xPercent: 1.2 }, { xPercent: -1.2, ease: "none", scrollTrigger: { trigger: img, containerAnimation: tween, start: "left right", end: "right left", scrub: true } });
       });
       gsap.fromTo("#timeline", { "--fill": 0 }, { "--fill": 1, ease: "none", scrollTrigger: { trigger: "#timeline", start: "top 85%", end: "top 40%", scrub: true } });
       return function () { gsap.set(track, { x: 0 }); };
