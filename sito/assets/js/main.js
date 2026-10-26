@@ -71,8 +71,8 @@
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var outs = $$("#dyn-out li"), outEls = [$("#o0"), $("#o1"), $("#o2")], rpmEl = $("#rpm");
     var outVals = outEls.map(function (e) { return parseInt(e.textContent, 10) || 0; });
-    var LABELS = ["email · 22:47", "richiesta preventivo", "visita · Cremona", "ordine #2418", "WhatsApp · rivenditore", "catalogo · art. 4521",
-      "domanda tecnica", "chiamata persa · 18:40", "visita · Parma", "ordine da ricopiare", "visita · Lodi", "fattura da registrare"];
+    var LABELS = ["post sui social", "pubblicazione catalogo", "richiesta assistenza", "ordine n° 2418", "WhatsApp · rivenditore", "richiesta preventivo",
+      "email · 22:47", "visita · Cremona", "scheda prodotto", "campagna Google Ads", "newsletter clienti", "listino aggiornato"];
     var BLUE = "85,144,247", MONO = '500 14px "Geist Mono", ui-monospace, Menlo, monospace', MONO_S = '500 12px "Geist Mono", ui-monospace, Menlo, monospace';
     var VMAX = .6; // velocita' massima del rotore (rad/s, circa 75 giri/min)
     var W = 0, H = 0, mobile = false, R = 0, CX = 0, CY = 0, F = 1000, outPts = [], textRight = 0, h1Rect = null;
