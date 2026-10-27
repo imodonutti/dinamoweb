@@ -73,7 +73,7 @@
     var outVals = outEls.map(function (e) { return parseInt(e.textContent, 10) || 0; });
     var LABELS = ["post sui social", "pubblicazione catalogo", "richiesta assistenza", "ordine n° 2418", "WhatsApp · rivenditore", "richiesta preventivo",
       "email · 22:47", "visita · Cremona", "scheda prodotto", "campagna Google Ads", "newsletter clienti", "listino aggiornato"];
-    var BLUE = "85,144,247", MONO = '500 14px "Geist Mono", ui-monospace, Menlo, monospace', MONO_S = '500 12px "Geist Mono", ui-monospace, Menlo, monospace';
+    var BLUE = "85,144,247", MONO = '500 14px "IBM Plex Mono", ui-monospace, Menlo, monospace', MONO_S = '500 12px "IBM Plex Mono", ui-monospace, Menlo, monospace';
     var VMAX = .6; // velocita' massima del rotore (rad/s, circa 75 giri/min)
     var W = 0, H = 0, mobile = false, R = 0, CX = 0, CY = 0, F = 1000, outPts = [], textRight = 0, h1Rect = null;
     var tilt = 1.0, tiltNow = 1.0, yaw = 0, yawT = 0, pitchT = 0, roll = -.35;
@@ -538,6 +538,24 @@
       .from(".dyn-out li", { opacity: 0, y: 16, duration: .9, stagger: .12 }, T + 1.5)
       .from(".trust, .stats .stat", { opacity: 0, y: 20, duration: 1, stagger: .08 }, T + 1.4);
 
+    /* Pin orizzontale dei lavori: creato per primo, così i trigger successivi tengono conto dello spazio del pin */
+    var mm = gsap.matchMedia();
+    mm.add("(min-width: 961px)", function () {
+      var track = $("#works-track"), bar = $(".works-bar");
+      var dist = function () { return Math.max(0, track.scrollWidth - window.innerWidth); };
+      var tween = gsap.to(track, { x: function () { return -dist(); }, ease: "none",
+        scrollTrigger: { trigger: "#works-pin", start: "top 18%", end: function () { return "+=" + dist(); }, pin: true, scrub: .8, invalidateOnRefresh: true, anticipatePin: 1,
+          onUpdate: function (self) { bar.style.setProperty("--p", self.progress.toFixed(3)); } } });
+      gsap.utils.toArray(".work-media img").forEach(function (img) {
+        gsap.fromTo(img, { xPercent: 1.2 }, { xPercent: -1.2, ease: "none", scrollTrigger: { trigger: img, containerAnimation: tween, start: "left right", end: "right left", scrub: true } });
+      });
+      gsap.fromTo("#timeline", { "--fill": 0 }, { "--fill": 1, ease: "none", scrollTrigger: { trigger: "#timeline", start: "top 85%", end: "top 40%", scrub: true } });
+      return function () { gsap.set(track, { x: 0 }); };
+    });
+    mm.add("(max-width: 960px)", function () {
+      gsap.fromTo("#timeline", { "--fill": 0 }, { "--fill": 1, ease: "none", scrollTrigger: { trigger: "#timeline", start: "top 80%", end: "bottom 60%", scrub: true } });
+    });
+
     /* Titoli e blocchi */
     // titoli di sezione: le parole si accendono una dopo l'altra mentre scorri (come il manifesto)
     $$(".reveal-lines").forEach(function (el) {
@@ -572,11 +590,12 @@
     gsap.from(".eco-card", { opacity: 0, y: 50, duration: 1.1, ease: "power3.out", stagger: .1, scrollTrigger: { trigger: ".eco", start: "top 85%" } });
     gsap.from(".eco-art svg", { opacity: 0, y: 30, scale: .94, duration: 1.4, ease: "expo.out", stagger: .12, scrollTrigger: { trigger: ".eco", start: "top 80%" } });
 
-    /* Contatori */
+    /* Contatori: avanzano con lo scroll */
     $$("[data-count]").forEach(function (el) {
-      var end = parseInt(el.getAttribute("data-count"), 10), o = { v: 0 };
-      ScrollTrigger.create({ trigger: el, start: "top 95%", once: true, onEnter: function () {
-        gsap.fromTo(o, { v: 0 }, { v: end, duration: 2, ease: "power2.out", onUpdate: function () { el.textContent = Math.round(o.v); } });
+      var end = parseInt(el.getAttribute("data-count"), 10);
+      el.textContent = "0";
+      ScrollTrigger.create({ trigger: el, start: "top 98%", end: "top 50%", scrub: true, onUpdate: function (self) {
+        el.textContent = Math.round(gsap.parseEase("power1.out")(self.progress) * end);
       } });
     });
 
@@ -592,23 +611,6 @@
       .from("#agent [data-seq='1']", { opacity: 0, y: 12, duration: .6 }, .5)
       .from("#agent [data-seq='2']", { opacity: 0, y: 12, duration: .6 }, 1.4)
       .from("#agent [data-seq='3'] span", { opacity: 0, x: -8, duration: .5, stagger: .25 }, 1.9);
-
-    var mm = gsap.matchMedia();
-    mm.add("(min-width: 961px)", function () {
-      var track = $("#works-track"), bar = $(".works-bar");
-      var dist = function () { return Math.max(0, track.scrollWidth - window.innerWidth); };
-      var tween = gsap.to(track, { x: function () { return -dist(); }, ease: "none",
-        scrollTrigger: { trigger: "#works-pin", start: "top 18%", end: function () { return "+=" + dist(); }, pin: true, scrub: .8, invalidateOnRefresh: true, anticipatePin: 1,
-          onUpdate: function (self) { bar.style.setProperty("--p", self.progress.toFixed(3)); } } });
-      gsap.utils.toArray(".work-media img").forEach(function (img) {
-        gsap.fromTo(img, { xPercent: 1.2 }, { xPercent: -1.2, ease: "none", scrollTrigger: { trigger: img, containerAnimation: tween, start: "left right", end: "right left", scrub: true } });
-      });
-      gsap.fromTo("#timeline", { "--fill": 0 }, { "--fill": 1, ease: "none", scrollTrigger: { trigger: "#timeline", start: "top 85%", end: "top 40%", scrub: true } });
-      return function () { gsap.set(track, { x: 0 }); };
-    });
-    mm.add("(max-width: 960px)", function () {
-      gsap.fromTo("#timeline", { "--fill": 0 }, { "--fill": 1, ease: "none", scrollTrigger: { trigger: "#timeline", start: "top 80%", end: "bottom 60%", scrub: true } });
-    });
 
     /* Metodo */
     gsap.fromTo("#steps", { "--fill": 0 }, { "--fill": 1, ease: "none", scrollTrigger: { trigger: "#steps", start: "top 60%", end: "bottom 60%", scrub: true } });
