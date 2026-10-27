@@ -90,7 +90,7 @@
   }
 
   function draw(p) {
-    if (!W) return;
+    if (W < 2 || H < 2) { resize(); if (W < 2 || H < 2) return; }
     ctx.fillStyle = "#F6F0EA"; ctx.fillRect(0, 0, W, H);
     var b = box(), pos = clamp(p) * (FRAMES - 1), i = Math.floor(pos), f = pos - i;
     var a = nearest(i);
@@ -144,6 +144,13 @@
   }
   resize(); draw(0);
   window.addEventListener("resize", function () { resize(); kick(); });
+  /* il riquadro si rimisura ogni volta che cambia davvero dimensione */
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(function () {
+      var rc = canvas.getBoundingClientRect();
+      if (Math.round(rc.width) !== W || Math.round(rc.height) !== H) { resize(); kick(); }
+    }).observe(canvas);
+  }
 
   /* indicatore di crescita */
   var tc = $("#tc"), fill = $("#scrub-fill"), scene = $("#hero-scene");
