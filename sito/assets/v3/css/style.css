@@ -303,6 +303,7 @@ html:not(.js-motion) .hero-inner { min-height: 100svh; }
   .hero-grid i:nth-child(n+3) { display: none; }
   .hero-inner { padding-top: calc(var(--head) + 2.6rem); padding-bottom: 1rem; gap: 1.2rem; }
   .hero-top .hero-scene { display: none; }
+  .hero-top .label { padding: .3rem .7rem; border-radius: 99px; background: rgba(255,255,255,.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--ink); }
   .beats { align-self: end; padding-bottom: .5rem; }
   .player { gap: .7rem; padding: .55rem .8rem; }
   .cards, .works { grid-template-columns: 1fr; }

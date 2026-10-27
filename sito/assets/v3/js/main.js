@@ -77,7 +77,7 @@
 
     /* la sfera sale e cresce */
     var cx, cy, R;
-    if (mobile) { cx = W * mix(.78, .62, p); cy = H * mix(.36, .26, p); R = W * mix(.42, .66, ease(p)); }
+    if (mobile) { cx = W * mix(.78, .64, p); cy = H * mix(.34, .22, p); R = W * mix(.42, .5, ease(p)); }
     else { cx = W * mix(.76, .68, p); cy = H * mix(.74, .5, ease(Math.min(1, p * 1.4))); R = Math.min(W, H) * mix(.3, .52, ease(p)); }
 
     /* alone */
@@ -110,8 +110,8 @@
 
     /* velo per la leggibilità del testo */
     var vl = rgba(bgL, 1), v0 = rgba(bgL, 0);
-    var veil = mobile ? ctx.createLinearGradient(0, H, 0, H * .3) : ctx.createLinearGradient(0, 0, W * .62, 0);
-    veil.addColorStop(0, vl); veil.addColorStop(mobile ? .45 : .55, rgba(bgL, .82)); veil.addColorStop(1, v0);
+    var veil = mobile ? ctx.createLinearGradient(0, H, 0, H * .38) : ctx.createLinearGradient(0, 0, W * .62, 0);
+    veil.addColorStop(0, vl); veil.addColorStop(mobile ? .55 : .55, rgba(bgL, mobile ? .92 : .82)); veil.addColorStop(1, v0);
     ctx.fillStyle = veil; ctx.fillRect(0, 0, W, H);
   }
 
