@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dinamoweb · Comunicare è emozionare</title>
+<meta name="description" content="Web agency di Piacenza dal 1998. Siti ed e-commerce, agenti AI e automazione, visibilità su Google e sulle AI, foto e video industriali per le imprese di Piacenza, Parma, Cremona, Lodi, Pavia, Brescia e Bergamo.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F6F0EA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..700;1,300..600&display=swap">
+<link rel="stylesheet" href="/assets/v3/css/style.css?v=202610271200">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"Dinamoweb S.r.l.","url":"https://www.dinamoweb.com","foundingDate":"1998",
+ "description":"Web agency di Piacenza: siti ed e-commerce, agenti AI e automazione, SEO e GEO, Google Ads, foto e video industriali.",
+ "telephone":"+39 0523 1998388","email":"info@dinamoweb.com","vatID":"IT01431780335",
+ "address":{"@type":"PostalAddress","streetAddress":"Via Conciliazione 58/C","postalCode":"29122","addressLocality":"Piacenza","addressRegion":"PC","addressCountry":"IT"},
+ "areaServed":["Piacenza","Parma","Cremona","Lodi","Pavia","Brescia","Bergamo"],"openingHours":["Mo-Fr 09:00-13:00","Mo-Fr 14:00-18:00"]}
+</script>
+</head>
+<body>
+
+<div class="draft-flag">Bozza home v3 · testi e numeri da approvare · non indicizzata</div>
+
+<header class="site-header">
+  <a class="logo" href="#top" aria-label="Dinamoweb, torna all'inizio"><img src="/assets/img/dinamologo.svg?v=202610271200" alt="Dinamoweb" width="113" height="48"></a>
+  <nav class="nav" id="nav" aria-label="Menu principale">
+    <a href="#servizi">Servizi</a>
+    <a href="#lavori">Lavori</a>
+    <a href="#noi">Chi siamo</a>
+    <a href="#assistenza">Assistenza</a>
+  </nav>
+  <a class="btn btn-brand btn-sm" href="#checkup">Check-up gratuito</a>
+  <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
+</header>
+
+<main id="top">
+
+  <!-- Apertura: un film che va avanti e indietro con lo scroll -->
+  <section class="hero" id="hero" aria-labelledby="hero-title">
+    <div class="hero-stage" id="hero-stage">
+      <canvas id="film" aria-hidden="true"></canvas>
+      <div class="grain" aria-hidden="true"></div>
+      <div class="hero-grid" aria-hidden="true"><i></i><i></i><i></i></div>
+
+      <div class="hero-inner">
+        <div class="hero-top">
+          <span class="label">Web agency &amp; AI · Piacenza, dal 1998</span>
+          <span class="label hero-scene" id="hero-scene" aria-hidden="true">Scena 1 / 3</span>
+        </div>
+
+        <div class="beats">
+          <div class="beat" data-beat="0">
+            <h1 id="hero-title">Ogni impresa ha una storia. <em>Noi la facciamo sentire.</em></h1>
+            <p class="beat-lead">La comunicazione funziona quando emoziona: un sito che fa venire voglia di chiamare, un video che resta in mente, un messaggio che arriva alla persona giusta.</p>
+          </div>
+          <div class="beat" data-beat="1">
+            <p class="beat-title">Immagini, parole e design <em>che si ricordano.</em></p>
+            <p class="beat-lead">Siti ed e-commerce, foto e video industriali, campagne e social: diamo alla tua azienda il tono giusto, ovunque ti cerchino.</p>
+          </div>
+          <div class="beat" data-beat="2">
+            <p class="beat-title">E dietro l'emozione, l'AI <em>che la trasforma in clienti.</em></p>
+            <p class="beat-lead">Agenti AI che rispondono a ogni richiesta, anche di notte, e automazioni che restituiscono ore al tuo ufficio.</p>
+            <div class="actions">
+              <a class="btn btn-brand" href="#checkup">Prenota un check-up gratuito <span aria-hidden="true">→</span></a>
+              <a class="btn btn-glass" href="#lavori">Guarda i lavori</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="player" aria-hidden="true">
+          <span class="play"><i></i></span>
+          <span class="tc" id="tc">00:00</span>
+          <div class="scrub"><i id="scrub-fill"></i><b style="--p:0"></b><b style="--p:.36"></b><b style="--p:.7"></b></div>
+          <span class="tc tc-end">00:12</span>
+          <span class="hint">Scorri: il film va avanti e indietro</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partner -->
+  <section class="trust" aria-label="Partner e certificazioni">
+    <div class="wrap trust-row">
+      <span class="label">Partner certificati</span>
+      <ul>
+        <li>Google Partner</li>
+        <li>Shopify Partner</li>
+        <li>Socio Confindustria Piacenza</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Manifesto -->
+  <section class="sec" aria-labelledby="mani-title">
+    <div class="wrap">
+      <span class="label">Chi siamo, in una frase</span>
+      <h2 id="mani-title" class="statement">Dal 1998 raccontiamo le imprese del nostro territorio. Oggi uniamo la parte che <em>emoziona</em>, immagini, parole e design, alla parte che <em>lavora</em>: agenti AI e automazioni che portano clienti e restituiscono tempo.</h2>
+    </div>
+  </section>
+
+  <!-- Servizi -->
+  <section class="sec sec-tight" id="servizi" aria-labelledby="servizi-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Quattro mestieri</span>
+        <h2 id="servizi-title" class="title">Una squadra sola, <em>dal primo sguardo al cliente.</em></h2>
+      </div>
+      <ul class="cards">
+        <li class="card">
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18M8 21h8"/></svg></span>
+          <h3>Siti ed <em>e-commerce</em></h3>
+          <p>Siti e cataloghi che fanno venire voglia di contattarti. Negozi online anche su Shopify.</p>
+          <a href="#checkup">Parliamone</a>
+        </li>
+        <li class="card card-hot">
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8M8 13h5"/></svg></span>
+          <h3>Agenti AI e <em>automazione</em></h3>
+          <p>Assistenti che conoscono i tuoi prodotti: rispondono ai clienti, smistano le email, preparano preventivi e post.</p>
+          <a href="#checkup">Parliamone</a>
+        </li>
+        <li class="card">
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+          <h3><em>Visibilità</em></h3>
+          <p>Google Ads, SEO, presenza nelle risposte delle AI come ChatGPT, social media marketing.</p>
+          <a href="#checkup">Parliamone</a>
+        </li>
+        <li class="card">
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="13" height="11" rx="2"/><path d="M16 11l5-3v9l-5-3z"/></svg></span>
+          <h3>Foto e video <em>industriali</em></h3>
+          <p>Reparti, prodotti e lavorazioni raccontati con immagini che trasmettono competenza.</p>
+          <a href="#checkup">Parliamone</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Numeri -->
+  <section class="numbers-sec" aria-labelledby="num-title">
+    <div class="wrap">
+      <div class="numbers-head">
+        <span class="label label-light">I numeri</span>
+        <h2 id="num-title" class="title">Ventotto anni di <em>clienti che restano.</em></h2>
+      </div>
+      <ul class="numbers">
+        <li><b><span data-scrub="28">28</span></b><span>anni di web, dal 1998</span></li>
+        <li><b><span data-scrub="650">650</span><sup>+</sup></b><span>siti realizzati per oltre 600 clienti</span></li>
+        <li><b><span data-scrub="18">18</span></b><span>aziende con campagne Google Ads sempre attive, seguite da noi</span></li>
+        <li><b><span data-scrub="7">7</span></b><span>province servite da una sede a Piacenza</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Lavori -->
+  <section class="sec" id="lavori" aria-labelledby="lavori-title">
+    <div class="wrap">
+      <div class="sec-head sec-head-row">
+        <div>
+          <span class="label">Lavori recenti</span>
+          <h2 id="lavori-title" class="title">Tre aziende, <em>tre storie raccontate bene.</em></h2>
+        </div>
+        <a class="link" href="https://www.dinamoweb.com/referenze/tutti-i-progetti.html" rel="noopener">Tutti i 650+ progetti →</a>
+      </div>
+      <div class="works">
+        <a class="work" href="https://lpr.dinamoweb.it" rel="noopener">
+          <div class="work-img"><img src="/assets/img/lpr.jpg?v=202610271200" alt="Homepage del nuovo sito LPR" width="1600" height="1000" loading="lazy" decoding="async"><span class="tag">In uscita</span></div>
+          <div class="work-body"><span class="label">LPR · ricambi per impianti frenanti</span><h3>Migliaia di codici ricambio, <em>trovati in un clic.</em></h3></div>
+        </a>
+        <a class="work" href="https://edilsider.dinamoweb.it" rel="noopener">
+          <div class="work-img"><img src="/assets/img/edilsider.jpg?v=202610271200" alt="Homepage del nuovo sito Edilsider" width="1600" height="1000" loading="lazy" decoding="async"><span class="tag">In uscita</span></div>
+          <div class="work-body"><span class="label">Edilsider · edifici modulari</span><h3>Progetti in quattro continenti, <em>un solo racconto.</em></h3></div>
+        </a>
+        <a class="work" href="https://maxiarredo.dinamoai.it" rel="noopener">
+          <div class="work-img"><img src="/assets/img/maxiarredo.jpg?v=202610271200" alt="Homepage del nuovo sito Maxiarredo" width="1600" height="1000" loading="lazy" decoding="async"><span class="tag">In uscita</span></div>
+          <div class="work-body"><span class="label">Maxiarredo · architettura d'interni</span><h3>Da negozio di arredamento <em>a studio di interni.</em></h3></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Agente AI: esempio -->
+  <section class="sec sec-tight" aria-labelledby="agent-title">
+    <div class="wrap agent">
+      <div>
+        <span class="label">Agenti AI, in pratica</span>
+        <h2 id="agent-title" class="title">Venerdì, 22:47. <em>L'ufficio è chiuso, l'agente no.</em></h2>
+        <p class="lead">Un distributore scrive a tarda sera. L'agente risponde con i dati del tuo catalogo e fissa la telefonata con il commerciale. Quando la domanda è delicata, passa la parola a una persona.</p>
+      </div>
+      <figure class="chat" aria-label="Esempio di conversazione con un agente AI">
+        <p class="msg in"><small>Distributore · 22:47</small>Avete il codice K-220 in 50 pezzi? Mi servirebbero entro venerdì.</p>
+        <p class="msg out"><small>Agente · 22:47</small>Sì, a magazzino ce ne sono 120. Con ordine entro domani alle 12 la consegna è giovedì.</p>
+        <p class="msg in"><small>Distributore · 22:48</small>Perfetto. Mi fate richiamare per il prezzo?</p>
+        <p class="msg out"><small>Agente · 22:48</small>Fatto: domani alle 9:30 la chiama Marco dell'ufficio commerciale. Le ho mandato il riepilogo via email.</p>
+        <figcaption>Esempio · conversazione dimostrativa</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Chi siamo -->
+  <section class="sec" id="noi" aria-labelledby="noi-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Dal 1998</span>
+        <h2 id="noi-title" class="title">Siamo cresciuti con il web. <em>Oggi lo facciamo pensare.</em></h2>
+      </div>
+      <ol class="timeline">
+        <li><b>1998</b><p>Nasciamo a Piacenza come divisione web di una storica agenzia di comunicazione.</p></li>
+        <li><b>2005</b><p>Diventiamo una società autonoma e accompagniamo le PMI nell'e-commerce.</p></li>
+        <li><b>2018</b><p>Lasciamo i server fisici e portiamo i siti dei clienti sul cloud.</p></li>
+        <li class="now"><b>2026</b><p>Agenti AI e automazione entrano nei processi delle aziende che seguiamo.</p></li>
+      </ol>
+      <div class="territory">
+        <p class="lead">Da Piacenza, a meno di un'ora dalle imprese che seguiamo.</p>
+        <ul class="places" aria-label="Distanze in linea d'aria da Piacenza">
+          <li><b>Cremona</b> 27 km</li><li><b>Lodi</b> 33 km</li><li><b>Pavia</b> 44 km</li><li><b>Parma</b> 57 km</li><li><b>Brescia</b> 68 km</li><li><b>Bergamo</b> 72 km</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Check-up -->
+  <section class="checkup" id="checkup" aria-labelledby="checkup-title">
+    <div class="wrap check-grid">
+      <div class="check-copy">
+        <span class="label label-light">Check-up gratuito · 30 minuti</span>
+        <h2 id="checkup-title" class="title">Da dove <em>iniziamo?</em></h2>
+        <p class="lead">Guardiamo insieme il tuo sito e la tua comunicazione, e ti diciamo dove l'AI può farti risparmiare tempo o portarti clienti.</p>
+        <ul class="steps">
+          <li><b>01</b>Sito e visibilità, su Google e sulle AI</li>
+          <li><b>02</b>Due o tre attività che si possono automatizzare</li>
+          <li><b>03</b>Una stima di costi e tempi, per iscritto</li>
+        </ul>
+      </div>
+      <form class="form" id="checkup-form" novalidate>
+        <div class="field"><label for="f-nome">Nome e cognome</label><input id="f-nome" name="nome" autocomplete="name" required></div>
+        <div class="field"><label for="f-azienda">Azienda</label><input id="f-azienda" name="azienda" autocomplete="organization" required></div>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="f-tel">Telefono</label><input id="f-tel" name="telefono" type="tel" autocomplete="tel"></div>
+        <fieldset class="field full">
+          <legend>Cosa ti interessa</legend>
+          <div class="chips">
+            <label><input type="checkbox" name="interesse" value="siti"><span>Sito o e-commerce</span></label>
+            <label><input type="checkbox" name="interesse" value="ai"><span>Agenti AI</span></label>
+            <label><input type="checkbox" name="interesse" value="visibilita"><span>Visibilità</span></label>
+            <label><input type="checkbox" name="interesse" value="foto"><span>Foto e video</span></label>
+          </div>
+        </fieldset>
+        <div class="field full"><label for="f-msg">Raccontaci in due righe (facoltativo)</label><textarea id="f-msg" name="messaggio" rows="2"></textarea></div>
+        <div class="form-foot">
+          <button class="btn btn-brand" type="submit">Prenota il check-up <span aria-hidden="true">→</span></button>
+          <small>Ti ricontattiamo entro un giorno lavorativo.</small>
+        </div>
+        <p class="form-status" id="checkup-status" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer" id="assistenza">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img src="/assets/img/dinamologo-scuro.svg?v=202610271200" alt="Dinamoweb" width="132" height="56">
+        <p>Dinamoweb S.r.l.<br>Via Conciliazione 58/C, 29122 Piacenza (PC)<br><a href="tel:+3905231998388">+39 0523 1998388</a> · <a href="mailto:info@dinamoweb.com">info@dinamoweb.com</a></p>
+      </div>
+      <div>
+        <h3>Assistenza clienti</h3>
+        <ul>
+          <li><a href="#assistenza">Richiesta di assistenza</a></li>
+          <li><a href="#assistenza">Teleassistenza Mac</a></li>
+          <li><a href="#assistenza">Teleassistenza Windows</a></li>
+          <li><a href="#assistenza">Demo riservata</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Orari</h3>
+        <ul><li>Lunedì–venerdì</li><li>9:00–13:00</li><li>14:00–18:00</li></ul>
+      </div>
+      <div>
+        <h3>Seguici</h3>
+        <ul>
+          <li><a href="https://www.linkedin.com/" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://www.facebook.com/" rel="noopener">Facebook</a></li>
+          <li><a href="https://www.youtube.com/" rel="noopener">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot-word" aria-hidden="true">Facciamola <em>sentire.</em></p>
+    <p class="legal">© 1998–2026 Dinamoweb S.r.l. · P. IVA 01431780335 · REA PC-161904 · SDI SUBM70N · Cap. soc. € 10.000 i.v. · <a href="#top">Privacy</a> · <a href="#top">Cookie</a></p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="/assets/v3/js/main.js?v=202610271200"></script>
+</body>
+</html>
