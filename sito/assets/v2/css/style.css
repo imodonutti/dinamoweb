@@ -51,7 +51,7 @@ em { font-style: italic; }
 .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 
 .draft-flag {
-  position: fixed; z-index: 60; left: 50%; top: calc(var(--head) + .5rem); transform: translateX(-50%);
+  position: absolute; z-index: 60; left: 50%; top: calc(var(--head) + .5rem); transform: translateX(-50%);
   font-size: .75rem; letter-spacing: .02em; padding: .3rem .8rem; border-radius: 99px;
   background: var(--sun); color: #1B1814; white-space: nowrap; pointer-events: none; opacity: .92;
 }

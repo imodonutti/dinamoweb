@@ -84,7 +84,7 @@
     if (y >= anchors[anchors.length - 1].y) m = anchors[anchors.length - 1].m;
     else for (var k = 0; k < anchors.length - 1; k++) {
       var a = anchors[k], b = anchors[k + 1];
-      if (y >= a.y && y < b.y) { m = a.m + (b.m - a.m) * ((y - a.y) / (b.y - a.y)); break; }
+      if (y >= a.y && y < b.y) { var q = (y - a.y) / (b.y - a.y); q = Math.max(0, (q - 0.55) / 0.45); m = a.m + (b.m - a.m) * q; break; }
     }
     dcTime.textContent = fmt(m);
     dcLabel.textContent = label(m);
