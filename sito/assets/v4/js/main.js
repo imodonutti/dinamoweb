@@ -578,10 +578,12 @@
       var n = scenes.length, cur = -1, entry = 0, f = 0, mode = "";
       var cards = scenes.map(function (s) { return $(".proof", s); });
       var setX = cards.map(function (c) { return gsap.quickSetter(c, "x", "px"); });
+      // il colore resta fermo su ogni scena e cambia in fretta a metà del passaggio
+      var quick = function (x) { x = Math.max(0, Math.min(1, (x - .35) / .3)); return x * x * (3 - 2 * x); };
       function render() {
         var t = entry < 1 ? entry - 1 : f, c;
-        if (t < 0) { var a = t + 1; c = SKY0.map(function (v, k) { return v + (skyCols[0][k] - v) * a; }); }
-        else { var i = Math.min(n - 2, Math.floor(t)), fr = t - i; c = skyCols[i].map(function (v, k) { return v + (skyCols[i + 1][k] - v) * fr; }); }
+        if (t < 0) { var a = quick(t + 1); c = SKY0.map(function (v, k) { return v + (skyCols[0][k] - v) * a; }); }
+        else { var i = Math.min(n - 2, Math.floor(t)), fr = quick(t - i); c = skyCols[i].map(function (v, k) { return v + (skyCols[i + 1][k] - v) * fr; }); }
         sec.style.setProperty("--sky-now", "rgb(" + c.map(Math.round).join(",") + ")");
         var m = lum(c) > .3 ? "is-light" : "is-dark";
         if (m !== mode) { sec.classList.remove("is-light", "is-dark"); sec.classList.add(m); mode = m; }
