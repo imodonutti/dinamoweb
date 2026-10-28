@@ -604,20 +604,34 @@
         onUpdate: function (self) { f = self.progress * (n - 1); render(); } });
       var entryST = ScrollTrigger.create({ trigger: "#day-pin", start: "top 90%", end: "top top", onUpdate: function (self) { entry = self.progress; render(); },
         onLeave: function () { entry = 1; render(); }, onEnterBack: function () { render(); } });
-      // scatto alla scena più vicina quando lo scroll si ferma
-      var snapping = false;
+      // scatto alla scena: appena finisce il gesto (rotella, trackpad, tocco) si va alla scena
+      // nella direzione in cui stavi scorrendo; lo scroll di Lenis viene "ripreso" senza attese
+      var snapping = false, snapTimer = 0, gestTimer = 0, lastY = window.scrollY, dir = 0;
+      var stopY = function (k) { return dayST.start + (dayST.end - dayST.start) * (k / (n - 1)); };
       var goTo = function (k, dur) {
-        var y = dayST.start + (dayST.end - dayST.start) * (k / (n - 1));
-        snapping = true;
-        if (lenis) lenis.scrollTo(y, { duration: dur || .9, easing: function (x) { return 1 - Math.pow(1 - x, 3); }, onComplete: function () { snapping = false; } });
-        else { window.scrollTo({ top: y, behavior: "smooth" }); setTimeout(function () { snapping = false; }, 700); }
+        var y = stopY(k);
+        snapping = true; clearTimeout(snapTimer);
+        snapTimer = setTimeout(function () { snapping = false; }, (dur || .9) * 1000 + 150); // sblocco anche se l'animazione viene interrotta
+        if (lenis) lenis.scrollTo(y, { duration: dur || .9, force: true, easing: function (x) { return 1 - Math.pow(1 - x, 3); } });
+        else window.scrollTo({ top: y, behavior: "smooth" });
       };
-      var onEnd = function () {
+      var decide = function () {
         if (snapping) return;
-        var y = window.scrollY; if (y <= dayST.start + 2 || y >= dayST.end - 2) return;
-        var k = Math.round(dayST.progress * (n - 1)), ty = dayST.start + (dayST.end - dayST.start) * (k / (n - 1));
-        if (Math.abs(ty - y) > 3) goTo(k, .8);
+        var y = lenis ? lenis.targetScroll : window.scrollY;
+        if (y <= dayST.start + 2 || y >= dayST.end - 2) return; // fuori dalla giornata: si esce liberamente
+        var p = (y - dayST.start) / (dayST.end - dayST.start) * (n - 1), lo = Math.floor(p), hi = Math.ceil(p), k;
+        if (dir > 0) k = p - lo > .08 ? hi : lo;
+        else if (dir < 0) k = hi - p > .08 ? lo : hi;
+        else k = Math.round(p);
+        k = Math.max(0, Math.min(n - 1, k));
+        if (Math.abs(stopY(k) - y) > 3) goTo(k, .85);
       };
+      var onGesture = function (e) { if (e && e.deltaY) dir = e.deltaY > 0 ? 1 : -1; clearTimeout(gestTimer); gestTimer = setTimeout(function () { gestTimer = 0; decide(); }, 140); };
+      var onScrollDir = function () { var y = window.scrollY; if (y !== lastY && !snapping && !gestTimer) dir = y > lastY ? 1 : -1; lastY = y; };
+      var onEnd = function () { dir = 0; decide(); }; // tastiera, barra di scorrimento
+      window.addEventListener("wheel", onGesture, { passive: true });
+      window.addEventListener("touchend", onGesture, { passive: true });
+      window.addEventListener("scroll", onScrollDir, { passive: true });
       ScrollTrigger.addEventListener("scrollEnd", onEnd);
       var onStop = function (e) { var k = parseInt(e.currentTarget.getAttribute("data-go"), 10); goTo(k, 1.2); };
       stops.forEach(function (b) { b.addEventListener("click", onStop); });
@@ -636,6 +650,7 @@
       return function () {
         gsap.set(track, { x: 0 });
         ScrollTrigger.removeEventListener("scrollEnd", onEnd);
+        window.removeEventListener("wheel", onGesture); window.removeEventListener("touchend", onGesture); window.removeEventListener("scroll", onScrollDir);
         stops.forEach(function (b) { b.removeEventListener("click", onStop); });
         root.classList.remove("day-h");
         sec.classList.remove("is-light"); sec.classList.add("is-dark"); sec.style.removeProperty("--sky-now");
