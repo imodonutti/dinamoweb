@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="/assets/v5/css/style.css?v=202610281800">
+<link rel="stylesheet" href="/assets/v5/css/style.css?v=202610281800b">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","name":"Dinamoweb S.r.l.","url":"https://www.dinamoweb.com","foundingDate":"1998",
  "description":"Web agency di Piacenza: siti ed e-commerce, agenti AI e automazione, SEO e GEO, Google Ads, foto e video industriali.",
@@ -53,53 +53,79 @@
       <!-- Prototipo v5: il robot lancia la dinamo (solo desktop con movimento) -->
       <div class="robot-layer" id="robot" aria-hidden="true">
         <div class="robot-bg"></div>
+        <div class="robot-flash"></div>
         <div class="robot-lines"></div>
         <span class="meta robot-cap"><b>_00</b> Sequenza di lancio · prototipo</span>
         <div class="robot-wrap">
           <p class="robot-bubble">Dinamo,<br>al lavoro!</p>
-          <svg class="robot" viewBox="0 0 400 540">
+          <svg class="robot" viewBox="0 0 400 560">
+            <defs>
+              <linearGradient id="rb-blue" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4F8CF6"/><stop offset=".5" stop-color="#2F6FE0"/><stop offset=".5" stop-color="#2459C2"/><stop offset="1" stop-color="#1F4EAD"/></linearGradient>
+              <linearGradient id="rb-white" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".5" stop-color="#EEF0F4"/><stop offset=".5" stop-color="#CBD1DC"/><stop offset="1" stop-color="#B9C0CD"/></linearGradient>
+              <linearGradient id="rb-red" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0787C"/><stop offset=".55" stop-color="#CD4D52"/><stop offset="1" stop-color="#9E3338"/></linearGradient>
+              <linearGradient id="rb-dark" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3A4766"/><stop offset=".5" stop-color="#26324F"/><stop offset=".5" stop-color="#1B2540"/><stop offset="1" stop-color="#151D33"/></linearGradient>
+              <radialGradient id="rb-core"><stop offset="0" stop-color="#FFE9E9"/><stop offset=".5" stop-color="#F0787C"/><stop offset="1" stop-color="#CD4D52"/></radialGradient>
+            </defs>
             <g id="robot-body">
-              <!-- gambe e piedi -->
-              <path d="M150 368 L196 368 L190 470 L144 470 Z" fill="#3F72D6"/>
-              <path d="M204 368 L250 368 L256 470 L210 470 Z" fill="#5590F7"/>
-              <rect x="152" y="404" width="36" height="26" rx="4" fill="#F2EADC"/>
-              <rect x="212" y="404" width="36" height="26" rx="4" fill="#F2EADC"/>
-              <path d="M128 470 H196 L202 506 H120 Z" fill="#F2EADC"/>
-              <path d="M204 470 H272 L280 506 H198 Z" fill="#F2EADC"/>
-              <!-- bacino -->
-              <path d="M140 326 H260 L250 372 H150 Z" fill="#2A3550"/>
-              <rect x="186" y="334" width="28" height="18" rx="3" fill="#CD4D52"/>
-              <!-- busto -->
-              <path d="M104 186 L296 186 L272 330 L128 330 Z" fill="#5590F7"/>
-              <path d="M200 186 L296 186 L272 330 L200 330 Z" fill="#3F72D6"/>
-              <path d="M140 200 L260 200 L250 262 L150 262 Z" fill="#F2EADC"/>
-              <path d="M184 213 L184 251 L218 232 Z" fill="#CD4D52"/>
-              <path d="M160 282 H240 M164 298 H236 M168 314 H232" fill="none"/>
-              <!-- braccio sinistro, a riposo -->
-              <path d="M76 204 L110 204 L106 292 L80 292 Z" fill="#3F72D6"/>
-              <path d="M76 292 H110 L108 352 H78 Z" fill="#F2EADC"/>
-              <rect x="72" y="350" width="40" height="34" rx="8" fill="#2A3550"/>
-              <circle cx="93" cy="198" r="30" fill="#F2EADC"/>
-              <circle cx="93" cy="198" r="14" fill="#5590F7"/>
+              <!-- gamba sinistra -->
+              <g transform="translate(-16 0)">
+                <path d="M158 384 L196 388 L188 442 L150 438 Z" fill="url(#rb-white)"/>
+                <path d="M144 434 L192 438 L188 466 L140 460 Z" fill="url(#rb-red)"/>
+                <path d="M142 460 L190 464 L198 522 L122 526 L130 482 Z" fill="url(#rb-blue)"/>
+                <path class="hl" d="M138 470 L146 470 L140 518 L130 520 Z"/>
+                <path d="M116 524 L202 520 L206 540 L110 542 Z" fill="url(#rb-dark)"/>
+              </g>
+              <!-- gamba destra -->
+              <g transform="translate(16 0)">
+                <path d="M242 384 L204 388 L212 442 L250 438 Z" fill="url(#rb-white)"/>
+                <path d="M256 434 L208 438 L212 466 L260 460 Z" fill="url(#rb-red)"/>
+                <path d="M258 460 L210 464 L202 522 L278 526 L270 482 Z" fill="url(#rb-blue)"/>
+                <path d="M284 524 L198 520 L194 540 L290 542 Z" fill="url(#rb-dark)"/>
+              </g>
+              <!-- protezioni dei fianchi e cintura -->
+              <path d="M160 344 L200 344 L192 396 L150 388 Z" fill="url(#rb-blue)"/>
+              <path d="M240 344 L200 344 L208 396 L250 388 Z" fill="url(#rb-blue)"/>
+              <path d="M176 290 H224 L220 330 H180 Z" fill="url(#rb-dark)"/>
+              <path d="M184 302 H216 M185 316 H215" fill="none" stroke-width="3.5"/>
+              <path d="M160 326 H240 L244 348 H156 Z" fill="url(#rb-white)"/>
+              <rect x="188" y="328" width="24" height="18" rx="2" fill="url(#rb-red)"/>
+              <!-- busto a V -->
+              <path d="M140 176 L260 176 L288 198 L262 264 L224 292 H176 L138 264 L112 198 Z" fill="url(#rb-blue)"/>
+              <path d="M150 184 H250 L268 200 L248 238 H152 L132 200 Z" fill="url(#rb-white)"/>
+              <path class="hl" d="M154 190 H186 L168 232 H158 L140 200 Z"/>
+              <path d="M150 250 L176 278 M250 250 L224 278" fill="none" stroke-width="3.5"/>
+              <circle class="core-glow" cx="200" cy="218" r="26" fill="#F0787C" stroke="none" opacity=".0"/>
+              <path class="core" d="M184 200 L184 238 L220 219 Z" fill="url(#rb-core)"/>
+              <!-- braccio sinistro, pugno sul fianco -->
+              <path d="M82 230 L112 232 L110 294 L80 292 Z" fill="url(#rb-white)"/>
+              <path d="M72 292 L116 294 L120 348 L70 346 Z" fill="url(#rb-blue)"/>
+              <path d="M74 304 L117 306" fill="none" stroke="#CD4D52" stroke-width="5"/>
+              <path d="M68 346 H122 L124 382 Q96 394 66 382 Z" fill="url(#rb-dark)"/>
+              <path d="M80 356 V376 M94 356 V380 M108 356 V378" fill="none" stroke-width="3"/>
+              <path d="M150 168 L96 160 L64 198 L72 240 L120 236 L152 202 Z" fill="url(#rb-white)"/>
+              <path d="M72 226 L120 222" fill="none" stroke="#CD4D52" stroke-width="6"/>
+              <path class="hl" d="M96 168 L132 170 L106 196 L80 196 Z"/>
               <!-- testa -->
-              <rect x="186" y="160" width="28" height="30" fill="#2A3550"/>
-              <path d="M200 66 L211 112 L189 112 Z" fill="#CD4D52"/>
-              <circle cx="154" cy="140" r="12" fill="#F2EADC"/>
-              <circle cx="246" cy="140" r="12" fill="#F2EADC"/>
-              <path d="M156 110 Q200 84 244 110 L240 168 Q200 182 160 168 Z" fill="#5590F7"/>
-              <path d="M170 124 H230 L226 162 Q200 172 174 162 Z" fill="#F2EADC"/>
-              <rect class="eye" x="176" y="132" width="18" height="11" rx="2" fill="#9CC3FF"/>
-              <rect class="eye" x="206" y="132" width="18" height="11" rx="2" fill="#9CC3FF"/>
-              <path d="M186 152 H214 M188 158 H212" fill="none" stroke-width="3"/>
+              <rect x="186" y="150" width="28" height="22" fill="url(#rb-dark)"/>
+              <path d="M166 94 L130 60 L152 108 Z" fill="url(#rb-white)"/>
+              <path d="M234 94 L270 60 L248 108 Z" fill="url(#rb-white)"/>
+              <path d="M160 152 L153 98 Q200 54 247 98 L240 152 Q200 168 160 152 Z" fill="url(#rb-blue)"/>
+              <path class="hl" d="M162 98 Q176 80 192 74 L184 92 Q172 98 166 112 Z"/>
+              <path d="M200 38 L215 96 L200 110 L185 96 Z" fill="url(#rb-red)"/>
+              <path d="M172 108 H228 L222 150 Q200 160 178 150 Z" fill="url(#rb-white)"/>
+              <path class="eye" d="M175 115 L197 120 L195 129 L177 125 Z" fill="#CFEAFF"/>
+              <path class="eye" d="M225 115 L203 120 L205 129 L223 125 Z" fill="#CFEAFF"/>
+              <path d="M188 138 H212 M190 145 H210" fill="none" stroke-width="3.5"/>
               <!-- braccio destro: lancia il disco -->
               <g id="arm-throw">
-                <path d="M286 200 L316 200 L320 290 L290 290 Z" fill="#5590F7"/>
-                <path d="M288 290 H322 L324 350 H290 Z" fill="#F2EADC"/>
-                <rect x="285" y="348" width="42" height="36" rx="8" fill="#2A3550"/>
-                <circle id="hand" cx="306" cy="368" r="14" fill="none" stroke="none"/>
+                <path d="M290 230 L320 232 L322 294 L292 292 Z" fill="url(#rb-white)"/>
+                <path d="M284 292 L328 294 L332 348 L282 346 Z" fill="url(#rb-blue)"/>
+                <path d="M285 304 L329 306" fill="none" stroke="#CD4D52" stroke-width="5"/>
+                <path d="M278 346 H332 L334 382 Q306 394 276 382 Z" fill="url(#rb-dark)"/>
+                <circle id="hand" cx="306" cy="370" r="14" fill="none" stroke="none"/>
               </g>
-              <circle cx="304" cy="198" r="30" fill="#F2EADC"/>
-              <circle cx="304" cy="198" r="14" fill="#5590F7"/>
+              <path d="M250 168 L304 160 L336 198 L328 240 L280 236 L248 202 Z" fill="url(#rb-white)"/>
+              <path d="M328 226 L280 222" fill="none" stroke="#CD4D52" stroke-width="6"/>
             </g>
           </svg>
         </div>
@@ -629,6 +655,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="/assets/v5/js/main.js?v=202610281800"></script>
+<script src="/assets/v5/js/main.js?v=202610281800b"></script>
 </body>
 </html>

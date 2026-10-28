@@ -585,7 +585,7 @@
       if (robotOn) (function () {
         var root = document.documentElement, stage = $("#hero-stage"), bg = $(".robot-bg"), lines = $(".robot-lines"), wrap = $(".robot-wrap");
         var arm = $("#arm-throw"), body = $("#robot-body"), hand = $("#hand"), eyes = $$(".robot .eye"), bubble = $(".robot-bubble");
-        var disc = $("#disc"), spinG = $("#disc-spin"), hint = $(".robot-hint"), cap = $(".robot-cap");
+        var coreGlow = $(".core-glow"), flash = $(".robot-flash"), disc = $("#disc"), spinG = $("#disc-spin"), hint = $(".robot-hint"), cap = $(".robot-cap");
         var p = 0, landed = false, spin = 0, spd = 1, lastT = performance.now(), introPlayed = false;
         var cl = function (x) { return Math.max(0, Math.min(1, x)); };
         var seg = function (a, b) { return cl((p - a) / (b - a)); };
@@ -596,9 +596,11 @@
         function render() {
           var raise = io(seg(.04, .26)), charge = seg(.28, .5), thr = ei(seg(.5, .56)), fly1 = eo(seg(.54, .68)), fly2 = io(seg(.68, .8)), fade = seg(.58, .78);
           // il braccio si alza, carica e lancia
-          arm.setAttribute("transform", "rotate(" + (-138 * raise + 120 * thr).toFixed(2) + " 302 200)");
-          body.setAttribute("transform", "translate(0 " + (8 * charge * (1 - thr)).toFixed(2) + ") rotate(" + (-4 * charge * (1 - thr) + 6 * thr).toFixed(2) + " 200 506)");
-          eyes.forEach(function (e) { e.setAttribute("fill", charge > .2 ? "#EEF4FF" : "#9CC3FF"); });
+          arm.setAttribute("transform", "rotate(" + (-138 * raise + 120 * thr).toFixed(2) + " 305 214)");
+          body.setAttribute("transform", "translate(0 " + (8 * charge * (1 - thr)).toFixed(2) + ") rotate(" + (-4 * charge * (1 - thr) + 6 * thr).toFixed(2) + " 200 540)");
+          eyes.forEach(function (e) { e.setAttribute("fill", charge > .2 ? "#FFFFFF" : "#CFEAFF"); e.style.filter = "drop-shadow(0 0 " + (6 + 10 * charge) + "px #9CC3FF)"; });
+          coreGlow.setAttribute("opacity", (charge * .7 * (1 - thr)).toFixed(3)); coreGlow.setAttribute("r", (24 + 12 * charge).toFixed(1));
+          flash.style.opacity = (Math.max(0, 1 - Math.abs(p - .55) / .025) * .95).toFixed(3); // lampo bianco da cartone al lancio
           lines.style.opacity = (charge * (1 - fade)).toFixed(3);
           var bo = seg(.3, .36) * (1 - seg(.53, .57));
           bubble.style.opacity = bo.toFixed(3); bubble.style.transform = "scale(" + (.6 + .4 * eo(seg(.3, .36))).toFixed(3) + ") rotate(-4deg)";
