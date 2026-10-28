@@ -7,7 +7,7 @@
   var hasGSAP = typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined";
   var motion = hasGSAP && !reduced;
   var robotOn = motion && window.matchMedia("(min-width: 961px)").matches && !!document.getElementById("robot");
-  if (robotOn) document.documentElement.classList.add("has-robot");
+  if (robotOn) document.documentElement.classList.add("has-robot", "header-light");
   var playIntro = motion && document.documentElement.classList.contains("has-intro");
   if (!motion) document.documentElement.classList.remove("has-intro");
   var $ = function (s, c) { return (c || document).querySelector(s); };
@@ -620,6 +620,7 @@
           var appear = eo(seg(.12, .2));
           disc.style.opacity = landed ? "0" : appear.toFixed(3);
           disc.style.transform = "matrix(" + [ax[0] / 100 * appear, ax[1] / 100 * appear, ay[0] / 100 * appear, ay[1] / 100 * appear, c.x - 100, c.y - 100].map(function (v) { return v.toFixed(3); }).join(",") + ")";
+          root.classList.toggle("header-light", p < .66); // il menu cambia insieme al fondo: prima chiaro, poi scuro
           // aggancio: passa la mano alla dinamo in canvas
           if (p >= .8 && !landed) {
             landed = true; root.classList.add("robot-landed"); if (window.dynCtl) window.dynCtl.land();

@@ -807,3 +807,24 @@ html.has-robot .disc { display: block; position: absolute; left: 0; top: 0; widt
 .robot-bubble::after { content: ""; position: absolute; right: -1.3rem; bottom: 1rem; border: .8rem solid transparent; border-left: 1.4rem solid #1B2333; }
 html.has-robot .hero-inner { opacity: 0; visibility: hidden; transition: opacity .6s, visibility 0s .6s; }
 html.has-robot.robot-landed .hero-inner { opacity: 1; visibility: visible; transition: opacity .6s .1s, visibility 0s; }
+
+/* v5 · prima e dopo: si parte con il logo storico e il menu su fondo chiaro,
+   si arriva al logo nuovo e al menu scuro quando la dinamo si aggancia */
+.site-header .logo { position: relative; display: inline-block; }
+.logo-old { display: none; }
+html.has-robot .logo-old { display: block; position: absolute; inset: 0; opacity: 0; transition: opacity .6s; }
+html.has-robot .logo-new { transition: opacity .6s; }
+html.has-robot .draft-flag, html.has-robot .site-header, html.has-robot body::before { transition: background-color .6s, color .6s, border-color .6s; }
+html.header-light body::before { background: #F6EDDF; }
+html.header-light .draft-flag { background: #F6EDDF; color: #7A6652; border-bottom-color: rgba(27,35,51,.12); }
+html.header-light .site-header, html.header-light .site-header.scrolled { background: #F6EDDF; border-bottom-color: rgba(27,35,51,.12); backdrop-filter: none; -webkit-backdrop-filter: none; }
+html.header-light .logo-new { opacity: 0; }
+html.header-light .logo-old { opacity: 1; }
+html.header-light .nav { background: rgba(255,255,255,.55); border-color: rgba(27,35,51,.14); }
+html.header-light .nav a { color: #5E5A55; }
+html.header-light .nav a:hover { color: #1B2333; background: rgba(27,35,51,.06); }
+html.header-light .support-link { color: #7A6652; }
+html.header-light .btn-primary { background: linear-gradient(180deg, #DC6A6E, #B93F44); border-color: #CD4D52; box-shadow: 0 10px 30px -12px rgba(205,77,82,.6); }
+html.header-light .btn-primary .arrow { border-left-color: rgba(255,255,255,.35); }
+html.header-light .btn.menu-toggle { color: #1B2333; border-color: rgba(27,35,51,.25); }
+.site-header .btn-primary { transition: background .6s, border-color .6s, box-shadow .6s; }
