@@ -63,7 +63,7 @@ p { margin: 0; }
 
 /* testo metallico (Wallety) e bicolore (Sentry) */
 .metal { background: linear-gradient(180deg, #FFFFFF 0%, #F4F4F4 45%, #8F8F8F 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.ghost { background: linear-gradient(180deg, #8A8A8A 0%, #4A4A4A 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.ghost { background: linear-gradient(180deg, #9CC3FF 0%, #5590F7 70%, #2563EB 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .blue { background: linear-gradient(180deg, #9CC3FF 0%, #5590F7 70%, #2563EB 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
 /* etichette da catalogo */
@@ -624,14 +624,14 @@ fieldset.field { border: 0; padding: 0; margin: 0; }
 .is-dark {
   --t-fg: #F4F4F4; --t-muted: #8C8C8C; --t-line: rgba(255,255,255,.12); --t-line-2: rgba(255,255,255,.2);
   --t-metal: linear-gradient(180deg, #FFFFFF 0%, #F4F4F4 45%, #8F8F8F 100%);
-  --t-ghost: linear-gradient(180deg, rgba(255,255,255,.52) 0%, rgba(255,255,255,.27) 100%);
+  --t-ghost: linear-gradient(180deg, #9CC3FF 0%, #5590F7 70%, #2563EB 100%);
   --t-card: rgba(255,255,255,.06); --t-card-2: rgba(255,255,255,.04); --t-screw-a: #c9ced6; --t-screw-b: #59606a;
   --t-shadow: 0 30px 60px -30px rgba(0,0,0,.9); --t-accent: #6FA2F8;
 }
 .is-light {
   --t-fg: #121316; --t-muted: #57534E; --t-line: rgba(18,19,22,.13); --t-line-2: rgba(18,19,22,.22);
   --t-metal: linear-gradient(180deg, #0C0D10 0%, #24262B 55%, #5C5F66 100%);
-  --t-ghost: linear-gradient(180deg, rgba(18,19,22,.5) 0%, rgba(18,19,22,.3) 100%);
+  --t-ghost: linear-gradient(180deg, #3B78EA 0%, #2560D6 60%, #1D4FB4 100%);
   --t-card: rgba(255,255,255,.58); --t-card-2: rgba(255,255,255,.4); --t-screw-a: #f4f5f7; --t-screw-b: #8b9099;
   --t-shadow: 0 30px 60px -34px rgba(60,45,30,.45); --t-accent: #2560D6;
 }
@@ -655,7 +655,7 @@ fieldset.field { border: 0; padding: 0; margin: 0; }
 .scene-time i { font-style: normal; opacity: .35; padding-inline: .02em; }
 .scene h3 { font-size: clamp(2rem, 1.1rem + 2.1vw, 3.5rem); letter-spacing: -.05em; line-height: 1; margin-top: 1.1rem; }
 .scene h3 > span:not(.sr) { display: block; }
-.scene-lead { margin-top: 1.6rem; font-size: var(--fs-lead); line-height: 1.42; max-width: 28em; }
+.scene-lead { margin-top: 1.6rem; font-size: clamp(1.15rem, 1rem + .6vw, 1.6rem); line-height: 1.38; max-width: 24em; }
 .scene-body { margin-top: .9rem; color: var(--t-muted); max-width: 32em; }
 .scene-body strong { color: var(--t-fg); font-weight: 500; }
 .scene-result { margin-top: 1.6rem; padding-top: 1.1rem; border-top: 1px solid var(--t-line); font-family: var(--f-mono); font-size: var(--fs-meta); letter-spacing: .08em; text-transform: uppercase; color: var(--t-muted); display: flex; flex-wrap: wrap; align-items: baseline; gap: .7rem; max-width: 32rem; }
