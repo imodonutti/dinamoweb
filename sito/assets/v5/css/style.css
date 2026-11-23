@@ -782,7 +782,9 @@ fieldset.field { border: 0; padding: 0; margin: 0; }
 .robot-layer, .disc { display: none; }
 html.has-robot .robot-layer { display: block; position: absolute; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
 html.has-robot .disc { display: block; position: absolute; left: 0; top: 0; width: 200px; height: 200px; z-index: 4; pointer-events: none; transform-origin: 100px 100px; will-change: transform, opacity; opacity: 0; }
-.disc svg { width: 200px; height: 200px; overflow: visible; filter: drop-shadow(0 0 18px rgba(85,144,247,.55)); }
+.disc svg { width: 200px; height: 200px; overflow: visible; filter: drop-shadow(0 0 14px rgba(85,144,247,.45)); }
+.disc path, .disc circle { stroke: #141824; stroke-width: 5; stroke-linejoin: round; }
+.disc .disc-core { filter: drop-shadow(0 0 6px rgba(240,120,124,.9)); }
 .robot-bg { position: absolute; inset: 0; background:
   radial-gradient(circle at 1px 1px, rgba(205,77,82,.13) 1px, transparent 1.6px) 0 0 / 14px 14px,
   radial-gradient(75% 85% at 70% 45%, #FBF4E8 0%, #F3E7D4 55%, #E9D7BE 100%); }
@@ -793,7 +795,17 @@ html.has-robot .disc { display: block; position: absolute; left: 0; top: 0; widt
 @keyframes robot-spin { to { transform: rotate(360deg); } }
 .robot-cap { position: absolute; left: max(var(--gutter), env(safe-area-inset-left, 0px)); top: clamp(1.5rem, 3vw, 2.5rem); color: #7A6652; }
 .robot-cap b { color: #1B2333; }
-.robot-hint { position: absolute; left: 50%; bottom: 2rem; transform: translateX(-50%); color: #7A6652; }
+.robot-hint { position: absolute; left: max(var(--gutter), env(safe-area-inset-left, 0px)); bottom: clamp(2rem, 6vh, 4rem); display: inline-flex; align-items: center; gap: .7rem;
+  padding: .75rem 1.1rem .75rem 1.3rem; background: #1B2333; color: #FBF4E8; border: 3px solid #141824; border-radius: 999px; box-shadow: 5px 5px 0 #CD4D52;
+  font: 600 .95rem/1 var(--f-sans); letter-spacing: -.01em; }
+.robot-hint-arrow { display: inline-grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: #CD4D52; color: #fff; animation: robot-nudge 1.4s ease-in-out infinite; }
+@keyframes robot-nudge { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(4px); } }
+/* il titolo della prima schermata: chi siamo prima del lancio */
+.robot-copy { position: absolute; left: max(var(--gutter), env(safe-area-inset-left, 0px)); top: 50%; transform: translateY(-58%); width: min(46%, 40rem); }
+.robot-title { margin: 0; color: #1B2333; font: 700 clamp(2.4rem, 1rem + 3.3vw, 4.6rem)/1.02 var(--f-sans); letter-spacing: -.045em; text-wrap: balance; }
+.robot-title span { display: block; }
+.robot-title .red { margin-top: .25em; color: #CD4D52; }
+.robot-sub { margin: 1.6rem 0 0; color: #5E5A55; font-size: clamp(1.05rem, .9rem + .4vw, 1.3rem); line-height: 1.4; max-width: 26em; }
 .robot-wrap { position: absolute; right: 18%; bottom: -1%; height: 88%; aspect-ratio: 400 / 560; aspect-ratio: 400 / 540; transform-origin: 50% 100%; }
 .robot { width: 100%; height: 100%; overflow: visible; }
 .robot path, .robot rect, .robot circle { stroke: #141824; stroke-width: 5.5; stroke-linejoin: round; stroke-linecap: round; }
@@ -802,7 +814,7 @@ html.has-robot .disc { display: block; position: absolute; left: 0; top: 0; widt
 .robot-flash { position: absolute; inset: 0; background: radial-gradient(circle at 60% 40%, #fff 0, #fff 35%, rgba(255,255,255,.6) 70%); opacity: 0; z-index: 2; }
 .robot #hand { stroke: none; }
 .robot .eye { filter: drop-shadow(0 0 6px #9CC3FF); stroke-width: 4; }
-.robot-bubble { position: absolute; left: -38%; top: 4%; margin: 0; padding: .9rem 1.3rem 1rem; background: #fff; color: #1B2333; border: 4px solid #1B2333; border-radius: 1.6rem;
+.robot-bubble { position: absolute; left: -38%; top: 4%; z-index: 1; margin: 0; padding: .9rem 1.3rem 1rem; background: #fff; color: #1B2333; border: 4px solid #1B2333; border-radius: 1.6rem;
   font: italic 800 clamp(1.3rem, .8rem + 1.2vw, 2.1rem)/1 var(--f-sans); letter-spacing: -.03em; text-transform: uppercase; box-shadow: 6px 6px 0 #CD4D52; opacity: 0; transform-origin: 90% 100%; }
 .robot-bubble::after { content: ""; position: absolute; right: -1.3rem; bottom: 1rem; border: .8rem solid transparent; border-left: 1.4rem solid #1B2333; }
 html.has-robot .hero-inner { opacity: 0; visibility: hidden; transition: opacity .6s, visibility 0s .6s; }

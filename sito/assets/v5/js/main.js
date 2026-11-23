@@ -75,7 +75,7 @@
     var outVals = outEls.map(function (e) { return parseInt(e.textContent, 10) || 0; });
     var LABELS = ["post sui social", "pubblicazione catalogo", "richiesta assistenza", "ordine n° 2418", "WhatsApp · rivenditore", "richiesta preventivo",
       "email · 22:47", "visita · Cremona", "scheda prodotto", "campagna Google Ads", "newsletter clienti", "listino aggiornato"];
-    var BLUE = "85,144,247", MONO = '500 14px "IBM Plex Mono", ui-monospace, Menlo, monospace', MONO_S = '500 12px "IBM Plex Mono", ui-monospace, Menlo, monospace';
+    var INK = "#141824", RED = "#CD4D52", BLUE = "85,144,247", MONO = '500 14px "IBM Plex Mono", ui-monospace, Menlo, monospace', MONO_S = '500 12px "IBM Plex Mono", ui-monospace, Menlo, monospace';
     var VMAX = .6; // velocita' massima del rotore (rad/s, circa 75 giri/min)
     var W = 0, H = 0, mobile = false, R = 0, CX = 0, CY = 0, F = 1000, outPts = [], textRight = 0, h1Rect = null;
     var tilt = 1.0, tiltNow = 1.0, yaw = 0, yawT = 0, pitchT = 0, roll = -.35;
@@ -227,33 +227,48 @@
       ctx.setLineDash([3, 6]); ctx.strokeStyle = "rgba(255,255,255," + (.07 * b) + ")";
       ring(R * 2.1, 0); ctx.stroke(); ring(R * 2.8, 0); ctx.stroke(); ctx.setLineDash([]);
 
-      // statore: cilindro con denti
+      // statore: corona in stile cartone (come il robot): campiture piatte a due toni, contorno scuro, filo rosso
       var hs = R * .16, so = R * 1.34, si = R * 1.06;
-      ctx.lineWidth = 1;
-      // corpo dello statore: corona piena
+      var LW = Math.max(2.5, Math.min(6, R * .018));
       if (b > .05) {
+        ctx.globalAlpha = b;
+        // fianco anteriore, il tono più scuro
         ctx.beginPath();
-        for (var z = 0; z <= 90; z++) { var az = z / 90 * Math.PI * 2, pz = P(Math.cos(az) * so, Math.sin(az) * so, hs); z ? ctx.lineTo(pz[0], pz[1]) : ctx.moveTo(pz[0], pz[1]); }
-        for (z = 90; z >= 0; z--) { az = z / 90 * Math.PI * 2; pz = P(Math.cos(az) * si, Math.sin(az) * si, hs); ctx.lineTo(pz[0], pz[1]); }
-        ctx.closePath(); ctx.fillStyle = "rgba(22,24,30," + (.78 * b).toFixed(3) + ")"; ctx.fill();
-        // fianco anteriore
-        ctx.beginPath();
-        for (z = 0; z <= 90; z++) { az = z / 90 * Math.PI * 2; pz = P(Math.cos(az) * so, Math.sin(az) * so, 0); z ? ctx.lineTo(pz[0], pz[1]) : ctx.moveTo(pz[0], pz[1]); }
+        for (var z = 0; z <= 90; z++) { var az = z / 90 * Math.PI * 2, pz = P(Math.cos(az) * so, Math.sin(az) * so, 0); z ? ctx.lineTo(pz[0], pz[1]) : ctx.moveTo(pz[0], pz[1]); }
         for (z = 90; z >= 0; z--) { az = z / 90 * Math.PI * 2; pz = P(Math.cos(az) * so, Math.sin(az) * so, hs); ctx.lineTo(pz[0], pz[1]); }
-        ctx.closePath(); ctx.fillStyle = "rgba(16,17,21," + (.6 * b).toFixed(3) + ")"; ctx.fill();
+        ctx.closePath(); ctx.fillStyle = "#151D33"; ctx.fill();
+        ctx.lineWidth = LW; ctx.strokeStyle = INK; ctx.lineJoin = "round"; ring(so, 0); ctx.stroke();
+        // faccia superiore: due toni con lo stacco netto a metà, come il busto del robot
+        var sx0 = P(-so, 0, hs)[0], sx1 = P(so, 0, hs)[0];
+        var gs = ctx.createLinearGradient(Math.min(sx0, sx1), 0, Math.max(sx0, sx1), 0);
+        gs.addColorStop(0, "#3A4766"); gs.addColorStop(.5, "#2C3856"); gs.addColorStop(.5, "#1F2945"); gs.addColorStop(1, "#18203A");
+        ctx.beginPath();
+        for (z = 0; z <= 90; z++) { az = z / 90 * Math.PI * 2; pz = P(Math.cos(az) * so, Math.sin(az) * so, hs); z ? ctx.lineTo(pz[0], pz[1]) : ctx.moveTo(pz[0], pz[1]); }
+        for (z = 90; z >= 0; z--) { az = z / 90 * Math.PI * 2; pz = P(Math.cos(az) * si, Math.sin(az) * si, hs); ctx.lineTo(pz[0], pz[1]); }
+        ctx.closePath(); ctx.fillStyle = gs; ctx.fill();
+        // riflesso netto in alto a sinistra
+        ctx.fillStyle = "rgba(255,255,255,.16)"; ctx.beginPath();
+        for (z = 0; z <= 24; z++) { az = Math.PI * .62 + z / 24 * Math.PI * .5; pz = P(Math.cos(az) * so * .985, Math.sin(az) * so * .985, hs); z ? ctx.lineTo(pz[0], pz[1]) : ctx.moveTo(pz[0], pz[1]); }
+        for (z = 24; z >= 0; z--) { az = Math.PI * .62 + z / 24 * Math.PI * .5; pz = P(Math.cos(az) * so * .93, Math.sin(az) * so * .93, hs); ctx.lineTo(pz[0], pz[1]); }
+        ctx.closePath(); ctx.fill();
+        ctx.lineWidth = LW; ctx.strokeStyle = INK; ring(so, hs); ctx.stroke(); ring(si, hs); ctx.stroke();
+        // il filo rosso delle strisce del robot
+        ctx.lineWidth = LW * .9; ctx.strokeStyle = RED; ring(si + (so - si) * .2, hs); ctx.stroke();
+        ctx.globalAlpha = 1;
       }
-      ctx.strokeStyle = "rgba(255,255,255," + (.22 * b) + ")"; ring(so, 0, 0, Math.PI * 2 * b); ctx.stroke();
-      ctx.strokeStyle = "rgba(255,255,255," + (.42 * b) + ")"; ring(so, hs, 0, Math.PI * 2 * b); ctx.stroke();
-      ctx.strokeStyle = "rgba(255,255,255," + (.2 * b) + ")"; ring(si, hs, 0, Math.PI * 2 * b); ctx.stroke();
+      // denti: tratti pieni, si accendono quando il rotore gira
       var teeth = 60;
+      ctx.lineCap = "round";
       for (var i = 0; i < teeth * b; i++) {
         var ta = i / teeth * Math.PI * 2, ca = Math.cos(ta), sa = Math.sin(ta);
         var live = Math.max(0, Math.cos(ta - angle * 3)) * e;
-        ctx.strokeStyle = live > .25 ? "rgba(" + BLUE + "," + (.35 + live * .65).toFixed(2) + ")" : "rgba(255,255,255,.3)";
-        seg(ca * si, sa * si, hs, ca * R * 1.24, sa * R * 1.24, hs); ctx.stroke();
+        ctx.lineWidth = LW * .7;
+        ctx.strokeStyle = live > .25 ? "rgba(156,195,255," + (.5 + live * .5).toFixed(2) + ")" : "rgba(91,107,145,.9)";
+        seg(ca * (si + (so - si) * .38), sa * (si + (so - si) * .38), hs, ca * (si + (so - si) * .82), sa * (si + (so - si) * .82), hs); ctx.stroke();
         var f = P(ca * so, sa * so, 0);
-        if (f[2] < 0 && i % 2 === 0) { ctx.strokeStyle = "rgba(255,255,255,.1)"; seg(ca * so, sa * so, 0, ca * so, sa * so, hs); ctx.stroke(); }
+        if (f[2] < 0 && i % 3 === 0) { ctx.lineWidth = LW * .5; ctx.strokeStyle = "rgba(255,255,255,.12)"; seg(ca * so, sa * so, hs * .15, ca * so, sa * so, hs * .85); ctx.stroke(); }
       }
+      ctx.lineCap = "butt"; ctx.lineWidth = 1;
 
       // onda d'urto sul pavimento dopo l'aggancio
       ripples = ripples.filter(function (t0) {
@@ -278,77 +293,91 @@
         ctx.beginPath(); ctx.ellipse(sh[0], sh[1], R * 1.2 * sh[3] * sk, R * .45 * sh[3] * sk, 0, 0, Math.PI * 2); ctx.fill();
       }
 
-      // rotore: sei settori in rilievo
+      // rotore in stile cartone: sei settori bianchi e blu a due toni, contorno scuro, riflessi netti
       var hr = R * .13;
       if (!rotorHidden) {
-      snapshot();
+      var ga = arr ? 1 : b;
+      ctx.globalAlpha = ga; ctx.lineJoin = "round";
+      var sect = function (a0, a1, r0, r1, h) {
+        var o = [], n = 16, j, a;
+        for (j = 0; j <= n; j++) { a = a0 + (a1 - a0) * j / n; o.push(Pr(Math.cos(a) * r1, Math.sin(a) * r1, h)); }
+        for (j = n; j >= 0; j--) { a = a0 + (a1 - a0) * j / n; o.push(Pr(Math.cos(a) * r0, Math.sin(a) * r0, h)); }
+        return o;
+      };
+      var poly = function (pts) { ctx.beginPath(); pts.forEach(function (p, q) { q ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.closePath(); };
+      var bbox = function (pts) { var x0 = 1e9, x1 = -1e9; pts.forEach(function (p) { x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); }); return [x0, x1]; };
+      // spessore: prima i fianchi esterni di tutti i settori, poi le facce
       for (var k = 0; k < 6; k++) {
-        var a0 = angle + k * Math.PI / 3 + .1, a1 = angle + (k + 1) * Math.PI / 3 - .1, n = 16, pts = [], outer = [], inner = [];
-        for (var j = 0; j <= n; j++) { var a = a0 + (a1 - a0) * j / n, po = Pr(Math.cos(a) * R * .96, Math.sin(a) * R * .96, hr); pts.push(po); outer.push(po); }
-        for (j = n; j >= 0; j--) { a = a0 + (a1 - a0) * j / n; var pi = Pr(Math.cos(a) * R * .46, Math.sin(a) * R * .46, hr); pts.push(pi); inner.push(pi); }
-        var path = function () { ctx.beginPath(); pts.forEach(function (p, q) { q ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.closePath(); };
-        ctx.globalAlpha = arr ? 1 : b;
-        // spigoli verticali esterni
-        [a0, a1].forEach(function (aa) { ctx.strokeStyle = "rgba(255,255,255,.14)"; segr(Math.cos(aa) * R * .96, Math.sin(aa) * R * .96, 0, Math.cos(aa) * R * .96, Math.sin(aa) * R * .96, hr); ctx.stroke(); });
-        var minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
-        pts.forEach(function (p) { minX = Math.min(minX, p[0]); maxX = Math.max(maxX, p[0]); minY = Math.min(minY, p[1]); maxY = Math.max(maxY, p[1]); });
-        if (k % 2) {
-          // lastra di vetro smerigliato: sfondo sfocato, velatura blu, riflesso diagonale, filo di luce sui bordi
-          frosted(path, "rgba(" + BLUE + "," + (.1 + glow * .22).toFixed(3) + ")");
-          ctx.save(); path(); ctx.clip();
-          var gl = ctx.createLinearGradient(minX, minY, maxX, maxY);
-          gl.addColorStop(0, "rgba(255,255,255,.16)"); gl.addColorStop(.38, "rgba(255,255,255,.03)");
-          gl.addColorStop(.46, "rgba(255,255,255,.2)"); gl.addColorStop(.52, "rgba(255,255,255,.02)"); gl.addColorStop(1, "rgba(255,255,255,0)");
-          ctx.fillStyle = gl; ctx.fillRect(minX, minY, maxX - minX, maxY - minY);
-          ctx.restore();
-          ctx.lineWidth = 1.6; ctx.strokeStyle = "rgba(225,236,255,.85)";
-          ctx.beginPath(); outer.forEach(function (p, q) { q ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.stroke();
-          ctx.lineWidth = 1; ctx.strokeStyle = "rgba(156,195,255,.55)"; path(); ctx.stroke();
-        } else {
-          // metallo spazzolato
-          ctx.save(); path(); ctx.clip();
-          var gm = ctx.createLinearGradient(minX, minY, maxX, maxY);
-          gm.addColorStop(0, "rgba(58,62,70,.95)"); gm.addColorStop(.5, "rgba(30,33,39,.95)"); gm.addColorStop(1, "rgba(44,48,56,.95)");
-          ctx.fillStyle = gm; ctx.fillRect(minX, minY, maxX - minX, maxY - minY);
-          ctx.globalAlpha = (arr ? 1 : b) * .32; ctx.fillStyle = brush; ctx.fillRect(minX, minY, maxX - minX, maxY - minY);
-          ctx.restore(); ctx.globalAlpha = arr ? 1 : b;
-          ctx.strokeStyle = "rgba(255,255,255,.32)"; path(); ctx.stroke();
-          ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.beginPath(); outer.forEach(function (p, q) { q ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+        var s0 = angle + k * Math.PI / 3 + .1, s1 = angle + (k + 1) * Math.PI / 3 - .1, side = [];
+        for (var j = 0; j <= 16; j++) { var sa2 = s0 + (s1 - s0) * j / 16; side.push(Pr(Math.cos(sa2) * R * .96, Math.sin(sa2) * R * .96, hr)); }
+        for (j = 16; j >= 0; j--) { sa2 = s0 + (s1 - s0) * j / 16; side.push(Pr(Math.cos(sa2) * R * .96, Math.sin(sa2) * R * .96, 0)); }
+        poly(side); ctx.fillStyle = k % 2 ? "#1B2540" : "#8E97A8"; ctx.fill(); ctx.lineWidth = LW; ctx.strokeStyle = INK; ctx.stroke();
+      }
+      for (k = 0; k < 6; k++) {
+        var a0 = angle + k * Math.PI / 3 + .1, a1 = angle + (k + 1) * Math.PI / 3 - .1;
+        var pts = sect(a0, a1, R * .46, R * .96, hr), bx2 = bbox(pts);
+        var gr = ctx.createLinearGradient(bx2[0], 0, bx2[1], 0);
+        if (k % 2) { // blu, come gambe e busto del robot
+          var lit = .55 + glow * .45;
+          gr.addColorStop(0, "#5B95F8"); gr.addColorStop(.5, "#2F6FE0"); gr.addColorStop(.5, "#2459C2"); gr.addColorStop(1, "#1F4EAD");
+          poly(pts); ctx.fillStyle = gr; ctx.fill();
+          // quando gira forte il blu si accende
+          ctx.fillStyle = "rgba(156,195,255," + (lit * .28 * e).toFixed(3) + ")"; ctx.fill();
+        } else { // bianco, come spalle e caschetto
+          gr.addColorStop(0, "#FFFFFF"); gr.addColorStop(.5, "#EEF0F4"); gr.addColorStop(.5, "#CBD1DC"); gr.addColorStop(1, "#B9C0CD");
+          poly(pts); ctx.fillStyle = gr; ctx.fill();
         }
-        // bulloni agli angoli esterni
-        [a0 + .07, a1 - .07].forEach(function (aa) {
-          var bp = Pr(Math.cos(aa) * R * .88, Math.sin(aa) * R * .88, hr), rb = Math.max(1.4, R * .015 * bp[3]);
-          var bg = ctx.createRadialGradient(bp[0] - rb * .4, bp[1] - rb * .4, 0, bp[0], bp[1], rb);
-          bg.addColorStop(0, "#d6dbe2"); bg.addColorStop(.6, "#7b828c"); bg.addColorStop(1, "#2a2e35");
-          ctx.fillStyle = bg; ctx.beginPath(); ctx.arc(bp[0], bp[1], rb, 0, Math.PI * 2); ctx.fill();
+        ctx.lineWidth = LW; ctx.strokeStyle = INK; poly(pts); ctx.stroke();
+        // riflesso netto vicino al bordo, come le lamelle bianche del robot
+        poly(sect(a0 + .1, a0 + (a1 - a0) * .42, R * .8, R * .88, hr)); ctx.fillStyle = k % 2 ? "rgba(255,255,255,.5)" : "rgba(255,255,255,.95)"; ctx.fill();
+        // bulloni
+        [a0 + .08, a1 - .08].forEach(function (aa) {
+          var bp = Pr(Math.cos(aa) * R * .87, Math.sin(aa) * R * .87, hr), rb = Math.max(2, R * .018 * bp[3]);
+          ctx.fillStyle = "#EEF0F4"; ctx.beginPath(); ctx.arc(bp[0], bp[1], rb, 0, Math.PI * 2); ctx.fill();
+          ctx.lineWidth = Math.max(1.5, LW * .45); ctx.strokeStyle = INK; ctx.stroke();
         });
-        ctx.globalAlpha = 1;
       }
-      // albero e mozzo luminoso
-      var hg = ctx.createRadialGradient(hub[0], hub[1], 0, hub[0], hub[1], R * .36 * hub[3]);
-      var bh = arr ? 1 : b;
-      hg.addColorStop(0, "rgba(235,242,255," + ((.6 + glow * .4) * bh).toFixed(3) + ")");
-      hg.addColorStop(.35, "rgba(" + BLUE + "," + ((.65 + glow * .35) * bh).toFixed(3) + ")");
-      hg.addColorStop(1, "rgba(" + BLUE + ",0)");
-      ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(hub[0], hub[1], R * .36 * hub[3], 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.beginPath();
-      for (var hz = 0; hz <= 40; hz++) { var ha = hz / 40 * Math.PI * 2, hp = Pr(Math.cos(ha) * R * .14, Math.sin(ha) * R * .14, R * .2); hz ? ctx.lineTo(hp[0], hp[1]) : ctx.moveTo(hp[0], hp[1]); }
-      ctx.stroke();
-      // cupola di vetro sul mozzo
-      (function () {
-        var c = Pr(0, 0, R * .2), ex = Pr(R * .2, 0, R * .2), ey = Pr(0, R * .2, R * .2);
-        var rx = Math.hypot(ex[0] - c[0], ex[1] - c[1]), ry = Math.hypot(ey[0] - c[0], ey[1] - c[1]);
-        var dg = ctx.createRadialGradient(c[0] - rx * .35, c[1] - ry * .5, 0, c[0], c[1], rx);
-        dg.addColorStop(0, "rgba(255,255,255,.38)"); dg.addColorStop(.55, "rgba(200,220,255,.08)"); dg.addColorStop(1, "rgba(200,220,255,.0)");
-        ctx.fillStyle = dg; ctx.beginPath(); ctx.ellipse(c[0], c[1], rx, ry, 0, 0, Math.PI * 2); ctx.fill();
-        ctx.strokeStyle = "rgba(235,242,255,.6)"; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.ellipse(c[0], c[1], rx, ry, 0, Math.PI * 1.05, Math.PI * 1.75); ctx.stroke(); ctx.lineWidth = 1;
-      })();
-      // il triangolo della "D" del logo sul mozzo
-      var tri = [Pr(-R * .055, -R * .065, R * .205), Pr(-R * .055, R * .065, R * .205), Pr(R * .075, 0, R * .205)];
-      ctx.fillStyle = "rgba(255,255,255,.92)"; ctx.beginPath(); ctx.moveTo(tri[0][0], tri[0][1]); ctx.lineTo(tri[1][0], tri[1][1]); ctx.lineTo(tri[2][0], tri[2][1]); ctx.closePath(); ctx.fill();
+      // linee di velocità da cartone sopra il rotore, più evidenti quando accelera
+      var sl = Math.min(1, e * 1.2 + (arr ? 1 : 0) + Math.min(1, boost * .6));
+      if (sl > .05) {
+        ctx.lineCap = "round"; ctx.lineWidth = LW * .8;
+        for (var q = 0; q < 3; q++) {
+          var qa = angle * 1.15 + q * Math.PI * 2 / 3, qr = R * (.6 + q * .1);
+          ctx.strokeStyle = "rgba(255,255,255," + (.75 * sl).toFixed(3) + ")";
+          ctx.beginPath();
+          for (j = 0; j <= 14; j++) { var la = qa + j / 14 * .7, lp = Pr(Math.cos(la) * qr, Math.sin(la) * qr, hr + R * .01); j ? ctx.lineTo(lp[0], lp[1]) : ctx.moveTo(lp[0], lp[1]); }
+          ctx.stroke();
+        }
+        ctx.lineCap = "butt";
       }
-      // lampo all'aggancio
-      if (flash > .01) { ctx.fillStyle = "rgba(170,205,255," + (flash * .32).toFixed(3) + ")"; ctx.fillRect(0, 0, W, H); flash *= .9; }
+      // mozzo: alone d'energia, poi un piatto bianco con il nucleo rosso del robot
+      var hg = ctx.createRadialGradient(hub[0], hub[1], 0, hub[0], hub[1], R * .55 * hub[3]);
+      hg.addColorStop(0, "rgba(240,120,124," + ((.35 + glow * .35) * ga).toFixed(3) + ")");
+      hg.addColorStop(1, "rgba(240,120,124,0)");
+      ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(hub[0], hub[1], R * .55 * hub[3], 0, Math.PI * 2); ctx.fill();
+      var cap = function (r, h) { var o = []; for (var z = 0; z <= 48; z++) { var a = z / 48 * Math.PI * 2; o.push(Pr(Math.cos(a) * r, Math.sin(a) * r, h)); } return o; };
+      // fianco del piatto
+      var c0 = cap(R * .38, hr), c1 = cap(R * .38, R * .2);
+      poly(c0.concat(c1.slice().reverse())); ctx.fillStyle = "#8E97A8"; ctx.fill(); ctx.lineWidth = LW; ctx.strokeStyle = INK; ctx.stroke();
+      var cb = bbox(c1), gp = ctx.createLinearGradient(cb[0], 0, cb[1], 0);
+      gp.addColorStop(0, "#FFFFFF"); gp.addColorStop(.5, "#EEF0F4"); gp.addColorStop(.5, "#CBD1DC"); gp.addColorStop(1, "#B9C0CD");
+      poly(c1); ctx.fillStyle = gp; ctx.fill(); ctx.stroke();
+      // incavo scuro e nucleo
+      var c2 = cap(R * .25, R * .2); poly(c2); ctx.fillStyle = "#1B2540"; ctx.fill(); ctx.lineWidth = LW * .8; ctx.stroke();
+      var tri = [Pr(-R * .1, -R * .115, R * .21), Pr(-R * .1, R * .115, R * .21), Pr(R * .135, 0, R * .21)];
+      var tc = Pr(0, 0, R * .21), rg = ctx.createRadialGradient(tc[0], tc[1], 0, tc[0], tc[1], R * .16 * tc[3]);
+      rg.addColorStop(0, "#FFE9E9"); rg.addColorStop(.5, "#F0787C"); rg.addColorStop(1, "#CD4D52");
+      ctx.save(); ctx.shadowColor = "rgba(240,120,124," + (.6 + glow * .4).toFixed(2) + ")"; ctx.shadowBlur = 10 + glow * 18;
+      ctx.beginPath(); ctx.moveTo(tri[0][0], tri[0][1]); ctx.lineTo(tri[1][0], tri[1][1]); ctx.lineTo(tri[2][0], tri[2][1]); ctx.closePath();
+      ctx.fillStyle = rg; ctx.fill(); ctx.restore();
+      ctx.beginPath(); ctx.moveTo(tri[0][0], tri[0][1]); ctx.lineTo(tri[1][0], tri[1][1]); ctx.lineTo(tri[2][0], tri[2][1]); ctx.closePath();
+      ctx.lineWidth = LW * .7; ctx.strokeStyle = INK; ctx.stroke();
+      // riflesso sul piatto
+      poly(cap(R * .33, R * .2).slice(28, 40).concat(cap(R * .29, R * .2).slice(28, 40).reverse())); ctx.fillStyle = "rgba(255,255,255,.95)"; ctx.fill();
+      ctx.globalAlpha = 1; ctx.lineWidth = 1;
+      }
+      // lampo bianco all'aggancio, come il fotogramma bianco degli anime
+      if (flash > .01) { ctx.fillStyle = "rgba(255,255,255," + (flash * .55).toFixed(3) + ")"; ctx.fillRect(0, 0, W, H); flash *= .88; }
 
       // anelli d'energia
       rings = rings.filter(function (r) {
@@ -399,13 +428,12 @@
         if (lab > .02 && bx > 0 && by > 0 && bx + cw < W) {
           placed.push([bx, by - p.dy + want, cw, chipH]);
           ctx.globalAlpha = lab * b;
-          frosted(function () { ctx.beginPath(); ctx.rect(bx, by, cw, chipH); }, "rgba(16,18,24,.62)");
-          var gc = ctx.createLinearGradient(0, by, 0, by + chipH);
-          gc.addColorStop(0, "rgba(255,255,255,.1)"); gc.addColorStop(1, "rgba(255,255,255,0)");
-          ctx.fillStyle = gc; ctx.fillRect(bx, by, cw, chipH);
-          ctx.strokeStyle = "rgba(255,255,255,.2)"; ctx.strokeRect(bx + .5, by + .5, cw - 1, chipH - 1);
-          ctx.strokeStyle = "rgba(255,255,255,.45)"; ctx.beginPath(); ctx.moveTo(bx + 1, by + .5); ctx.lineTo(bx + cw - 1, by + .5); ctx.stroke();
-          ctx.fillStyle = "#e6e6e6"; ctx.fillText(p.label, bx + padX, by + chipH / 2 + .5);
+          // etichetta da fumetto: bianca, contorno scuro e ombra piena blu
+          var rr2 = chipH * .32;
+          ctx.fillStyle = "#2F6FE0"; ctx.beginPath(); ctx.roundRect(bx + 4, by + 4, cw, chipH, rr2); ctx.fill();
+          ctx.fillStyle = "#FFFFFF"; ctx.beginPath(); ctx.roundRect(bx, by, cw, chipH, rr2); ctx.fill();
+          ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.stroke(); ctx.lineWidth = 1;
+          ctx.fillStyle = "#1B2333"; ctx.fillText(p.label, bx + padX, by + chipH / 2 + .5);
           ctx.globalAlpha = 1;
         }
         return true;
@@ -585,7 +613,7 @@
       if (robotOn) (function () {
         var root = document.documentElement, stage = $("#hero-stage"), bg = $(".robot-bg"), lines = $(".robot-lines"), wrap = $(".robot-wrap");
         var arm = $("#arm-throw"), body = $("#robot-body"), hand = $("#hand"), eyes = $$(".robot .eye"), bubble = $(".robot-bubble");
-        var coreGlow = $(".core-glow"), flash = $(".robot-flash"), disc = $("#disc"), spinG = $("#disc-spin"), hint = $(".robot-hint"), cap = $(".robot-cap");
+        var coreGlow = $(".core-glow"), flash = $(".robot-flash"), disc = $("#disc"), spinG = $("#disc-spin"), hint = $(".robot-hint"), cap = $(".robot-cap"), copy = $(".robot-copy");
         var p = 0, landed = false, spin = 0, spd = 1, lastT = performance.now(), introPlayed = false;
         var cl = function (x) { return Math.max(0, Math.min(1, x)); };
         var seg = function (a, b) { return cl((p - a) / (b - a)); };
@@ -606,7 +634,10 @@
           bubble.style.opacity = bo.toFixed(3); bubble.style.transform = "scale(" + (.6 + .4 * eo(seg(.3, .36))).toFixed(3) + ") rotate(-4deg)";
           bg.style.opacity = (1 - fade).toFixed(3); cap.style.opacity = (1 - fade).toFixed(3);
           wrap.style.opacity = (1 - fade).toFixed(3); wrap.style.transform = "scale(" + (1 - .22 * fade).toFixed(3) + ") translateY(" + (6 * fade).toFixed(2) + "%)";
-          hint.style.opacity = (1 - seg(.02, .1)).toFixed(3);
+          hint.style.opacity = (1 - seg(.06, .16)).toFixed(3);
+          // il titolo resta finché il robot alza il braccio, poi lascia la scena al fumetto
+          var cf = seg(.14, .28);
+          copy.style.opacity = (1 - cf).toFixed(3); copy.style.transform = "translate(" + (-40 * io(cf)).toFixed(1) + "px, -58%)";
           // il disco: in mano, verso di noi, poi si appoggia dove gira la dinamo
           var W = stage.clientWidth, H = stage.clientHeight, dp = window.dynCtl ? window.dynCtl.dockPoint() : null;
           var h = rel(hand), piv = rel(arm.querySelector("path")), rH = h.w * 2.1;
