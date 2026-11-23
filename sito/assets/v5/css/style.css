@@ -788,11 +788,13 @@ html.has-robot .disc { display: block; position: absolute; left: 0; top: 0; widt
 .robot-bg { position: absolute; inset: 0; background:
   radial-gradient(circle at 1px 1px, rgba(205,77,82,.13) 1px, transparent 1.6px) 0 0 / 14px 14px,
   radial-gradient(75% 85% at 70% 45%, #FBF4E8 0%, #F3E7D4 55%, #E9D7BE 100%); }
-.robot-lines { position: absolute; inset: -20%; opacity: 0;
-  background: repeating-conic-gradient(from 0deg at 64% 42%, transparent 0 5deg, rgba(205,77,82,.16) 5deg 7deg, transparent 7deg 11deg, rgba(85,144,247,.14) 11deg 12.5deg);
-  -webkit-mask-image: radial-gradient(circle at 64% 42%, transparent 0 14%, #000 40%); mask-image: radial-gradient(circle at 64% 42%, transparent 0 14%, #000 40%);
-  animation: robot-spin 9s linear infinite; }
-@keyframes robot-spin { to { transform: rotate(360deg); } }
+/* raggi: un quadrato molto più grande della hero, centrato sul robot (posizione da JS),
+   così ruotando il centro resta dietro al robot e i bordi non entrano mai nello schermo */
+.robot-lines { position: absolute; left: 64%; top: 42%; width: 300vmax; height: 300vmax; opacity: 0;
+  background: repeating-conic-gradient(from 0deg at 50% 50%, transparent 0 5deg, rgba(205,77,82,.16) 5deg 7deg, transparent 7deg 11deg, rgba(85,144,247,.14) 11deg 12.5deg);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 0 4%, #000 12%); mask-image: radial-gradient(circle at 50% 50%, transparent 0 4%, #000 12%);
+  transform: translate(-50%, -50%); animation: robot-spin 9s linear infinite; }
+@keyframes robot-spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
 .robot-cap { position: absolute; left: max(var(--gutter), env(safe-area-inset-left, 0px)); top: clamp(1.5rem, 3vw, 2.5rem); color: #7A6652; }
 .robot-cap b { color: #1B2333; }
 .robot-hint { position: absolute; left: max(var(--gutter), env(safe-area-inset-left, 0px)); bottom: clamp(2rem, 6vh, 4rem); display: inline-flex; align-items: center; gap: .7rem;

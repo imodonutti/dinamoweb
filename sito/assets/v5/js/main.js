@@ -630,6 +630,8 @@
           coreGlow.setAttribute("opacity", (charge * .7 * (1 - thr)).toFixed(3)); coreGlow.setAttribute("r", (24 + 12 * charge).toFixed(1));
           flash.style.opacity = (Math.max(0, 1 - Math.abs(p - .55) / .025) * .95).toFixed(3); // lampo bianco da cartone al lancio
           lines.style.opacity = (charge * (1 - fade)).toFixed(3);
+          // il centro dei raggi sta sempre dietro al petto del robot
+          lines.style.left = (wrap.offsetLeft + wrap.offsetWidth * .5) + "px"; lines.style.top = (wrap.offsetTop + wrap.offsetHeight * .4) + "px";
           var bo = seg(.3, .36) * (1 - seg(.53, .57));
           bubble.style.opacity = bo.toFixed(3); bubble.style.transform = "scale(" + (.6 + .4 * eo(seg(.3, .36))).toFixed(3) + ") rotate(-4deg)";
           bg.style.opacity = (1 - fade).toFixed(3); cap.style.opacity = (1 - fade).toFixed(3);
