@@ -31,11 +31,6 @@ html.is-lp .site-header .container { grid-template-columns: 1fr auto; }
 .lp-dots { display: flex; gap: .4rem; padding: .7rem .9rem; border-bottom: 1px solid var(--line); }
 .lp-dots i { width: .55rem; height: .55rem; border-radius: 50%; background: #3A3A3A; }
 .lp-browser img { display: block; width: 100%; height: auto; }
-/* il bollino da fumetto, come il robot della home */
-.lp-sticker { position: absolute; left: -1.5rem; bottom: -1.8rem; margin: 0; display: grid; place-items: center; text-align: center; width: 8.5rem; height: 8.5rem; border-radius: 50%;
-  background: #fff; color: #1B2333; border: 4px solid var(--lp-ink); box-shadow: 6px 6px 0 var(--lp-red); transform: rotate(-10deg);
-  font: italic 800 1.7rem/1 var(--f-sans); letter-spacing: -.04em; text-transform: uppercase; align-content: center; }
-.lp-sticker small { display: block; font-size: .7rem; letter-spacing: .08em; font-style: normal; font-weight: 600; margin-bottom: .2rem; color: var(--lp-red); }
 
 /* 2 · problema */
 .lp-pains { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
@@ -97,9 +92,8 @@ html.is-lp .site-header .container { grid-template-columns: 1fr auto; }
 
 @media (max-width: 960px) {
   .lp-hero-grid, .lp-faq-grid, .lp-always { grid-template-columns: minmax(0, 1fr); }
-  .lp-hero-shot { margin: 1rem .5rem 1.5rem 1.5rem; }
+  .lp-hero-shot { margin: 1rem 0 0; }
   .lp-browser { transform: none; }
-  .lp-sticker { width: 6.6rem; height: 6.6rem; font-size: 1.3rem; left: -1.2rem; bottom: -1.4rem; }
   .lp-pains, .lp-steps, .lp-work-grid { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
   .lp-pack-grid { grid-template-columns: minmax(0, 1fr); gap: 1.8rem; }
   .lp-pack.is-top { order: -1; }
