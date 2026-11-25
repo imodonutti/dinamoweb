@@ -256,3 +256,34 @@ html.is-lp .site-header .container { grid-template-columns: 1fr auto; }
   .svc-row { grid-template-columns: 2rem minmax(0, 1fr) 1.2rem; grid-template-areas: "n name go" "n line go" "n price go"; }
   .svc-price { text-align: left; margin-top: .3rem; }
 }
+
+/* ===== pagine "su misura": metodo al posto dei pacchetti ===== */
+.lp-phases { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line-2); }
+.lp-phases li { display: grid; grid-template-columns: 3rem minmax(0, 1fr) minmax(0, 14rem); gap: var(--gutter); align-items: start; padding: 1.6rem 0; border-bottom: 1px solid var(--line-2); }
+.lp-phases li > span { font: 500 var(--fs-meta) var(--f-mono); color: var(--accent); padding-top: .45rem; }
+.lp-phases strong { display: block; font-size: clamp(1.3rem, 1.05rem + .8vw, 1.8rem); font-weight: 500; letter-spacing: -.03em; }
+.lp-phases p { margin: .5rem 0 0; color: var(--muted); line-height: 1.5; max-width: 34em; }
+.lp-phases em { font-style: normal; justify-self: end; padding: .5rem .85rem; border: 1px solid var(--line-2); border-radius: 999px; font: .74rem var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: #C9C9C9; white-space: nowrap; }
+.lp-gets { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--gutter); margin-top: clamp(2.5rem, 5vw, 4rem); padding: clamp(1.6rem, 3vw, 2.6rem); border: 1px solid rgba(85,144,247,.45); border-radius: 8px; background: linear-gradient(135deg, rgba(85,144,247,.12), #111 70%); }
+.lp-gets h3 { margin-top: 1rem; font-size: clamp(1.4rem, 1.1rem + 1vw, 2rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; }
+.lp-gets ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .9rem; align-content: center; }
+.lp-gets li { padding-left: 1.6rem; position: relative; color: #D5D5D5; line-height: 1.4; }
+.lp-gets li::before { content: ""; position: absolute; left: 0; top: .35em; width: .8rem; height: .45rem; border-left: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(-45deg); }
+/* illustrazione: dal processo alla proposta */
+.mk-flow-in { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: .6rem; align-items: center; padding: 1.6rem 1.2rem 1rem; background: #111; }
+.mk-step { display: grid; gap: .45rem; padding: .9rem; border-radius: 8px; background: #1B1B1B; border: 1px solid #2E2E2E; }
+.mk-step small { font: .62rem var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: #8A8A8A; }
+.mk-step b { font-size: .88rem; font-weight: 500; line-height: 1.2; }
+.mk-step i { display: block; height: .35rem; border-radius: 3px; background: #2C2C2C; } .mk-step i.short { width: 60%; }
+.mk-step.warn { border-color: rgba(205,77,82,.6); } .mk-step.warn small { color: #E8898C; }
+.mk-step.ok { border-color: rgba(85,144,247,.7); background: rgba(85,144,247,.1); } .mk-step.ok small { color: #9CC3FF; }
+.mk-arrow { color: #666; }
+.mk-notes { display: flex; gap: .6rem; padding: .4rem 1.2rem 1.5rem; background: #111; }
+.mk-notes p { margin: 0; padding: .6rem .8rem; border-radius: 4px; background: #F3E7B3; color: #3A3320; font-size: .78rem; font-weight: 500; transform: rotate(-2deg); box-shadow: 0 6px 14px -6px rgba(0,0,0,.6); }
+.mk-notes p:nth-child(2) { transform: rotate(1.5deg); background: #F6D0D1; } .mk-notes p:nth-child(3) { transform: rotate(-1deg); background: #CFE0FF; }
+@media (max-width: 960px) {
+  .lp-phases li { grid-template-columns: 2.2rem minmax(0, 1fr); }
+  .lp-phases em { grid-column: 2; justify-self: start; }
+  .lp-gets { grid-template-columns: minmax(0, 1fr); }
+  .mk-flow-in { grid-template-columns: minmax(0, 1fr); } .mk-arrow { transform: rotate(90deg); justify-self: center; }
+}
