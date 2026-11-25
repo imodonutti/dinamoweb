@@ -8,12 +8,12 @@
   // nella versione campagne si nasconde il link alla versione stessa
   if (lp) $$('a[href^="?"]').forEach(function (a) { a.style.display = "none"; });
 
-  // titolo con la città dell'annuncio: ?citta=Cremona (solo le province servite)
-  var CITIES = { piacenza: "Piacenza", parma: "Parma", cremona: "Cremona", lodi: "Lodi", pavia: "Pavia", brescia: "Brescia", bergamo: "Bergamo" };
-  var c = CITIES[(q.get("citta") || "").toLowerCase()];
-  if (c) {
-    $(".lp-city").textContent = " a " + c;
-    document.title = "Siti web per aziende a " + c + " da 750 € · Dinamoweb";
+  // titolo con la città dell'annuncio: ?citta=Cremona (qualunque città, solo lettere)
+  var raw = (q.get("citta") || "").trim();
+  if (/^[A-Za-zÀ-ÿ' -]{2,30}$/.test(raw)) {
+    var c = raw.toLowerCase().replace(/(^|[\s'-])([a-zà-ÿ])/g, function (m, a, b) { return a + b.toUpperCase(); });
+    $$(".lp-city").forEach(function (el) { el.textContent = " a " + c; });
+    document.title = c + " · " + document.title;
   }
 
   // header: sfondo quando si scorre, menu su telefono
