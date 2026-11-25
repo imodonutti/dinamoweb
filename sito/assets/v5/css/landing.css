@@ -228,3 +228,31 @@ html.is-lp .site-header .container { grid-template-columns: 1fr auto; }
   .lp-phone-mock.mk-app { width: 52%; left: 0; }
 }
 .lp-hero h1.is-long { font-size: clamp(2.4rem, 1rem + 4.1vw, 5.2rem); }
+
+/* ===== elenco dei servizi (/v5/servizi/) ===== */
+.svc-hero h1 { max-width: 14em; }
+.svc-hero .lp-lead { max-width: 32em; }
+.svc-jump { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 2.2rem; }
+.svc-jump a { padding: .65rem 1rem; border: 1px solid var(--line-2); border-radius: 999px; text-decoration: none; font-size: .9rem; color: #C9C9C9; transition: border-color .2s, color .2s; }
+.svc-jump a:hover { border-color: var(--accent); color: #fff; }
+.svc-sec { padding-top: clamp(2.5rem, 2rem + 2vw, 4rem) !important; }
+.svc-group { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--gutter); padding-block: clamp(2rem, 1.5rem + 2vw, 3.5rem); border-bottom: 1px solid var(--line); scroll-margin-top: calc(var(--header-h) + 1rem); }
+.svc-group:last-child { border-bottom: 0; }
+.svc-group-head h2 { font-size: clamp(1.8rem, 1.2rem + 1.8vw, 2.8rem); letter-spacing: -.045em; }
+.svc-group-head p { margin: .8rem 0 0; color: var(--muted); max-width: 20em; line-height: 1.45; }
+.svc-list { border-top: 1px solid var(--line-2); }
+.svc-row { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr) auto 2rem; grid-template-areas: "n name price go" "n line price go"; column-gap: 1rem; row-gap: .3rem; align-items: center;
+  padding: 1.4rem .5rem; border-bottom: 1px solid var(--line-2); text-decoration: none; color: var(--fg); transition: background .25s; }
+.svc-row:hover { background: linear-gradient(90deg, rgba(85,144,247,.1), transparent 80%); }
+.svc-n { grid-area: n; align-self: start; padding-top: .35rem; font: 500 var(--fs-meta) var(--f-mono); color: var(--accent); }
+.svc-name { grid-area: name; font-size: clamp(1.3rem, 1.05rem + .8vw, 1.8rem); font-weight: 500; letter-spacing: -.03em; }
+.svc-line { grid-area: line; color: var(--muted); font-size: .98rem; }
+.svc-price { grid-area: price; text-align: right; font-size: clamp(1.15rem, 1rem + .5vw, 1.5rem); font-weight: 600; letter-spacing: -.03em; white-space: nowrap; }
+.svc-price small { font-size: .8rem; font-weight: 400; color: var(--muted); }
+.svc-go { grid-area: go; justify-self: end; color: var(--accent); font-size: 1.2rem; transition: transform .3s var(--ease); }
+.svc-row:hover .svc-go { transform: translateX(4px); }
+@media (max-width: 960px) {
+  .svc-group { grid-template-columns: minmax(0, 1fr); }
+  .svc-row { grid-template-columns: 2rem minmax(0, 1fr) 1.2rem; grid-template-areas: "n name go" "n line go" "n price go"; }
+  .svc-price { text-align: left; margin-top: .3rem; }
+}
